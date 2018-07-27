@@ -1,0 +1,327 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>财务报销单列表</title>
+    <link href="../Content/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../Content/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="../Content/datatables.min.css" rel="stylesheet" />
+    <style type="text/css">
+        .loading {
+            padding-left: 50%;
+            padding-top: 20%;
+            display: none;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            position: absolute;
+        }
+
+        .form-control1 {
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.428571429;
+            color: #555555;
+            vertical-align: middle;
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 0px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+            transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+        }
+
+        td.details-control {
+            background: url('../Img/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+
+        tr.shown td.details-control {
+            background: url('../Img/details_close.png') no-repeat center center;
+        }
+
+        .btn {
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            border-radius: 0;
+        }
+    </style>
+
+</head>
+<body>
+    <br /><br /><br />
+    <!--加载图片-->
+    <div class="loading">
+        <img src="../Img/loading.gif" />
+    </div>
+    <div ng-app="myApp" ng-controller="myCtrl">
+        <form class="navbar-form pull-left">
+            <label class="control-label">按时间查询:</label>
+            <input type="text" placeholder="开始日期" value="" class="form-control1" id="startDate" ng-model="conditions.startDate"> --
+            <input type="text" value="" placeholder="结束日期" class="form-control1" id="endDate" ng-model="conditions.endDate">
+            <label class="control-label">审核状态:</label>
+            <select class="form-control1" ng-model="conditions.finishedflag_id">
+                <option ng-repeat="finishedflag in finishedflagList" value="{{finishedflag.id}}">{{finishedflag.value}}</option>
+            </select>
+            <label class="control-label">员工姓名:</label>
+            <input type="text" placeholder="员工姓名,支持模糊查询" class="form-control1" ng-model="conditions.menberName">
+            <label class="control-label">编号:</label>
+            <input type="text" placeholder="票据编号，不支持模糊查询" onkeyup="value=value.replace(/[^\d-]/g,'')" class="form-control1" ng-model="conditions.col_Id">
+            <label class="control-label">单据类型:</label>
+            <select class="form-control1"  ng-model="conditions.form_appid">
+                <option ng-repeat="form in formList" value="{{form.id}}">{{form.value}}</option>
+            </select> 
+            <button type="button" class="btn btn-primary" id="search" ng-click="search()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>查询</button>
+        </form>
+        <div id="tabDiv">
+
+            <table id="table" class="display" style="width:100%">
+            </table>
+        </div>
+    </div>
+</body>
+<script src="../Scripts/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
+<script type="text/javascript" src="../Scripts/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../Scripts/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script src="../Scripts/angular.min.js"></script>
+<script src="../Scripts/datatables.min.js"></script>
+<script>
+    $('#startDate').datetimepicker({
+        format: 'yyyy/mm/dd',
+        language: "zh-CN", //汉化
+        todayBtn: "true",  //显示今天按钮
+        autoclose: true,   //选择日期后自动关闭日期选择框
+        todayHighlight: true,   //当天高亮显示
+        minView: "month",   //不显示时分秒hour
+        showMeridian: 1,
+        pickerPosition: "bottom-left",
+        // startDate: new Date(new Date() - 1000 * 60 * 60 * 24 * 365),  //只显示一年的日期365天
+        endDate: new Date()
+    }).on('click', function (e) {
+        //$("#startDate2").datetimepicker("setEndDate", $("#endDate2").val());
+    });
+    $('#endDate').datetimepicker({
+        format: 'yyyy/mm/dd',
+        language: "zh-CN",
+        todayBtn: "true",
+        autoclose: true,
+        todayHighlight: true,
+        minView: "month",
+        pickerPosition: "bottom-left",
+        //startDate: new Date(new Date() - 1000 * 60 * 60 * 24 * 365),
+        endDate: new Date()
+    }).on('click', function (e) {
+        //$("#endDate2").datetimepicker("setStartDate", $("#startDate2").val());
+    });
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function ($scope, $http) {
+        //单据流程完成情况
+        $scope.finishedflagList = [
+           { id: '0', value: '未完成' },
+           { id: '1', value: '完成' },
+           { id: '3', value: '已终止' }
+        ]
+        //单据类型
+        $scope.formList=[
+           { id: '7918552077698879263', value: '预支单' },
+           { id: '-1166138112544715333', value: '付款审批单' },
+           { id: '6030205033455177463', value: '费用报销单' },
+           { id: '-2287409120319815238', value: '差旅费报销单' },
+           { id: '4932768139687445340', value: '上海悦目-费用申请表' }
+        ]
+        //读取一个月
+        $scope.dt = new Date();
+        $scope.year = ($scope.dt.getMonth() == 0) ? ($scope.dt.getFullYear() - 1) : $scope.dt.getFullYear();
+        $scope.month = ($scope.dt.getMonth() == 0) ? 12 : $scope.dt.getMonth();
+        $scope.date = $scope.dt.getDate() >= 29 ? 28 : $scope.dt.getDate();//考虑到2月可能最少只有28天
+        $scope.conditions = {
+            col_Id: '',//单据编号（系统生成，非流水号）
+            startDate: $scope.year + "/" + $scope.month + "/" + $scope.date,
+            endDate: new Date().getFullYear() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getDate(),
+            menberName: "",
+            finishedflag_id: $scope.finishedflagList[0].id,
+            form_appid: $scope.formList[0].id
+        };
+        $scope.search = function () {
+            $scope.getList($scope.conditions);
+        }
+        $scope.getList = function (search) {
+            $(".loading").css("display", "block");
+            $http({
+                method: 'Post',
+                url: '../api/OA/getList',
+                // params: search
+                data: search
+            }).success(function (data) {
+                console.log(data);
+                tableShow(data);
+
+                $(".loading").css("display", "none");
+            }).error(function (msg) {
+                console.log(msg);
+
+                $(".loading").css("display", "none");
+            })
+        }
+      //  $scope.getList($scope.condition);
+    });
+    function tableShow(dataList) {
+        //显示给用户看的视图
+        //由于datatables会有一个缓存问题，导致保存了上一次该行的内容会造成多次请求，先销毁这个table再重构table就不会有这个问题了
+        $("#tabDiv").html("");
+        $("#tabDiv").html(' <table id="table" class="display" style="width:100%"></table>');
+
+        var table = $('#table').DataTable({
+            data: dataList,
+            "bFilter": false,
+            "ordering": true,
+            "info": false,
+            "destroy": true,
+            bAutoWidth: true,//自动宽度
+            paging: true,
+            searching: false,
+            "oLanguage": { // 国际化配置
+                "sProcessing": "正在获取数据，请稍后...",
+                "sLengthMenu": "显示 _MENU_ 条",
+                "sZeroRecords": "没有找到数据",
+                "sInfo": "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
+                "sInfoEmpty": "记录数为0",
+                "sInfoFiltered": "(全部记录数 _MAX_ 条)",
+                "sInfoPostFix": "",
+                "sSearch": "查询",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "第一页",
+                    "sPrevious": "上一页",
+                    "sNext": "下一页",
+                    "sLast": "最后一页"
+                }
+            },
+            // "scrollX": true,//x方向滚动
+            columns: [
+              {
+                  "class": 'details-control',
+                  "orderable": false,
+                  "data": null,
+                  "defaultContent": ''
+              },
+              {
+                  'title': 'ID',
+                  "width": "10%",
+                  "orderable": false, // 禁用排序
+                  "defaultContent": "",
+                  "render": function (data, type, row, meta) {
+                      return row.col_summary.idStr ;
+                  }
+              }, {
+                  'title': '姓名',
+                  "width": "10%",
+                  "orderable": false, // 禁用排序
+                  "defaultContent": "",
+                  "render": function (data, type, row, meta) {
+                      return row.v3x_org_member.name;
+                  }
+              }, {
+                  'title': '部门',
+                  "width": "10%",
+                  "orderable": true, // 禁用排序
+                  "defaultContent": "",
+                  "render": function (data, type, row, meta) {
+                      return row.v3x_org_department.name;
+                  }
+              }, {
+                  'title': '创建日期',
+                  "orderable": true, // 禁用排序
+                  "defaultContent": "",
+                  "width": "10%",
+                  "render": function (data, type, row, meta) {
+                      return new Date(row.col_summary.create_date).getFullYear() + '-' + (new Date(row.col_summary.create_date).getMonth() + 1)+"-" + new Date(row.col_summary.create_date).getDate();
+                  }
+              }, {
+                  'title': '完成日期',
+                  "orderable": true, // 禁用排序
+                  "defaultContent": "",
+                  "width": "10%",
+                  "render": function (data, type, row, meta) {
+                      return row.col_summary.finish_date == null ? "" : new Date(row.col_summary.finish_date).getFullYear() + '-'
+                          + +(new Date(row.col_summary.finish_date).getMonth() + 1) + "-" + new Date(row.col_summary.finish_date).getDate();
+                  }
+              },
+              {
+                  "orderable": false, // 禁用排序
+                  "defaultContent": "",
+                  "render": function (data, type, row, meta) {
+                      return '<button class="btn btn-info btn-sm" onclick="searchOnes(\'' + row.col_summary.idStr + '\',\''  +row.col_summary.form_appid + '\')"><span class="glyphicon glyphicon-pushpin"></span>操作</button>';
+                  }
+              }
+            ]
+        });
+        /*$('#table').dataTable().fnClearTable();   //将数据清除
+        $("#table").dataTable().fnDestroy();*/
+        //点击表格+时触发事件
+        $('#table tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+            if (row.child.isShown()) {
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                row.child(format(row.data())).show();
+                tr.addClass('shown');
+            }
+        });
+    }
+    //详细信息，点击表格的+号显示详细信息
+    function format(data) {
+        if (data.col_summary.form_appid == "4932768139687445340") {//上海悦目费用申请表
+            var formson = "";//详细明细
+            for (var f in data.ShenqianbiaoList.formson_0191List) {
+                formson += '<tr>\
+                                <td>摘要</td>\
+                                <td>' + data.ShenqianbiaoList.formson_0191List[f].field0017 + '</td>\
+                                <td>金额</td>\
+                                <td>' + data.ShenqianbiaoList.formson_0191List[f].field0019 + '</td>\
+                           </tr>\
+                           <tr>\
+                                <td>备注</td>\
+                                <td colspan="3">' + data.ShenqianbiaoList.formson_0191List[f].field0018 == null ? "" : data.ShenqianbiaoList.formson_0191List[f].field0018 + '</td>\
+                           </tr>'
+            }
+            return net = '<table class=" "> <tr> <td>累计金额:</td><td>' + data.ShenqianbiaoList.formmain_0190.field0010 + '</td></tr>'  + formson+'</table>';
+        }
+    }
+    function searchOnes(Id, type) {//跳转界面
+        if (type == "上海悦目-预支单") {
+            $(".loading").css("display", "block");
+            window.location.href = "./yuzhi.html?Id=" + Id + "&type=" + type;
+        }
+        if (type == "上海悦目-付款审批单") {
+            $(".loading").css("display", "block");
+            window.location.href = "./shenpi.html?Id=" + Id + "&type=" + type;
+        }
+        if (type == "上海悦目-费用报销单") {
+            $(".loading").css("display", "block");
+            window.location.href = "./baoxiao.html?Id=" + Id + "&type=" + type;
+        }
+        if (type == "上海悦目-差旅费报销单") {
+            $(".loading").css("display", "block");
+            window.location.href = "./chailvfei.html?Id=" + Id + "&type=" + type;
+        }
+        if (type == "4932768139687445340") {
+            type = "上海悦目 - 费用申请表";
+            $(".loading").css("display", "block");
+            window.location.href = "./old.html?Id=" + Id + "&type=" + type
+        }
+        if (type == "广东悦肌-费用申请表") {
+            $(".loading").css("display", "block");
+            window.location.href = "./old.html?Id=" + Id + "&type=" + type // JSON.stringify(one);
+        }
+    }
+</script>
+</html>

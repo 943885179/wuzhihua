@@ -1,0 +1,662 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="images/favicon.ico" type="image/ico" />
+
+    <title>单据无纸化 </title>
+
+    <!-- Bootstrap -->
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+    <!-- bootstrap-progressbar -->
+    <link href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="../vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />
+    <!-- bootstrap-daterangepicker -->
+    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../build/css/custom.min.css" rel="stylesheet">
+
+    <link href="../Content/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="../Content/datatables.min.css" rel="stylesheet" />
+
+    <style type="text/css">
+        .loading {
+            padding-left: 50%;
+            padding-top: 20%;
+            display: none;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            position: absolute;
+        }
+
+        .form-control1 {
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.428571429;
+            color: #555555;
+            vertical-align: middle;
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 0px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+            transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+        }
+
+        td.details-control {
+            background: url('../Img/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+
+        tr.shown td.details-control {
+            background: url('../Img/details_close.png') no-repeat center center;
+        }
+
+        .btn {
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            border-radius: 0;
+        }
+    </style>
+</head>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container" ng-app="myApp" ng-controller="myCtrl">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="userIndex.html" target="_top" class="site_title"><i class="fa fa-paw"></i> <span>单据无纸化</span></a>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <ul class="nav side-menu">
+                                <li><a href="userIndex.html" target="_top"><i class="fa fa-bookmark"></i>财务单据</a></li>
+                                <!-- <li><a href="javascript:void(0)"><i class="fa fa-bars"></i> 预支单</a></li>
+                                 <li><a href="javascript:void(0)"><i class="fa fa-bookmark"></i> 差旅费报销单</a></li>
+                                 <li><a href="javascript:void(0)"><i class="fa fa-location-arrow"></i> 费用报销单</a></li>
+                                 <li><a href="javascript:void(0)"><i class="fa fa-life-bouy"></i> 付款审批单</a></li>-->
+                            </ul>
+                        </div>
+
+                    </div>
+                    <!-- /sidebar menu -->
+                </div>
+            </div>
+
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav>
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <img src="images/img.jpg" alt="">{{userInfo.name}}
+                                    <span class=" fa fa-angle-down"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                    <li><a href="login.html" target="_top"><i class="fa fa-sign-out pull-right"></i> 退出登录</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- /top navigation -->
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="loading">
+                    <img src="../Img/loading.gif" />
+                </div>
+                <div>
+
+                    <div id="chunaDiv">
+                        <a ng-click="back()" class="btn btn-info btn_help1"> <span class="glyphicon glyphicon-list"></span>返回单据列表</a>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="biaodanDiv" ng-repeat="tab in lengthTabList">
+                        <!--startprint-->
+                        <div class="{{tab.tabClass}}">
+                            <table style="width:100%" border="0" bordercolor="#333" cellspacing="0" cellpadding="0">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="width:40%">
+                                            <input type="checkbox" name="vehicle" value="one.company" checked="checked" /> {{one.company}}<br>
+                                            <br>
+                                        </td>
+                                        <td style="width:20%">
+                                            <h3><b>预支单</b></h3>
+                                        </td>
+                                        <td style="width:20%">
+                                            <br>
+                                            <img src="../../Img/login.png" alt="">
+                                        </td>
+                                        <td style="width:20%">
+                                            <h4>No <span style="color:red">{{one.liuShui}}</span></h4>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table style="width:100%" border="0" bordercolor="#333" cellspacing="0" cellpadding="0">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="width:40%">
+                                            报销部门:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{one.faqibumen}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+                                        </td>
+                                        <td style="width:40%">
+                                            收益部门:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{one.shouyibumen=="NULL"?"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;":one.shouyibumen}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+                                        </td>
+                                        <td style="width:20%">
+                                            <u ng-bind="one.date | date:'yyyy年MM月dd日'"></u>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table style="text-align:center;width:100%" border="1" bordercolor="#333" cellspacing="0" cellpadding="0">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                <tbody>
+                                    <tr>
+                                        <td style="width:20%;">收款单位（或个人）</td>
+                                        <td style="width:40%">{{one.shoukuandanwei}}</td>
+                                        <td style="width:20%">收款银行</td>
+                                        <td style="width:20%">{{one.shoukuanyh}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:20%">收款账号</td>
+                                        <td style="width:40%">{{one.zhanhao}}</td>
+                                        <td style="width:20%">预计付款日期</td>
+                                        <td style="width:20%">{{one.fukuanriqi | date:'yyyy/MM/dd'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="" style="text-align:center;width:100%" border="1" bordercolor="#333" cellspacing="0" cellpadding="0">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="width:70%;line-height:40px;" rowspan="2">用&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;途</td>
+                                        <td style="width:10%" colspan="12">金&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;额</td>
+                                        <td style="width:20%">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</td>
+                                    </tr>
+                                    <tr>
+                                        <td>十</td>
+                                        <td>亿</td>
+                                        <td>千</td>
+                                        <td>百</td>
+                                        <td>十</td>
+                                        <td>万</td>
+                                        <td>千</td>
+                                        <td>百</td>
+                                        <td>十</td>
+                                        <td>元</td>
+                                        <td>角</td>
+                                        <td>分</td>
+                                        <td style="width:30%" rowspan="8"></td>
+                                    </tr>
+                                    <!--读取到的详细数据-->
+                                    <tr ng-repeat="yt in tab.tabList track by $index" style="min-height:30px">
+                                        <td style="width:40%;height:30px" rowspan="1">
+                                            {{yt.miaoshu}}
+                                        </td>
+                                        <td ng-repeat="x1 in yt.notJineLists track by $index" style="height:30px" rowspan="1">
+                                            <span ng-if="$index==yt.notJineLists.length-1 && yt.jineList.length>0">￥</span>
+                                        </td>
+                                        <td ng-repeat="a1 in yt.jineList track by $index" style="height:30px" rowspan="1">{{a1}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:40%;line-height:40px" rowspan="2">
+                                            <span style="float:left">合计（大写）</span>{{tab.ltabJineList}}
+                                        </td>
+                                        <td ng-repeat="las in tab.notabJineList" rowspan="2" style="line-height:40px">
+                                            <span ng-if="$index==tab.notabJineList.length-1 && tab.tabJineList.length>0">￥</span>
+                                        </td>
+                                        <td style="line-height:40px" ng-repeat="lamou in tab.tabJineList track by $index" rowspan="2">{{lamou}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table style="text-align:center;width:100%" border="1" bordercolor="#333" cellspacing="0" cellpadding="0">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                    <tr style="font-size:14px">
+                                        <td style="width:10%;">&nbsp;&nbsp;会&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计&nbsp;&nbsp;</td>
+                                        <td style="width:10%;">&nbsp;&nbsp;总&nbsp;经&nbsp;理&nbsp;&nbsp;</td>
+                                        <td style="width:10%;">财务总监</td>
+                                        <td style="width:10%;">财务经理</td>
+                                        <td style="width:10%;">会&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计</td>
+                                        <td style="width:10%;">收益部门<br />负责人</td>
+                                        <td style="width:10%;">收益部门<br />经理</td>
+                                        <td style="width:10%;">报销部门<br />负责人</td>
+                                        <td style="width:10%;">报销部门<br />经理</td>
+                                        <td style="width:10%;">经手人</td>
+                                    </tr>
+                                    <tr style="font:1 16px FangSong">
+                                        <td></td>
+                                        <td>{{zjl.name}}<br />{{zjl.create_date| date:'yyyy/MM/dd'}}</td>
+                                        <td>{{cwzj.name}}<br />{{cwzj.create_date| date:'yyyy/MM/dd'}}</td>
+                                        <td>{{cwjl.name}}<br />{{cwjl.create_date| date:'yyyy/MM/dd'}}</td>
+                                        <td>{{caiwu.name}}<br />{{caiwu.create_date | date:'yyyy/MM/dd'}}</td>
+                                        <td>{{syfzr.name}}<br />{{syfzr.create_date | date:'yyyy/MM/dd'}}</td>
+                                        <td>{{syjl.name}}<br />{{syjl.create_date | date:'yyyy/MM/dd'}}</td>
+                                        <td>{{sqfzr.name}}<br />{{sqfzr.create_date | date:'yyyy/MM/dd'}}</td>
+                                        <td>{{sqjl.name}}<br />{{sqjl.create_date | date:'yyyy/MM/dd'}}</td>
+                                        <td>{{one.faqiren}} <br />{{one.date | date:'yyyy/MM/dd'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table style="text-align:center;width:100%" border="0" bordercolor="#333" cellspacing="0" cellpadding="0">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                    <tr style="font:1 12px FangSong;line-height:25px">
+                                        <td style="width:12.5%">销账确认：</td>
+                                        <td style="width:12.5%"></td>
+                                        <td style="width:12.5%">付款凭证号:</td>
+                                        <td style="width:12.5%"></td>
+                                        <td style="width:12.5%">出纳付款确认:</td>
+                                        <td style="width:12.5%"></td>
+                                        <td style="width:12.5%">付款时间:</td>
+                                        <td style="width:12.5%"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--endprint-->
+
+                        <button ng-click="dayin(tab.tabClass)" ng-if="one.shifouPingzhen == 0" class="btn btn-success"><span class="glyphicon glyphicon-print"></span>确认打印</button>
+
+                    </div>
+                </div>
+            </div>
+            <!-- /page content -->
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                    单据无纸化
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../vendors/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="../vendors/Chart.js/dist/Chart.min.js"></script>
+    <!-- gauge.js -->
+    <script src="../vendors/gauge.js/dist/gauge.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- iCheck -->
+    <script src="../vendors/iCheck/icheck.min.js"></script>
+    <!-- Skycons -->
+    <script src="../vendors/skycons/skycons.js"></script>
+    <!-- Flot -->
+    <script src="../vendors/Flot/jquery.flot.js"></script>
+    <script src="../vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="../vendors/Flot/jquery.flot.time.js"></script>
+    <script src="../vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="../vendors/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="../vendors/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="../vendors/DateJS/build/date.js"></script>
+    <!-- JQVMap -->
+    <script src="../vendors/jqvmap/dist/jquery.vmap.js"></script>
+    <script src="../vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+    <script src="../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="../vendors/moment/min/moment.min.js"></script>
+    <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.min.js"></script>
+
+    <script type="text/javascript" src="../Scripts/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../Scripts/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script src="../Scripts/angular.min.js"></script>
+    <script src="../Scripts/datatables.min.js"></script>
+
+    <script type="text/javascript" language="javascript">
+        var app = angular.module('myApp', []);
+        app.config(['$locationProvider', function ($locationProvider) {
+            // $locationProvider.html5Mode(true);
+            $locationProvider.html5Mode({
+                enabled: true,
+                requireBase: false
+            });
+        }]);
+        app.controller('myCtrl', function ($scope, $http, $location) {
+            $scope.getSesstion = function () {
+                $http({
+                    method: 'Post',
+                    url: '../api/UserInfo/getUserInfo',
+                    // params: search
+                }).success(function (data) {
+                    if (data == null) {
+                        window.location.href = "login.html";
+                    }
+                    $scope.userInfo = data;
+
+                }).error(function (msg) {
+                    window.location.href = "login.html";
+                })
+            }
+            $scope.getSesstion();
+            $scope.condition = { Id: $location.search().Id, type: $location.search().type };//, start:1
+            $scope.getList = function (condition) {
+                $(".loading").css("display", "block");
+                $http({
+                    method: 'Post',
+                    url: '../api/List/getList',
+                    // params: search
+                    data: condition
+                }).success(function (data) {
+                    if (data.length == 0) {
+                        $(".loading").css("display", "none");
+                        return;
+                    }
+                    $scope.getProcessList(data[0]);
+                    $scope.one = data[0];
+                    $scope.one.yuzhiShengyu = $scope.one.yuzhi;//可变的预支金额
+
+                    var dates = new Date($scope.one);
+                    $scope.one.fukuanriqi = new Date($scope.one.fukuanriqi.replace(/-/g, "/"));
+                    $scope.one.piaoju = [];
+                    $scope.one.lAmountList = parseFloat($scope.one.lAmount).toFixed(2).toString().replace(".", "").split("");
+                    $scope.one.date = new Date($scope.one.chuangjinshijin);
+                    //将金额分解
+                    $scope.notlAmountList = "";
+                    for (var i = 0; i < 12 - $scope.one.lAmountList.length; i++) {
+
+                        $scope.notlAmountList += i.toString();
+                    }
+                    $scope.one.notlAmountList = $scope.notlAmountList.split("");
+                    $scope.gerDetail($scope.one);
+                    $(".loading").css("display", "none");
+                }).error(function (msg) {
+                    $(".loading").css("display", "none");
+                })
+            }
+            $scope.getList($scope.condition);
+            //读取详细明细
+            $scope.gerDetail = function (datas) {
+                $http({
+                    method: 'Post',
+                    url: '../api/List/getDetail',
+                    data: datas
+                }).success(function (data) {
+                    $scope.list = [];//获取明细
+                    for (var t in data.list) {
+                        if (data.list[t].shouyibumen.length == 1) {
+                            data.list[t].shouyibumen = "0" + data.list[t].shouyibumen;
+
+                        }
+                        $scope.list.push(data.list[t]);
+                    }
+                    $scope.one.list = data.list;//直接赋值给大类，然后提交的时候再遍历提交
+                    var listlength = $scope.list.length % 4;//获取数量
+                    /*将金额用途分成四行，有的则用金额用途遍历，没有的用空值替换*/
+                    if (listlength != 0) {//不是4条的倍数遍历添加成4条的倍数
+                        for (var i = 0; i < 4 - listlength; i++) {
+                            $scope.list.push({ miaoshu: '', xianqing: '', jine: '.', shijin: '', kemu: '', jineList: [] });//添加一条空数据
+                        }
+                    }
+                    /*将金额分成单个字符放入对应的文本中，前面不足的用空值替换*/
+                    $scope.lengthTabList = [];
+                    $scope.temporaryTab = [];//临时表
+                    $scope.lengthTab = Number($scope.list.length / 4) + ($scope.list.length % 4 > 0 ? 1 : 0);//需要几个单据
+                    for (var i = 0; i < $scope.list.length; i++) {
+                        $scope.list[i].jineList = $scope.list[i].jine.replace(".", "").split("");
+                        $scope.notJineList = "";
+                        var jineListlength = $scope.list[i].jineList.length;
+                        for (var j = 0; j < 12 - jineListlength; j++) {
+                            if (j == 10) {
+                                $scope.notJineList += "x";
+                            }
+                            else if (j == 11) {
+                                $scope.notJineList += "y";
+                            }
+                            else {
+                                $scope.notJineList += j.toString();
+                            }
+                        }
+                        $scope.list[i].notJineLists = $scope.notJineList.split("");
+                        $scope.temporaryTab.push($scope.list[i]);
+                        if (i % 4 == 3) {//添加
+                            var tabJine = 0;
+                            for (var tem in $scope.temporaryTab) {
+                                if (Number($scope.temporaryTab[tem].jine).toString() != "NaN") {
+                                    tabJine = parseFloat(tabJine) + parseFloat($scope.temporaryTab[tem].jine);
+                                }
+                                var tabJineList = parseFloat(tabJine).toFixed(2).toString().replace(".", "").split("");//将此表单的金额总和分解成每个单位
+                                var notabJineList = "";
+                                for (var j = 0; j < 12 - tabJineList.length; j++) {
+                                    notabJineList += j.toString();
+                                }
+                            }
+                            //var $scope.one.lAmount - tabJine
+                            //预支金额计算
+                            var yuzhijine = 0;//该票据的预支金额
+                            var yinhuan = 0;//该票据的付款金额
+                            $scope.one.yuzhiShengyu = $scope.one.yuzhiShengyu == null || $scope.one.yuzhiShengyu == "" ? "0" : $scope.one.yuzhiShengyu
+                            var yuzhi = parseFloat($scope.one.yuzhiShengyu);
+                            if (yuzhi >= tabJine) {
+                                yuzhijine = tabJine;
+                                $scope.one.yuzhiShengyu = (yuzhi - tabJine) + "";
+                                yinhuan = 0;
+                            }
+                            else {//预支金额小于付款金额
+                                yuzhijine = yuzhi;
+                                yinhuan = tabJine - yuzhi;
+                                $scope.one.yuzhiShengyu = 0 + "";//预支完了
+                            }
+
+                            $scope.lengthTabList.push({
+                                tabClass: "tab" + i, tabList: $scope.temporaryTab, tabJine: tabJine, ltabJineList:
+                                    $scope.daxieJine(parseFloat(tabJine).toFixed(2)),
+                                tabJineList: tabJineList,
+                                notabJineList: notabJineList.split(""),
+                                yuzhijine: yuzhijine,
+                                yinhuan: yinhuan,
+                            })//添加到表中
+                            $scope.one.piaoju.push({
+                                tabClass: "tab" + i,
+                                yuzhijine: yuzhijine,
+                                yinhuan: yinhuan,
+                                Detail: $scope.temporaryTab
+                            });
+                            $scope.temporaryTab = [];//清空临时表
+                        }
+                    }
+                }).error(function (msg) {
+                    console.log(msg);
+
+                })
+
+            }
+            //读取流程签字
+            $scope.getProcessList = function (datas) {
+                $http({
+                    method: 'Post',
+                    url: '../api/List/getProcess',
+                    data: { col_id: datas.colId }
+                }).success(function (data) {
+                    $scope.sqjl = data[0];
+                    $scope.sqfzr = data[1];
+                    $scope.syjl = data[2];
+                    $scope.syfzr = data[3];
+                    $scope.caiwu = data[4];
+                    $scope.cwjl = data[5];
+                    $scope.cwzj = data[6];
+                    $scope.zjl = data[7];
+                    $scope.cn = data[8];
+                    //if ($scope.one.zhiwu == "员工级") {
+                    //
+                    // }
+                    if ($scope.one.lAmount < 100000) {
+                        $scope.zjl = "";
+                    }
+
+                }).error(function (msg) {
+                    console.log(msg);
+
+                })
+
+            }
+            //下拉刷新
+            $scope.changeFun = function () {
+                if ($scope.one.contents == null || $scope.one.contents == "") {
+                    for (var i in $scope.AccInfo) {
+                        if ($scope.one.content == $scope.AccInfo[i].ID) {
+                            $scope.one.contentName = $scope.AccInfo[i].AcctName;
+                            break;
+                        }
+                    }
+                }
+            }
+            //打印单据
+            $scope.dayin = function (divId) {
+                $(".selectKemu").hide();
+                $(".shouyibumenSun").hide();
+                var k = $("." + divId).prop("outerHTML");
+                $("body *").hide();
+                $("body").append(k);
+                window.print();
+                window.location.reload();
+                /* $("body *").show();
+                 $("body ." + divId + ":last").remove();
+                 $(".loading").css("display", "none");
+                 $(".swal2-container").remove();*/
+
+            }
+            //大写金额设置
+            $scope.daxieJine = function (Num) {
+                //如果输入的不是数字，则将其设置为空
+                // this.value = this.value.replace(/[^\d\.]/g, '').replace(/^0/, '');
+                // var Num = this.value;
+                if (Num == "") {
+                    //输入框删减为空时，将大写金额的内容值设为原始状态，当然也可以根据需求进行修改
+                    return "零元整";
+                    return false;
+                }
+                part = String(Num).split(".");
+                newchar = "";
+                for (i = part[0].length - 1; i >= 0; i--) {
+                    if (part[0].length > 10) {
+                        alert("位数过大，无法计算");//前面如果有验证位数的，此处判断可去掉
+                        return "";
+                    }
+                    tmpnewchar = ""
+                    perchar = part[0].charAt(i);
+                    switch (perchar) {
+                        case "0": tmpnewchar = "零" + tmpnewchar; break;
+                        case "1": tmpnewchar = "壹" + tmpnewchar; break;
+                        case "2": tmpnewchar = "贰" + tmpnewchar; break;
+                        case "3": tmpnewchar = "叁" + tmpnewchar; break;
+                        case "4": tmpnewchar = "肆" + tmpnewchar; break;
+                        case "5": tmpnewchar = "伍" + tmpnewchar; break;
+                        case "6": tmpnewchar = "陆" + tmpnewchar; break;
+                        case "7": tmpnewchar = "柒" + tmpnewchar; break;
+                        case "8": tmpnewchar = "捌" + tmpnewchar; break;
+                        case "9": tmpnewchar = "玖" + tmpnewchar; break;
+                    }
+                    switch (part[0].length - i - 1) {
+                        case 0: tmpnewchar = tmpnewchar + "元"; break;
+                        case 1: if (perchar != 0) tmpnewchar = tmpnewchar + "拾"; break;
+                        case 2: if (perchar != 0) tmpnewchar = tmpnewchar + "佰"; break;
+                        case 3: if (perchar != 0) tmpnewchar = tmpnewchar + "仟"; break;
+                        case 4: tmpnewchar = tmpnewchar + "万"; break;
+                        case 5: if (perchar != 0) tmpnewchar = tmpnewchar + "拾"; break;
+                        case 6: if (perchar != 0) tmpnewchar = tmpnewchar + "佰"; break;
+                        case 7: if (perchar != 0) tmpnewchar = tmpnewchar + "仟"; break;
+                        case 8: tmpnewchar = tmpnewchar + "亿"; break;
+                        case 9: tmpnewchar = tmpnewchar + "拾"; break;
+                    }
+                    newchar = tmpnewchar + newchar;
+                }
+                if (Num.indexOf(".") != -1) {
+                    if (part[1].length > 2) {
+                        part[1] = part[1].substr(0, 2)
+                    }
+                    for (i = 0; i < part[1].length; i++) {
+                        tmpnewchar = ""
+                        perchar = part[1].charAt(i)
+                        switch (perchar) {
+                            case "0": tmpnewchar = "零" + tmpnewchar; break;
+                            case "1": tmpnewchar = "壹" + tmpnewchar; break;
+                            case "2": tmpnewchar = "贰" + tmpnewchar; break;
+                            case "3": tmpnewchar = "叁" + tmpnewchar; break;
+                            case "4": tmpnewchar = "肆" + tmpnewchar; break;
+                            case "5": tmpnewchar = "伍" + tmpnewchar; break;
+                            case "6": tmpnewchar = "陆" + tmpnewchar; break;
+                            case "7": tmpnewchar = "柒" + tmpnewchar; break;
+                            case "8": tmpnewchar = "捌" + tmpnewchar; break;
+                            case "9": tmpnewchar = "玖" + tmpnewchar; break;
+                        }
+                        if (i == 0) tmpnewchar = tmpnewchar + "角";
+                        if (i == 1) tmpnewchar = tmpnewchar + "分";
+                        newchar = newchar + tmpnewchar;
+                    }
+                }
+                while (newchar.search("零元") != -1) {
+                    newchar = newchar.replace("零零", "零");
+                    newchar = newchar.replace("零亿", "亿");
+                    newchar = newchar.replace("亿万", "亿");
+                    newchar = newchar.replace("零万", "万");
+                    newchar = newchar.replace("零元", "元");
+                    newchar = newchar.replace("零角", "");
+                    newchar = newchar.replace("零分", "");
+                }
+                if (newchar.charAt(newchar.length - 1) == "元" || newchar.charAt(newchar.length - 1) == "角") {
+                    newchar = newchar + "整";
+                }
+                return newchar;
+            }
+            //返回列表
+            $scope.back = function () {
+                window.location.replace("./userIndex.html");
+            }
+
+        })
+    </script>
+</body>
+</html>

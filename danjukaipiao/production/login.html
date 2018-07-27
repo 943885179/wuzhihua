@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>单据无纸化登录 </title>
+    <link rel="icon" href="images/favicon.ico" type="image/ico" />
+    <!-- Bootstrap -->
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="../vendors/animate.css/animate.min.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="../build/css/custom.min.css" rel="stylesheet">   
+     <!-- PNotify -->
+    <link href="../vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="../vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="../vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+
+    <link href="../Content/sweetalert2.min.css" rel="stylesheet" />
+</head>
+<body class="login">
+    <div ng-app="myApp" ng-controller="myCtrl">
+        <a class="hiddenanchor" id="signup"></a>
+        <a class="hiddenanchor" id="signin"></a>
+        <div class="login_wrapper">
+            <div class="animate form login_form">
+                <section class="login_content">
+                    <form>
+                        <h1>单据无纸化系统</h1>
+                        <div>
+                            <input type="text" class="form-control" placeholder="用户名" required="" ng-model="user.username" />
+                        </div>
+                        <div>
+                            <input type="password" class="form-control" placeholder="密码" required="" ng-model="user.password" />
+                        </div>
+                        <div>
+                            <a class="btn btn-success " ng-click="loginClick()" id="loginBtn">登录</a>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="separator">
+                            <a href="#signup" class="to_register"> 修改密码 </a>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div>
+                                <h1><i class="fa fa-paw"></i> 单据无纸化</h1>
+                                <p>©2018 943885179@qq.com</p>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+            <div id="register" class="animate form registration_form">
+                <section class="login_content">
+                    <form>
+                        <h1>修改密码</h1>
+                        <div>
+                            <input type="text" class="form-control" placeholder="用户名" required="" ng-model="user.username" />
+                        </div>
+                        <div>
+                            <input type="password" class="form-control" placeholder="密码" required="" ng-model="user.password" />
+                        </div>
+                        <div>
+                            <input type="password" class="form-control" placeholder="新密码" required="" ng-model="user.newpassword" />
+                        </div>
+                        <div>
+                            <input type="password" class="form-control" placeholder="确认密码" required="" ng-model="user.newpasswordTrue" />
+                        </div>
+                        <div>
+                            <a class="btn btn-success " ng-click="registerClick()">确定</a>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="separator">
+                            <p class="change_link">
+                                <a href="#signin" class="to_register"> 登录 </a>
+                            </p>
+                            <div class="clearfix"></div>
+                            <br />
+                            <div>
+                                <h1><i class="fa fa-paw"></i> 单据无纸化</h1>
+                                <p>©2018 943885179@qq.com</p>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="../Scripts/jquery-1.10.2.min.js"></script>
+    <!-- angular -->
+    <script src="../Scripts/angular.min.js"></script>
+    <!-- sweetalert2 -->
+    <script src="../Scripts/sweetalert2.min.js"></script>
+    <!-- PNotify -->
+    <script src="../vendors/pnotify/dist/pnotify.js"></script>
+    <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="../vendors/pnotify/dist/pnotify.nonblock.js"></script>
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function ($scope, $http) {
+            $scope.user = { username: '', password: '', newpassword: '', newpasswordTrue: '' };
+            $(document).keyup(function (event) {
+                if (event.keyCode == 13) {
+                    $scope.loginClick();
+                }
+            });
+            $scope.loginClick = function () {
+                $("#loginBtn").html("登录中...");
+                $scope.loginError = "";
+                if ($scope.user.username.trim() == '') {
+                    $scope.loginError = "用户名不能为空";
+                }
+                else if ($scope.user.password.trim() == '') {
+                    $scope.loginError = "密码不能为空";
+                }
+                else { }
+                if ($scope.loginError != "") {
+                    new PNotify({
+                        title: '登录错误',
+                        text: $scope.loginError,
+                        type: 'error',
+                        styling: 'bootstrap3',
+                        hide: true, delay: 2000
+
+                    });
+
+                    $("#loginBtn").html("登录");
+                    return;
+                }
+                $http({
+                    method: 'Post',
+                    url: '../api/UserInfo/loginUserInfo',
+                    // params: search
+                    data: $scope.user
+                }).success(function (data) {
+                    console.log(data);
+                    if (data == null) {
+                        $scope.loginError = "账号或密码错误！";
+                        new PNotify({
+                            title: '登录错误',
+                            text: $scope.loginError,
+                            type: 'error',
+                            styling: 'bootstrap3',
+                            hide: true, delay: 2000
+
+                        });
+                        $("#loginBtn").html("登录");
+                        return;
+                    }
+                    if (data.type == 1 || data.type == 0) {
+                        //超级管理员
+                        window.location.href = "./index.html";
+                    }
+                    else {
+                        window.location.href = "./userIndex.html";
+                    }
+                }).error(function () {
+
+                    $("#loginBtn").html("登录");
+                    $scope.loginError = "系统错误";
+                })
+            }
+            $scope.registerClick = function () {
+                $scope.loginError = "";
+                if ($scope.user.username.trim() == '') {
+                    $scope.loginError = "用户名不能为空";
+                }
+                else if ($scope.user.password.trim() == '') {
+                    $scope.loginError = "密码不能为空";
+                }
+                else if ($scope.user.newpassword.trim() == '') {
+                    $scope.loginError = "新密码不能为空";
+                }
+                else if ($scope.user.newpasswordTrue.trim() == '') {
+                    $scope.loginError = "请确认密码";
+                }
+                else if ($scope.user.newpassword != $scope.user.newpassword) {
+                    $scope.loginError = "密码不一致";
+                }
+                else { }
+                if ($scope.loginError != "") {
+                    /* swal({
+                         html: $scope.loginError,
+                         //timer: 2000,
+                     });*/
+                    new PNotify({
+                        title: '登录错误',
+                        text: $scope.loginError,
+                        type: 'error',
+                        styling: 'bootstrap3',
+                        hide: true, delay: 2000
+
+                    });
+                    return;
+                }
+                $http({
+                    method: 'Post',
+                    url: '../api/UserInfo/updateUserInfo',
+                    // params: search
+                    data: $scope.user
+                }).success(function (data) {
+                    if (data == null) {
+                        new PNotify({
+                            title: '登录错误',
+                            text: $scope.loginError,
+                            type: 'error',
+                            styling: 'bootstrap3',
+                            hide: true, delay: 2000
+
+                        });
+                    }
+                    else {
+                        swal("修改成功");
+                    }
+                }).error(function () {
+                    swal({
+                        html: "系统故障",
+                        //timer: 2000,
+                    });
+                })
+            }
+        });
+    </script>
+</body>
+</html>

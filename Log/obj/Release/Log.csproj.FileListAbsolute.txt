@@ -1,0 +1,10 @@
+E:\stu\票据无纸化代码优化1.0\Log\bin\Release\Log.dll
+E:\stu\票据无纸化代码优化1.0\Log\bin\Release\Log.pdb
+E:\stu\票据无纸化代码优化1.0\Log\obj\Release\Log.dll
+E:\stu\票据无纸化代码优化1.0\Log\obj\Release\Log.pdb
+E:\stu\wuzhihua\Log\bin\Release\Log.dll
+E:\stu\wuzhihua\Log\bin\Release\Log.pdb
+E:\stu\wuzhihua\Log\obj\Release\Log.dll
+E:\stu\wuzhihua\Log\obj\Release\Log.pdb
+E:\stu\wuzhihua\Log\obj\Release\Log.csprojAssemblyReference.cache
+E:\stu\wuzhihua\Log\obj\Release\Log.csproj.CoreCompileInputs.cache

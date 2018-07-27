@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OAtoU8DATAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="contrast">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="baoxiaoId" Type="bigint" Nullable="false" />
+    <Property Name="yuzhiId" Type="bigint" Nullable="false" />
+    <Property Name="l4" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="l5" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="l6" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="l7" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="l13" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="producehelp">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="col_id" Type="bigint" Nullable="false" />
+    <Property Name="isShow" Type="int" Nullable="false" />
+    <Property Name="intoForm" Type="bigint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RecordTable">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Pid" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsIntoBook" Type="int" />
+    <Property Name="IsIntoCloseBill" Type="int" />
+    <Property Name="IsIntoAccvouch" Type="int" />
+    <Property Name="PayingBank" Type="nvarchar(max)" />
+    <Property Name="voucher" Type="nvarchar" MaxLength="50" />
+    <Property Name="updateTime" Type="datetime" />
+    <Property Name="updateTime2" Type="datetime" />
+    <Property Name="updateTime3" Type="datetime" />
+    <Property Name="ip" Type="nvarchar" MaxLength="50" />
+    <Property Name="ip2" Type="nvarchar" MaxLength="50" />
+    <Property Name="ip3" Type="nvarchar" MaxLength="50" />
+    <Property Name="Bid" Type="int" />
+    <Property Name="contents" Type="nvarchar" MaxLength="50" />
+    <Property Name="voucherno" Type="nvarchar" MaxLength="50" />
+    <Property Name="piaojuId" Type="int" />
+    <Property Name="liushuihao" Type="bigint" />
+    <Property Name="type" Type="int" />
+    <Property Name="amountMoney" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="chunabianhao" Type="nvarchar" MaxLength="50" />
+    <Property Name="pingzhenhao" Type="nvarchar" MaxLength="50" />
+    <Property Name="danjubianhao" Type="nvarchar" MaxLength="50" />
+    <Property Name="userName" Type="nvarchar" MaxLength="50" />
+    <Property Name="l4" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="l5" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="l6" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="l7" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="l13" Type="decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="triggerSummary">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="state" Type="int" />
+    <Property Name="subject" Type="nvarchar" MaxLength="255" />
+    <Property Name="create_date" Type="datetime" />
+    <Property Name="start_date" Type="datetime" />
+    <Property Name="finish_date" Type="datetime" />
+    <Property Name="templete_id" Type="bigint" />
+    <Property Name="start_member_id" Type="bigint" />
+  </EntityType>
+  <EntityType Name="userInfo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="start" Type="bit" Nullable="false" />
+    <Property Name="type" Type="int" Nullable="false" />
+    <Property Name="phnoe" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityContainer Name="OAtoU8DATAModelStoreContainer">
+    <EntitySet Name="contrast" EntityType="Self.contrast" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="producehelp" EntityType="Self.producehelp" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RecordTable" EntityType="Self.RecordTable" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="triggerSummary" EntityType="Self.triggerSummary" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="userInfo" EntityType="Self.userInfo" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>

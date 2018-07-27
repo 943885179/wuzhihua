@@ -1,0 +1,150 @@
+﻿
+<link href="../../Content/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="../../Content/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+<link href="~/Content/datatables.min.css" rel="stylesheet" />
+<style type="text/css">
+    .form-control1 {
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.428571429;
+        color: #555555;
+        vertical-align: middle;
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+        transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    }
+
+    td.details-control {
+        background: url('~/Img/details_open.png') no-repeat center center;
+        cursor: pointer;
+    }
+
+    tr.shown td.details-control {
+        background: url('~/Img/details_close.png') no-repeat center center;
+    }
+</style>
+<div ng-app="myApp" ng-controller="myCtrl">
+    <form class="navbar-form pull-left">
+        <label class="control-label">开始日期:</label>
+        <input type="text" placeholder="开始日期" value="" class="form-control1" id="startDate" ng-model="condition.startDate">
+        <label class="control-label">结束日期:</label>
+        <input type="text" value="" placeholder="结束日期" class="form-control1" id="endDate" ng-model="condition.endDate">
+       
+        <label class="control-label">员工姓名:</label>
+        <input type="text" placeholder="员工姓名,支持模糊查询" class="form-control1" ng-model="condition.menberName">
+        <br /><br />
+        <label class="control-label">编号:</label>
+        <input type="text" placeholder="票据编号，不支持模糊查询" onkeyup="value=value.replace(/[^\d-]/g,'')" class="form-control1" ng-model="condition.Id">
+        <label class="control-label">单据类型:</label>
+        <select class="form-control1" ng-init="selectedName = types[0]" ng-model="condition.type" ng-options="x for x in types"></select>
+        <label class="control-label">审核状态:</label>
+        <select class="form-control1" ng-init="selectedName = starts[0]" ng-model="condition.start" ng-options="x for x in starts"></select>
+        <button type="button" class="btn btn-primary" id="search" ng-click="search()">查询</button>
+    </form>
+    <table class="table table-condensed table-hover" id="InterviewerListTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>员工姓名</th>
+                <th>总金额</th>
+                <th>申请时间</th>
+                <th>审核状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="a in list">
+                <td>{{a.Id}}</td>
+                <td>
+                    {{a.faqiren}}
+                </td>
+                <td>{{a.lAmount}}</td>
+                <td>{{a.chuangjinshijin}}</td>
+                <td ng-if="a.finish_date">完成</td>
+                <td ng-if="!a.finish_date">审核中</td>
+                <td><a class="btn btn-success" ng-click="searchOne(a)">详情</a></td>
+            </tr>   
+       </tbody>
+   </table>
+ </div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+<script type="text/javascript" src="~/Scripts/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="~/Scripts/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script src="~/Scripts/angular.min.js"></script>
+<script src="~/Scripts/datatables.min.js"></script>
+<script>
+    $('#startDate').datetimepicker({
+        format: 'yyyy/mm/dd',
+        language: "zh-CN", //汉化
+        todayBtn: "true",  //显示今天按钮
+        autoclose: true,   //选择日期后自动关闭日期选择框
+        todayHighlight: true,   //当天高亮显示
+        minView: "month",   //不显示时分秒hour
+        showMeridian: 1,
+        pickerPosition: "bottom-left",
+        // startDate: new Date(new Date() - 1000 * 60 * 60 * 24 * 365),  //只显示一年的日期365天
+        endDate: new Date()
+    }).on('click', function (e) {
+        //$("#startDate2").datetimepicker("setEndDate", $("#endDate2").val());
+    });
+    $('#endDate').datetimepicker({
+        format: 'yyyy/mm/dd',
+        language: "zh-CN",
+        todayBtn: "true",
+        autoclose: true,
+        todayHighlight: true,
+        minView: "month",
+        pickerPosition: "bottom-left",
+        //startDate: new Date(new Date() - 1000 * 60 * 60 * 24 * 365),
+        endDate: new Date()
+    }).on('click', function (e) {
+        //$("#endDate2").datetimepicker("setStartDate", $("#startDate2").val());
+    });
+         var app = angular.module('myApp', []);
+         app.controller('myCtrl', function ($scope, $http) {
+             $scope.starts = ["完成", "审核中"];
+             $scope.types = ["上海悦目-费用申请表", "预支单", "付款审批单", "费用报销单", "差旅费报销单"];
+             $scope.condition = {Id:"", startDate: "", endDate: "", menberName: "", start: $scope.starts[0], type: $scope.types[0] };
+             $scope.search = function () {
+                 $scope.getList($scope.condition);
+             }
+             $scope.searchOne = function (one) {//跳转界面
+                 if(one.type=="预支单"){
+                     window.location.href = "./Home/yuzhi?Id=" + one.Id + "&type=" + one.type;
+                 }
+                 if(one.type=="付款审批单"){
+                     window.location.href = "./Home/shenpi?Id=" + one.Id + "&type=" + one.type;
+                 }
+                 if(one.type=="费用报销单"){
+                     window.location.href = "./Home/baoxiao?Id=" + one.Id + "&type=" + one.type;
+                 }
+                 if(one.type=="差旅费报销单"){
+                     window.location.href = "./Home/chailvfei?Id=" + one.Id + "&type=" + one.type;
+                 }
+                 if (one.type == "上海悦目-费用申请表") {
+                     window.location.href = "./Home/baoxiao?Id=" + one.Id + "&type=" + one.type // JSON.stringify(one);
+                 }
+             }
+             $scope.getList = function (search) {
+                 console.log(search);
+                 $http({
+                     method: 'Post',
+                     url: '../api/List/getList',
+                     // params: search
+                     data: search
+                 }).success(function (data) {
+                     console.log(data);
+                     $scope.list = data;
+                 }).error(function (msg) {
+                     console.log(msg);
+                 })
+             }
+             $scope.getList($scope.condition);
+         });
+</script>

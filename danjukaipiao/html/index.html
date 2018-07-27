@@ -1,0 +1,430 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>财务报销单列表</title>
+<link href="../Content/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="../Content/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+<link href="../Content/datatables.min.css" rel="stylesheet" />
+<style type="text/css">
+      .loading {
+      padding-left: 50%;
+      padding-top: 20%;
+      display: none;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      position: absolute;
+    }
+    .form-control1 {
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.428571429;
+        color: #555555;
+        vertical-align: middle;
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        border-radius: 0px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+        -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+        transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    }
+
+    td.details-control {
+        background: url('../Img/details_open.png') no-repeat center center;
+        cursor: pointer;
+    }
+
+    tr.shown td.details-control {
+        background: url('../Img/details_close.png') no-repeat center center;
+    }
+    .btn {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+</style>
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">票据首页</a>
+        </div>
+        <div class="navbar-collapse navbar-right collapse">
+            <a class="navbar-brand" href="login.html">登录</a>
+        </div>
+</div>
+    <br /><br /><br />
+        <!--加载图片-->
+        <div class="loading">
+            <img src="../Img/loading.gif" />
+        </div>
+        <div ng-app="myApp" ng-controller="myCtrl">
+
+            <form class="navbar-form pull-left">
+                <label class="control-label">按时间查询:</label>
+                <input type="text" placeholder="开始日期" value="" class="form-control1" id="startDate" ng-model="condition.startDate"> --
+                <input type="text" value="" placeholder="结束日期" class="form-control1" id="endDate" ng-model="condition.endDate">
+                <label class="control-label">审核状态:</label>
+                <select class="form-control1" ng-init="selectedName = starts[0]" ng-model="condition.start" ng-options="x for x in starts"></select>
+                <label class="control-label">员工姓名:</label>
+                <input type="text" placeholder="员工姓名,支持模糊查询" class="form-control1" ng-model="condition.menberName">
+                <label class="control-label">流水号:</label>
+                <input type="text" placeholder="流水号" onkeyup="value=value.replace(/[^\d-]/g,'')" class="form-control1" ng-model="condition.liuShui">
+                <label class="control-label">单据类型:</label>
+                <select class="form-control1" ng-init="selectedName = types[0]" ng-model="condition.type" ng-options="x for x in types"></select>
+                <button type="button" class="btn btn-primary" id="search" ng-click="search()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>查询</button>
+            </form>
+            <div id="tabDiv">
+
+                <table id="table" class="display" style="width:100%"></table>
+            </div>
+        </div>
+</body>
+<script src="../Scripts/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../Scripts/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="../Scripts/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script src="../Scripts/angular.min.js"></script>
+    <script src="../Scripts/datatables.min.js"></script>
+    <script>
+    $('#startDate').datetimepicker({
+        format: 'yyyy/mm/dd',
+        language: "zh-CN", //汉化
+        todayBtn: "true",  //显示今天按钮
+        autoclose: true,   //选择日期后自动关闭日期选择框
+        todayHighlight: true,   //当天高亮显示
+        minView: "month",   //不显示时分秒hour
+        showMeridian: 1,
+        pickerPosition: "bottom-left",
+        // startDate: new Date(new Date() - 1000 * 60 * 60 * 24 * 365),  //只显示一年的日期365天
+        endDate: new Date()
+    }).on('click', function (e) {
+        //$("#startDate2").datetimepicker("setEndDate", $("#endDate2").val());
+    });
+    $('#endDate').datetimepicker({
+        format: 'yyyy/mm/dd',
+        language: "zh-CN",
+        todayBtn: "true",
+        autoclose: true,
+        todayHighlight: true,
+        minView: "month",
+        pickerPosition: "bottom-left",
+        //startDate: new Date(new Date() - 1000 * 60 * 60 * 24 * 365),
+        endDate: new Date()
+    }).on('click', function (e) {
+        //$("#endDate2").datetimepicker("setStartDate", $("#startDate2").val());
+    });
+         var app = angular.module('myApp', []);
+         app.controller('myCtrl', function ($scope, $http) {
+
+             $scope.starts = ["完成", "审核中"];
+             $scope.types = ["全部", "上海悦目-预支单", "上海悦目-费用报销单", "上海悦目-差旅费报销单", "上海悦目-付款审批单"];//, "上海悦目-费用申请表", '广东悦肌-费用申请表'
+             $scope.dt = new Date();
+             $scope.year = ($scope.dt.getMonth() == 0) ? ($scope.dt.getFullYear() - 1) : $scope.dt.getFullYear();
+             $scope.month = ($scope.dt.getMonth() == 0) ? 12 : $scope.dt.getMonth();
+             $scope.date = $scope.dt.getDate() >= 29 ? 28 : $scope.dt.getDate();//考虑到2月可能最少只有28天
+             $scope.condition = { Id: "", startDate: $scope.year + "/" + $scope.month + "/" + $scope.date, endDate: new Date().getFullYear()+"/"+(new Date().getMonth()+1)+"/"+new Date().getDate(), menberName: "", start: $scope.starts[0], type: $scope.types[0] };
+             $scope.search = function () {
+                 $scope.getList($scope.condition);
+             }
+             $scope.getList = function (search) {
+                 $(".loading").css("display", "block");
+                 $http({
+                     method: 'Post',
+                     url: '../api/List/getList',
+                     // params: search
+                     data: search
+                 }).success(function (list) {
+                     $scope.list = list;
+                     var dataList=[];
+                     for (var a in list) {
+                         var arr = [];
+                         for (var b in list[a]) {
+                             arr.push(list[a][b]);
+                         }
+                         arr.push(list[a]);
+                         dataList.push(arr);
+                     }
+                     tableShow(dataList);
+
+                     $(".loading").css("display", "none");
+                 }).error(function (msg) {
+                     console.log(msg);
+
+                     $(".loading").css("display", "none");
+                 })
+             }
+             $scope.getList($scope.condition);
+         });
+function tableShow(dataList) {
+    //显示给用户看的视图
+    //由于datatables会有一个缓存问题，导致保存了上一次该行的内容会造成多次请求，先销毁这个table再重构table就不会有这个问题了
+    $("#tabDiv").html("");
+    $("#tabDiv").html(' <table id="table" class="display" style="width:100%"></table>');
+
+    var table = $('#table').DataTable({
+        data: dataList,
+        "bFilter": false,
+        "ordering": true,
+        "info": false,
+        "destroy": true,
+        bAutoWidth: true,//自动宽度
+        paging: true,
+        searching: false,
+        "oLanguage": { // 国际化配置
+            "sProcessing": "正在获取数据，请稍后...",
+            "sLengthMenu": "显示 _MENU_ 条",
+            "sZeroRecords": "没有找到数据",
+            "sInfo": "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
+            "sInfoEmpty": "记录数为0",
+            "sInfoFiltered": "(全部记录数 _MAX_ 条)",
+            "sInfoPostFix": "",
+            "sSearch": "查询",
+            "sUrl": "",
+            "oPaginate": {
+                "sFirst": "第一页",
+                "sPrevious": "上一页",
+                "sNext": "下一页",
+                "sLast": "最后一页"
+            }
+        },
+        // "scrollX": true,//x方向滚动
+        columns: [
+          {
+              "class": 'details-control',
+              "orderable": false,
+              "data": null,
+              "defaultContent": ''
+          },
+          {
+              'title': '流水号',
+              "orderable": true, // 禁用排序
+              "defaultContent": "",
+              "render": function (data, type, row, meta) {
+                  return row[41];
+              }
+          }, {
+              'title': '姓名',
+              "orderable": false, // 禁用排序
+              "defaultContent": "",
+              "render": function (data, type, row, meta) {
+                  return row[2];
+              }
+          }, {
+              'title': '金额',
+              "orderable": true, // 禁用排序
+              "defaultContent": "",
+              "width": "10%",
+              "render": function (data, type, row, meta) {
+                  return row[5];
+              }
+          }, {
+              'title': '创建日期',
+              "orderable": true, // 禁用排序
+              "defaultContent": "",
+              "width": "10%",
+              "render": function (data, type, row, meta) {
+                  return row[1];
+              }
+          },
+          {
+              'title': '日记账',
+              "orderable": false, // 禁用排序
+              "defaultContent": "",
+              "width": "10%",
+              "render": function (data, type, row, meta) {
+                  if (row[42].shifouPingzhen == 1) {
+                      return "<span class='alert-success'>已日记账</span>";;
+                  }
+                  return "<span class='alert-danger'>未日记账</span>";
+              }
+          },{
+              'title': '生单',
+              "orderable": false, // 禁用排序
+              "defaultContent": "",
+              "width": "10%",
+              "render": function (data, type, row, meta) {
+                  if (row[42].shifouShengdan == 1) {
+                      return "<span class='alert-success'>已生单</span>";
+                  }
+                  return "<span class='alert-danger'>未生单</span>";
+              }
+          }, {
+              'title': '制单',
+              "orderable": false, // 禁用排序
+              "defaultContent": "",
+              "width": "10%",
+              "render": function (data, type, row, meta) {
+                  if (row[42].shifouZhidan == 1) {
+                      return "<span class='alert-success'>已制单</span>";
+                  }
+                  return "<span class='alert-danger'>未制单</span>";
+              }
+          },
+
+          {
+              "orderable": false, // 禁用排序
+              "defaultContent": "",
+              "width": "10%",
+              "render": function (data, type, row, meta) {
+                  /* if (row[10] == null || row[10] == "" || row[10] == "NULL") {
+                      return "";
+                   }*/
+                  if (row[42].shifouZhidan == 1) {//row[41].shifouZhidan == 1 && row[41].shifouShengdan == 1 && 制单完成说明流程结束了，无法继续操作
+                       return "";
+                   }
+                  return '<button class="btn btn-info btn-sm" onclick="searchOnes(\'' + row[0] + '\',\'' + row[15] + '\')"><span class="glyphicon glyphicon-pushpin"></span>操作</button>';
+               
+} }
+        ]
+    });
+    /*$('#table').dataTable().fnClearTable();   //将数据清除  
+    $("#table").dataTable().fnDestroy();*/
+    //点击表格+时触发事件
+    $('#table tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row(tr);
+        if (row.child.isShown()) {
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+
+            $(".loading").css("display", "block");
+
+            $.ajax({
+                method: 'Post',
+                url: '../api/List/getDetail',
+                data: row.data()[42],
+                success: function (msg) {
+                    $.ajax({
+                        method: 'Post',
+                        url: '../api/List/getProcess',
+                        data: { col_id: row.data()[42].colId }
+                    }).success(function (qianzi) {
+                        $(".loading").css("display", "none");
+                        row.child(format(row.data(), msg, qianzi)).show();
+                        tr.addClass('shown');
+                    }).error(function () {
+                        $(".loading").css("display", "none");
+                    })
+
+                }, error: function (msg) {
+                    $(".loading").css("display", "none");
+                    console.log(msg);
+
+                }
+            });
+        }
+    });
+}
+        //详细信息，点击表格的+号显示详细信息
+
+function format(data, msg, qianzi) {
+    var listHtml = "";
+    var chailv = "";
+    console.log(data);
+    if (data[15] == "上海悦目-差旅费报销单") {
+        chailv = '<tr><td>出差理由:</td> <td>' + data[28] + '</td> </tr>'
+            + '<tr><td>出差时间:</td> <td>' + data[27] + "---" + data[29] + '&nbsp;&nbsp;共计' + data[26] + '天</td> </tr>';
+
+    }
+    listHtml += '<tr><td>明细</td></tr>';
+    for (var i in msg.list) {
+        if (data[15] == "上海悦目-付款审批单" || data[15] == "上海悦目-费用报销单" || data[15] == "上海悦目-预支单") {
+            listHtml += '<tr style="background:#C1FFC1">' + '<td>金额:</td>' + '<td>￥' + msg.list[i].jine + '</td>' + '<td>摘要:</td>' + '<td>' + msg.list[i].miaoshu + '</td>' + '</tr>';
+        }
+        if (data[15] == "上海悦目-差旅费报销单") {
+            listHtml += '<tr>' + '<td>明细' + (Number(i) + 1) + ':</td>' + '</tr>'
+                + '<tr style="background:#C1FFC1">' + '<td>起讫地点:</td>' + '<td>￥' + msg.list[i].qizhididian + '</td>'
+                + '<td>天数:</td>' + '<td>' + msg.list[i].tianshu + '</td>'
+                + '<td>日期:</td>' + '<td>' + msg.list[i].riqi + '</td>'
+                + '<td>差旅费津贴:</td>' + '<td>' + msg.list[i].jintie + '</td>'
+                + '<td>本市内交通费:</td>' + '<td>' + msg.list[i].shineijiaotong + '</td>'
+                + '<td>出差地市内交通费:</td>' + '<td>' + msg.list[i].chuchaijiaotong + '</td>'
+                + '<td>住宿费:</td>' + '<td>' + msg.list[i].zhusu + '</td>'
+                + '<td>车船费:</td>' + '<td>' + msg.list[i].chechuan + '</td>'
+                + '<td>机票费:</td>' + '<td>' + msg.list[i].jipiao + '</td>'
+                + '<td>其他:</td>' + '<td>' + msg.list[i].qita + '</td>'
+                + '<td>金额小计:</td>' + '<td>' + msg.list[i].jinexiaoji + '</td>'
+                + '</tr>';
+        }
+    }
+    if (data[7] == null) {
+        data[7] = "";//有些人不填收益部门
+    }
+    var qz = "<tr><td>签字流程</td><td>";
+    for (var q in qianzi) {
+        qz = qz + qianzi[q].name + "==》"
+    }
+    qz += "</td></tr>"
+    return net = '<table class=" " >' +
+                              '<tr>' +
+                                  '<td>公司:</td>' +
+                                  '<td>' + data[3] + '</td>' +
+                              '</tr>' +
+                               '<tr style="background:#AEEEEE">' +
+                                  '<td>合计金额:</td>' +
+                                  '<td>￥' + data[5] + '</td>' +
+                              '</tr>' +
+                              '<tr style="background:#AEEEEE">' +
+                                  '<td>大写金额:</td>' +
+                                  '<td>' + data[6] + '</td>' +
+                              '</tr>' +
+                              '<tr style="background:#AEEEEE">' +
+                                  '<td>发起部门:</td>' +
+                                  '<td>' + data[11] + '</td>' +
+                              '</tr>' +
+                              '<tr style="background:#AEEEEE">' +
+                                  '<td>受益部门:</td>' +
+                                  '<td>' + data[7] + '</td>' +
+                              '</tr>' +
+                              '<tr>' +
+                                  '<td>单据类型:</td>' +
+                                  '<td>' + data[15] + '</td>' +
+                              '</tr>' +
+                              '<tr>' +
+                                  '<td>审核结束日期:</td>' +
+                                  '<td>' + data[10] + '</td>' +
+                              '</tr>' + chailv + listHtml + qz +
+                          '</table>';
+}
+function searchOnes(Id, type) {//跳转界面
+    if (type == "上海悦目-预支单") {
+        $(".loading").css("display", "block");
+            window.location.href = "./yuzhi.html?Id=" + Id + "&type=" + type;
+        }
+    if (type == "上海悦目-付款审批单") {
+        $(".loading").css("display", "block");
+        window.location.href = "./shenpi.html?Id=" + Id + "&type=" + type;
+        }
+    if (type == "上海悦目-费用报销单") {
+        $(".loading").css("display", "block");
+        window.location.href = "./baoxiao.html?Id=" + Id + "&type=" + type;
+        }
+    if (type == "上海悦目-差旅费报销单") {
+        $(".loading").css("display", "block");
+        window.location.href = "./chailvfei.html?Id=" + Id + "&type=" + type;
+        }
+    if (type == "上海悦目-费用申请表") {
+        $(".loading").css("display", "block");
+            window.location.href = "./old.html?Id=" + Id + "&type=" + type 
+    }
+    if (type == "广东悦肌-费用申请表") {
+        $(".loading").css("display", "block");
+        window.location.href = "./old.html?Id=" + Id + "&type=" + type // JSON.stringify(one);
+    }
+    }
+</script>
+</html>

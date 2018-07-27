@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="OAtoU8DATAModelStoreContainer" CdmEntityContainer="OAtoU8DATAEntities">
+    <EntitySetMapping Name="triggerSummary">
+      <EntityTypeMapping TypeName="OAtoU8DATAModel.triggerSummary">
+        <MappingFragment StoreEntitySet="triggerSummary">
+          <ScalarProperty Name="start_member_id" ColumnName="start_member_id" />
+          <ScalarProperty Name="templete_id" ColumnName="templete_id" />
+          <ScalarProperty Name="finish_date" ColumnName="finish_date" />
+          <ScalarProperty Name="start_date" ColumnName="start_date" />
+          <ScalarProperty Name="create_date" ColumnName="create_date" />
+          <ScalarProperty Name="subject" ColumnName="subject" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="producehelp">
+      <EntityTypeMapping TypeName="OAtoU8DATAModel.producehelp">
+        <MappingFragment StoreEntitySet="producehelp">
+          <ScalarProperty Name="intoForm" ColumnName="intoForm" />
+          <ScalarProperty Name="isShow" ColumnName="isShow" />
+          <ScalarProperty Name="col_id" ColumnName="col_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="userInfo">
+      <EntityTypeMapping TypeName="OAtoU8DATAModel.userInfo">
+        <MappingFragment StoreEntitySet="userInfo">
+          <ScalarProperty Name="phnoe" ColumnName="phnoe" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="start" ColumnName="start" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="contrast">
+      <EntityTypeMapping TypeName="OAtoU8DATAModel.contrast">
+        <MappingFragment StoreEntitySet="contrast">
+          <ScalarProperty Name="l13" ColumnName="l13" />
+          <ScalarProperty Name="l7" ColumnName="l7" />
+          <ScalarProperty Name="l6" ColumnName="l6" />
+          <ScalarProperty Name="l5" ColumnName="l5" />
+          <ScalarProperty Name="l4" ColumnName="l4" />
+          <ScalarProperty Name="yuzhiId" ColumnName="yuzhiId" />
+          <ScalarProperty Name="baoxiaoId" ColumnName="baoxiaoId" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RecordTable">
+      <EntityTypeMapping TypeName="OAtoU8DATAModel.RecordTable">
+        <MappingFragment StoreEntitySet="RecordTable">
+          <ScalarProperty Name="l13" ColumnName="l13" />
+          <ScalarProperty Name="l7" ColumnName="l7" />
+          <ScalarProperty Name="l6" ColumnName="l6" />
+          <ScalarProperty Name="l5" ColumnName="l5" />
+          <ScalarProperty Name="l4" ColumnName="l4" />
+          <ScalarProperty Name="userName" ColumnName="userName" />
+          <ScalarProperty Name="danjubianhao" ColumnName="danjubianhao" />
+          <ScalarProperty Name="pingzhenhao" ColumnName="pingzhenhao" />
+          <ScalarProperty Name="chunabianhao" ColumnName="chunabianhao" />
+          <ScalarProperty Name="amountMoney" ColumnName="amountMoney" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="liushuihao" ColumnName="liushuihao" />
+          <ScalarProperty Name="piaojuId" ColumnName="piaojuId" />
+          <ScalarProperty Name="voucherno" ColumnName="voucherno" />
+          <ScalarProperty Name="contents" ColumnName="contents" />
+          <ScalarProperty Name="Bid" ColumnName="Bid" />
+          <ScalarProperty Name="ip3" ColumnName="ip3" />
+          <ScalarProperty Name="ip2" ColumnName="ip2" />
+          <ScalarProperty Name="ip" ColumnName="ip" />
+          <ScalarProperty Name="updateTime3" ColumnName="updateTime3" />
+          <ScalarProperty Name="updateTime2" ColumnName="updateTime2" />
+          <ScalarProperty Name="updateTime" ColumnName="updateTime" />
+          <ScalarProperty Name="voucher" ColumnName="voucher" />
+          <ScalarProperty Name="PayingBank" ColumnName="PayingBank" />
+          <ScalarProperty Name="IsIntoAccvouch" ColumnName="IsIntoAccvouch" />
+          <ScalarProperty Name="IsIntoCloseBill" ColumnName="IsIntoCloseBill" />
+          <ScalarProperty Name="IsIntoBook" ColumnName="IsIntoBook" />
+          <ScalarProperty Name="Pid" ColumnName="Pid" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

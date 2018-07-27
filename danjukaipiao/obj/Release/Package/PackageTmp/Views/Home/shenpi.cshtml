@@ -1,0 +1,179 @@
+﻿    
+    
+<div ng-app="myApp" ng-controller="myCtrl">
+    <div id="biaodanDiv">
+        <div id="biaodan" >
+            <table >
+                <thead>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td scope="row" style="width:40%">
+                            <input type="checkbox" name="vehicle" value="上海悦目化妆品有限公司" checked="checked" /> 上海悦目化妆品有限公司<br>
+                           <br>
+                            
+                        </td>
+                        <td style="width:20%">
+                            <h2><b>审批报销单</b></h2>
+                        </td>
+                        <td style="width:20%">
+                            <br>
+                            <img src="../../Img/login.png" alt="">
+                        </td>
+                        <td style="width:20%">
+                            <h3>No <span style="color:red">1713021</span></h3>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table >
+                <thead>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td scope="row" style="width:40%">
+                            报销部门:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信息技术部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+                        </td>
+                        <td style="width:40%">
+                            收益部门:<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信息技术部&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+                        </td>
+                        <td style="width:20%">
+                            <u>2017</u>年<u>04</u>月<u>03</u>日
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered table-hover" >
+                <thead>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="width:20%">收款单位（或个人）</td>
+                        <td style="width:40%"><u>蒙祖军</u></td>
+                        <td style="width:20%">收款银行</td>
+                        <td style="width:20%"><u>招商银行</u></td>
+                    </tr>
+                    <tr>
+                        <td style="width:20%">收款账号</td>
+                        <td style="width:40%"><u>123456789</u></td>
+                        <td style="width:20%">预计付款日期</td>
+                        <td style="width:20%"><u>2018-11-11</u></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered table-hover table-condensed" style="text-align:center;">
+                <thead>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="width:70%" rowspan="2">用途</td>
+                        <td style="width:10%" colspan="9"><u>金额</u></td>
+                        <td style="width:20%">备注</td>
+                    </tr>
+                    <tr>
+                        <td>百</td>
+                        <td>十</td>
+                        <td>万</td>
+                        <td>千</td>
+                        <td>百</td>
+                        <td>十</td>
+                        <td>元</td>
+                        <td>角</td>
+                        <td>分</td>
+
+                        <td style="width:30%" rowspan="5"></td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%" rowspan="1">
+                         </td>
+                        <td ng-repeat="a in nuls"></td>
+                        <td ng-repeat="a in test">{{a}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%" rowspan="1">
+                        </td>
+                        <td ng-repeat="a in nuls"></td>
+                        <td ng-repeat="a in test">{{a}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%" rowspan="1">
+                        </td>
+                        <td ng-repeat="a in nuls"></td>
+                        <td ng-repeat="a in test">{{a}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%" rowspan="1">
+                        </td>
+                        <td ng-repeat="a in nuls"></td>
+                        <td ng-repeat="a in test">{{a}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:40%" rowspan="2">
+                            合计（大写）伍佰肆拾捌万玖仟捌佰贰拾伍元零角零分
+                        </td>
+                        <td ng-repeat="a in nuls" rowspan="2"></td>
+                        <td ng-repeat="a in test" rowspan="2">{{a}}</td>
+                        <td>原借款&nbsp;&nbsp;￥<u>500</u>元</td>
+                    </tr>
+                    <tr>
+                        <td>应退/补&nbsp￥<u>补200</u>元</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered table-hover table-condensed" style="text-align:center;">
+                <thead>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td >会计</td>
+                        <td >总经理</td>
+                        <td >财务总监</td>
+                        <td >财务经理</td>
+                        <td >收益部门负责人</td>
+                        <td >收益部门经理</td>
+                        <td >报销部门负责人</td>
+                        <td >报销部门经理</td>
+                        <td >经手人</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>总经理</td>
+                        <td>沈经理</td>
+                        <td>沈经理</td>
+                        <td>沈经理</td>
+                        <td>沈经理</td>
+                        <td>沈经理</td>
+                        <td>沈经理</td>
+                        <td>蒙祖军</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <button ng-click="dayin('biaodan')">打印</button>
+    </div>
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/angular.min.js"></script>
+<script  type="text/javascript" language="javascript">
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function ($scope, $http) {
+         $scope.test = "123456".split("");
+        $scope.nul="";
+        for (var i = 0; i < 9 - "123456".length; i++) {
+            
+            $scope.nul += i.toString();
+            console.log($scope.nul);
+        }
+        $scope.nuls = $scope.nul.split("");
+        $scope.dayin=function(divId){
+             var k = $("#"+divId).prop("outerHTML");
+            $("body *").hide();
+            $("body").append(k);
+            window.print();
+            $("body *").show();
+            $("body #"+divId+":last").remove()
+        }
+    })
+</script>

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OAtoU8DATAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="OAtoU8DATAEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="triggerSummary" EntityType="OAtoU8DATAModel.triggerSummary" />
+    <EntitySet Name="producehelp" EntityType="OAtoU8DATAModel.producehelp" />
+    <EntitySet Name="userInfo" EntityType="OAtoU8DATAModel.userInfo" />
+    <EntitySet Name="contrast" EntityType="OAtoU8DATAModel.contrast" />
+    <EntitySet Name="RecordTable" EntityType="OAtoU8DATAModel.RecordTable" />
+  </EntityContainer>
+  <EntityType Name="triggerSummary">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="state" Type="Int32" />
+    <Property Name="subject" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="create_date" Type="DateTime" Precision="3" />
+    <Property Name="start_date" Type="DateTime" Precision="3" />
+    <Property Name="finish_date" Type="DateTime" Precision="3" />
+    <Property Name="templete_id" Type="Int64" />
+    <Property Name="start_member_id" Type="Int64" />
+  </EntityType>
+  <EntityType Name="producehelp">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="col_id" Type="Int64" Nullable="false" />
+    <Property Name="isShow" Type="Int32" Nullable="false" />
+    <Property Name="intoForm" Type="Int64" Nullable="false" />
+  </EntityType>
+  <EntityType Name="userInfo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="start" Type="Boolean" Nullable="false" />
+    <Property Name="type" Type="Int32" Nullable="false" />
+    <Property Name="phnoe" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="contrast">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="baoxiaoId" Type="Int64" Nullable="false" />
+    <Property Name="yuzhiId" Type="Int64" Nullable="false" />
+    <Property Name="l4" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="l5" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="l6" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="l7" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="l13" Type="Decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityType Name="RecordTable">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Pid" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsIntoBook" Type="Int32" />
+    <Property Name="IsIntoCloseBill" Type="Int32" />
+    <Property Name="IsIntoAccvouch" Type="Int32" />
+    <Property Name="PayingBank" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="voucher" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="updateTime" Type="DateTime" Precision="3" />
+    <Property Name="updateTime2" Type="DateTime" Precision="3" />
+    <Property Name="updateTime3" Type="DateTime" Precision="3" />
+    <Property Name="ip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ip2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ip3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Bid" Type="Int32" />
+    <Property Name="contents" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="voucherno" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="piaojuId" Type="Int32" />
+    <Property Name="liushuihao" Type="Int64" />
+    <Property Name="type" Type="Int32" />
+    <Property Name="amountMoney" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="chunabianhao" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="pingzhenhao" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="danjubianhao" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="l4" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="l5" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="l6" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="l7" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="l13" Type="Decimal" Precision="18" Scale="2" />
+  </EntityType>
+</Schema>

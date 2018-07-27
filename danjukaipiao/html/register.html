@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改密码</title>
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="../Content/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../Content/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="../Content/datatables.min.css" rel="stylesheet" />
+    <link href="../Content/sweetalert2.min.css" rel="stylesheet" />
+    <link href="../bootstrp-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    <style>
+        #body {
+            background: url("../img/1.jpg");
+            animation-name: myfirst;
+            animation-duration: 12s;
+            /*变换时间*/
+            animation-delay: 2s;
+            /*动画开始时间*/
+            animation-iteration-count: infinite;
+            /*下一周期循环播放*/
+            animation-play-state: running;
+            /*动画开始运行*/
+        }
+
+        body {
+            background: url("../img/login.jpg");
+            repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            -moz-background-size: cover;
+            -webkit-background-size: cover;
+        }
+
+        @keyframes myfirst {
+            0% {
+                background: url("../img/login.jpg");
+            }
+
+            34% {
+                background: url("../img/login.jpg");
+            }
+
+            67% {
+                background: url("../img/login.jpg");
+            }
+
+            100% {
+                background: url("../img/login.jpg");
+            }
+        }
+
+        .form {
+            background: rgba(255,255,255,0.2);
+            width: 400px;
+            margin: 120px auto;
+        }
+        /*阴影*/
+        .fa {
+            display: inline-block;
+            top: 27px;
+            left: 6px;
+            position: relative;
+            color: #ccc;
+        }
+
+        input[type="text"], input[type="password"] {
+            padding-left: 26px;
+        }
+
+        .checkbox {
+            padding-left: 21px;
+        }
+    </style>
+
+
+</head>
+<body>
+    <div class="container" ng-app="myApp" ng-controller="myCtrl">
+        <div class="form row">
+            <div class="form-horizontal col-md-offset-3" id="login_form">
+                <h3 class="form-title">单据无纸化系统</h3>
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <i class="fa fa-user fa-lg"><span class="glyphicon glyphicon-user"></span></i>
+                        <input class="form-control required" type="text" placeholder="用户名" ng-model="user.username" id="username" name="username" autofocus="autofocus" maxlength="20" />
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-lock fa-lg"><span class="glyphicon glyphicon-lock"></span></i>
+                        <input class="form-control required" type="password" placeholder="旧密码" ng-model="user.password" id="password" name="password" maxlength="20" />
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-lock fa-lg"><span class="glyphicon glyphicon-lock"></span></i>
+                        <input class="form-control required" type="password" placeholder="新密码" ng-model="user.newpassword" id="newpassword" name="newpassword" maxlength="20" />
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-lock fa-lg"><span class="glyphicon glyphicon-lock"></span></i>
+                        <input class="form-control required" type="password" placeholder="确认密码" ng-model="user.newpasswordTrue" id="passwordTrue" name="passwordTrue" maxlength="20" />
+                    </div>
+                    <div class="form-group">
+                        <!--<label class="checkbox">
+                            <input type="checkbox" name="remember" value="1" />记住我
+                        </label>-->
+                        <span class="errorMsg alert-danger" style="font-size:20px"></span>
+                    </div>
+                    <div class="form-group col-md-offset-9">
+                        <button type="submit" class="btn btn-success " id="loginBtn" ng-click="loginClick()" name="submit">修改密码</button>
+                        <a class="btn btn-link" href="./login.html">登录</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
+<script src="../Scripts/angular.min.js"></script>
+<script src="../Scripts/sweetalert2.min.js"></script>
+
+<script src="../bootstrp-select/js/bootstrap-select.min.js"></script>
+<script src="../bootstrp-select/js/i18n/defaults-zh_CN.min.js"></script>
+<script>
+    $(function () {
+    })
+    var app = angular.module('myApp', []);
+
+    app.controller('myCtrl', function ($scope, $http) {
+        $scope.user = { username: '', password: '', newpassword: '', newpasswordTrue: '' };
+        $scope.loginClick = function () {
+            $scope.loginError = "";
+            if ($scope.user.username.trim() == '') {
+                $scope.loginError = "用户名不能为空";
+            }
+            else if ($scope.user.password.trim() == '') {
+                $scope.loginError = "密码不能为空";
+            }
+            else if ($scope.user.newpassword.trim() == '') {
+                $scope.loginError = "新密码不能为空";
+            }
+            else if ($scope.user.newpasswordTrue.trim() == '') {
+                $scope.loginError = "请确认密码";
+            }
+            else if ($scope.user.newpassword != $scope.user.newpassword) {
+                $scope.loginError = "密码不一致";
+            }
+            else { }
+            if ($scope.loginError != "") {
+                swal({
+                    html: $scope.loginError,
+                    //timer: 2000,
+                });
+                return;
+            }
+            $http({
+                method: 'Post',
+                url: '../api/UserInfo/updateUserInfo',
+                // params: search
+                data: $scope.user
+            }).success(function (data) {
+                if (data == null) {
+                    swal({
+                        html: "用户名或密码错误",
+                    });
+                }
+                else {
+                    swal("修改成功");
+                }
+            }).error(function () {
+                swal({
+                    html:"系统故障",
+                    //timer: 2000,
+                });
+            })
+        }
+    });
+</script>
+</html>

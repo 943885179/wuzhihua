@@ -1,0 +1,585 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>报销单</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="../Content/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../Content/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="../Content/datatables.min.css" rel="stylesheet" />
+    <link href="../Content/sweetalert2.min.css" rel="stylesheet" />
+    <link href="../bootstrp-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    <style>
+        .loading {
+            padding-left: 30%;
+            padding-top: 20%;
+            display: none;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            position: absolute;
+        }
+
+        .btn {
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            border-radius: 0;
+            margin-right: 8px;
+        }
+
+        #btn_help {
+            position: fixed;
+            margin-top: 200px;
+            width: 100%;
+        }
+
+        .form-control1 {
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.428571429;
+            color: #555555;
+            vertical-align: middle;
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 0px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+            -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+            transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+        }
+
+        .btn_help1 {
+            float: right;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div ng-app="myApp" ng-controller="myCtrl">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" ng-click="back()">票据首页</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <div id="btn_help">
+        </div>
+        <div class="container body-content">
+            <div id="chunaDiv">
+                <a ng-click="back()" class="btn btn-info btn_help1">
+                    <span class="glyphicon glyphicon-list"></span>返回单据列表
+                </a>
+            </div>
+            <br />
+            <br />
+            <!--加载图片-->
+            <div class="loading">
+                <img src="../Img/loading.gif" />
+            </div>
+            <div class="biaodanDiv" ng-repeat="tab in lengthTabList">
+                <div class="{{tab.tabClass}}">
+                    <table>
+                        <thead>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td scope="row" style="width:40%">
+                                    <input type="checkbox" name="vehicle" value="" checked="checked" /> {{one.company}}
+                                    <br>
+                                    <br>
+                                </td>
+                                <td style="width:20%">
+                                    <h3>
+                                        <b>差旅费报销单</b>
+                                    </h3>
+                                </td>
+                                <td style="width:20%">
+                                    <br>
+                                    <img src="../../Img/login.png" alt="">
+                                </td>
+                                <td style="width:20%">
+                                    <h4>
+                                        No
+                                        <span style="color:red">{{one.liuShui}}</span>
+                                    </h4>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table>
+                        <thead>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td scope="row" style="width:40%">
+                                    报销部门:
+                                    <u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{one.faqibumen}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
+                                </td>
+                                <td style="width:40%">
+                                    受益部门:
+                                    <u>
+                                        <span class="dayinShouyibumen">{{one.shouyibumen}}</span>
+                                    </u>
+                                </td>
+                                <td style="width:20%">
+                                    <u ng-bind="one.date | date:'yyyy年MM月dd日'"></u>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-bordered table-hover" border="1" cellspacing="0" cellpadding="0" style="text-align:center">
+                        <thead>
+                        </thead>
+                        <tbody>
+                            <tr style=" white-space:nowrap;">
+                                <td>姓名</td>
+                                <td>
+                                    <u>{{one.faqiren}}</u>
+                                </td>
+                                <td>职别</td>
+                                <td>
+                                    <u>{{one.zhiwu}}</u>
+                                </td>
+                                <td>出差事由</td>
+                                <td colspan="8">
+                                    <u>
+                                        {{one.chuchaishiyou}}
+                                    </u>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="13">
+                                    出差起止日期自{{one.starDate | date:'yyyy年MM月dd日'}}至 {{one.endDate | date:'yyyy年MM月dd日'}}止共{{one.gongjitianshu}}天付单据2张
+                                </td>
+                            </tr>
+                            <tr style="text-align:center;line-height:40px;">
+                                <td colspan="2">日期</td>
+                                <td rowspan="2" colspan="2">起止地点</td>
+                                <td rowspan="2">天数</td>
+                                <td rowspan="2">机票费</td>
+                                <td rowspan="2">车船费</td>
+                                <td rowspan="2">住宿费</td>
+                                <td rowspan="2">出差地市内交通费</td>
+                                <td rowspan="2">本市内交通费</td>
+                                <td rowspan="2">差旅费津贴</td>
+                                <td rowspan="2">其他</td>
+                                <td rowspan="2">小计</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">月 &nbsp;&nbsp;|&nbsp;&nbsp; 日</td>
+                            </tr>
+                            <tr ng-repeat="yt in tab.tabList track by $index" style="height:40px">
+                                <td colspan="2">{{yt.riqi}}</td>
+                                <td colspan="2">{{yt.qizhididian}}</td>
+                                <td>{{yt.tianshu}}</td>
+                                <td>{{yt.jipiao}}</td>
+                                <td>{{yt.chechuan}}</td>
+                                <td>{{yt.zhusu}}</td>
+                                <td>{{yt.chuchaijiaotong}}</td>
+                                <td>{{yt.shineijiaotong}}</td>
+                                <td>{{yt.jintie}}</td>
+                                <td>{{yt.qita}}</td>
+                                <td>{{yt.jinexiaoji}}</td>
+                            </tr>
+                            <tr style="height:40px">
+                                <td colspan="2"></td>
+                                <td colspan="2"> 合计</td>
+                                <td>{{tab.tianshu}}</td>
+                                <td>{{tab.jipiao}}</td>
+                                <td>{{tab.chechuan}}</td>
+                                <td>{{tab.zhusu}}</td>
+                                <td>{{tab.chuchaijiaotong}}</td>
+                                <td>{{tab.shineijiaotong}}</td>
+                                <td>{{tab.jintie}}</td>
+                                <td>{{tab.qita}}</td>
+                                <td>{{tab.jinexiaoji}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="13">
+                                    总计金额（大写） {{tab.ljinexiaoji}} 借支 ￥ {{tab.yuzhijine}} 元 应补/退 ￥ {{tab.yinhuan}} 元
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-bordered table-hover table-condensed" style="text-align:center;" border="1" cellspacing="0" cellpadding="0">
+                        <thead>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="width:11%;line-height:40px;">会&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计</td>
+                                <td style="width:11%;line-height:40px;">总经理</td>
+                                <td style="width:11%;line-height:40px;">财务总监</td>
+                                <td style="width:11%;line-height:40px;">财务经理</td>
+                                <td style="width:11%;">收益部门负责人</td>
+                                <td style="width:11%;">收益部门经理</td>
+                                <td style="width:11%;">报销部门负责人</td>
+                                <td style="width:11%;">报销部门经理</td>
+                                <td style="width:11%;line-height:40px;">经手人</td>
+                            </tr>
+                            <tr style="font:1 16px FangSong">
+                                <td></td>
+                                <td>
+                                    {{zjl.name}}
+                                    <br />{{zjl.create_date| date:'yyyy.mm.dd'}}
+                                </td>
+                                <td>
+                                    {{cwzj.name}}
+                                    <br />{{cwzj.create_date| date:'yyyy.mm.dd'}}
+                                </td>
+                                <td>
+                                    {{cwjl.name}}
+                                    <br />{{cwjl.create_date| date:'yyyy.mm.dd'}}
+                                </td>
+                                <td>
+                                    {{syfzr.name}}
+                                    <br />{{syfzr.create_date | date:'yyyy.mm.dd'}}
+                                </td>
+                                <td>
+                                    {{syjl.name}}
+                                    <br />{{syjl.create_date | date:'yyyy.MM.dd'}}
+                                </td>
+                                <td>
+                                    {{sqfzr.name}}
+                                    <br />{{sqfzr.create_date | date:'yyyy.MM.dd'}}
+                                </td>
+                                <td>
+                                    {{sqjl.name}}
+                                    <br />{{sqjl.create_date | date:'yyyy.MM.dd'}}
+                                </td>
+                                <td>
+                                    {{one.faqiren}}
+                                    <br />{{one.date | date:'yyyy.MM.dd'}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button ng-click="dayin(tab.tabClass)" class="btn btn-success">
+                    <span class="glyphicon glyphicon-print"></span>确认打印
+                </button>
+            </div>
+            <hr />
+            <footer>
+                <p>&copy;单据开票</p>
+            </footer>
+        </div>
+        <script src="../Scripts/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
+        <script src="../Scripts/angular.min.js"></script>
+        <script src="../Scripts/sweetalert2.min.js"></script>
+
+        <script src="../bootstrp-select/js/bootstrap-select.min.js"></script>
+        <script src="../bootstrp-select/js/i18n/defaults-zh_CN.min.js"></script>
+        <script type="text/javascript" language="javascript">
+            var app = angular.module('myApp', []);
+            app.config(['$locationProvider', function ($locationProvider) {
+                // $locationProvider.html5Mode(true);
+                $locationProvider.html5Mode({
+                    enabled: true,
+                    requireBase: false
+                });
+            }]);
+            app.controller('myCtrl', function ($scope, $http, $location) {
+
+                $scope.condition = { Id: $location.search().Id, type: $location.search().type };//, start:1
+              $scope.getList = function (condition) {
+                    $(".loading").css("display", "block");
+                    $http({
+                        method: 'Post',
+                        url: '../api/List/getList',
+                        // params: search
+                        data: condition
+                    }).success(function (data) {
+                        console.log(data);
+                        $(".loading").css("display", "none");
+                        if (data.length == 0) {
+                            return;
+                        }
+                        $scope.getProcessList(data[0]);
+                        $scope.one = data[0];
+                        $scope.one.piaoju = [];
+                        $scope.one.yuzhiShengyu = $scope.one.yuzhi;
+                        $scope.one.date = new Date($scope.one.chuangjinshijin);
+                        $scope.gerDetail($scope.one);
+                    }).error(function (msg) {
+                        window.location.href = "./Home/error";
+                    })
+                }
+                $scope.getList($scope.condition);
+                //读取详细明细
+                $scope.gerDetail = function (data) {
+                    $http({
+                        method: 'Post',
+                        url: '../api/List/getDetail',
+                        data: data
+                    }).success(function (data) {
+                        console.log(data);
+                        $scope.list = data.list;//获取明细
+                        var listlength = $scope.list.length % 4;//获取数量
+                        /*将金额用途分成四行，有的则用金额用途遍历，没有的用空值替换*/
+                        if (listlength != 0) {//不是4条的倍数遍历添加成4条的倍数
+                            for (var i = 0; i < 4 - listlength; i++) {
+                                $scope.list.push({
+                                    miaoshu: '', xianqing: '', jine: '.', shijin: '',
+                                    jinexiaoji: '', riqi: '', qita: '', jintie: '', shineijiaotong: '',
+                                    chuchaijiaotong: '', zhusu: '',
+                                    chechuan: '', jipiao: '', tianshu: '', qizhididian: ''
+                                });//添加一条空数据
+                            }
+                        }
+                        /*将金额分成单个字符放入对应的文本中，前面不足的用空值替换*/
+                        $scope.lengthTabList = [];
+                        $scope.temporaryTab = [];//临时表
+                        $scope.lengthTab = Number($scope.list.length / 4) + ($scope.list.length % 4 > 0 ? 1 : 0);//需要几个单据
+                        for (var i = 0; i < $scope.list.length; i++) {
+                            $scope.temporaryTab.push($scope.list[i]);
+                            if (i % 4 == 3) {//添加
+                                var jinexiaoji = 0;
+                                var qita = 0;
+                                var jintie = 0;
+                                var shineijiaotong = 0;
+                                var chuchaijiaotong = 0;
+                                var zhusu = 0;
+                                var chechuan = 0;
+                                var jipiao = 0;
+                                var tianshu = 0;
+                                for (var tem in $scope.temporaryTab) {
+                                    if (parseFloat($scope.temporaryTab[tem].jinexiaoji).toString() != "NaN") {//合计金额小计
+                                        jinexiaoji = parseFloat(jinexiaoji) + parseFloat($scope.temporaryTab[tem].jinexiaoji);
+                                    }
+                                    if (parseFloat($scope.temporaryTab[tem].qita).toString() != "NaN") {//其他
+                                        qita = parseFloat(qita) + parseFloat($scope.temporaryTab[tem].qita);
+                                    }
+                                    if (parseFloat($scope.temporaryTab[tem].jintie).toString() != "NaN") {//差旅费津贴
+                                        jintie = parseFloat(jintie) + parseFloat($scope.temporaryTab[tem].jintie);
+                                    }
+                                    if (parseFloat($scope.temporaryTab[tem].shineijiaotong).toString() != "NaN") {//本市内交通费
+                                        shineijiaotong = parseFloat(shineijiaotong) + parseFloat($scope.temporaryTab[tem].shineijiaotong);
+                                    }
+                                    if (parseFloat($scope.temporaryTab[tem].chuchaijiaotong).toString() != "NaN") {//出差地市内交通费
+                                        chuchaijiaotong = parseFloat(chuchaijiaotong) + parseFloat($scope.temporaryTab[tem].chuchaijiaotong);
+                                    }
+                                    if (parseFloat($scope.temporaryTab[tem].zhusu).toString() != "NaN") {//住宿费
+                                        zhusu = parseFloat(zhusu) + parseFloat($scope.temporaryTab[tem].zhusu);
+                                    }
+                                    if (parseFloat($scope.temporaryTab[tem].chechuan).toString() != "NaN") {//车船费
+                                        chechuan = parseFloat(chechuan) + parseFloat($scope.temporaryTab[tem].chechuan);
+                                    }
+                                    if (parseFloat($scope.temporaryTab[tem].jipiao).toString() != "NaN") {//机票费
+                                        jipiao = parseFloat(jipiao) + parseFloat($scope.temporaryTab[tem].jipiao);
+                                    }
+                                    if (parseFloat($scope.temporaryTab[tem].tianshu).toString() != "NaN") {//天数
+                                        tianshu = parseFloat(tianshu) + parseFloat($scope.temporaryTab[tem].tianshu);
+                                    }
+                                }
+                                var yuzhijine = 0;//该票据的预支金额
+                                var yinhuan = 0;//该票据的付款金额
+                                $scope.one.yuzhiShengyu = $scope.one.yuzhiShengyu == null || $scope.one.yuzhiShengyu == "" ? "0" : $scope.one.yuzhiShengyu
+                                var yuzhi = parseFloat($scope.one.yuzhiShengyu);
+                                if (yuzhi >= jinexiaoji) {
+                                    yuzhijine = jinexiaoji;
+                                    $scope.one.yuzhiShengyu = (yuzhi - jinexiaoji) + "";
+                                    yinhuan = 0;
+                                }
+                                else {//预支金额小于付款金额
+                                    yuzhijine = yuzhi;
+                                    yinhuan = jinexiaoji - yuzhi;
+                                    $scope.one.yuzhiShengyu = 0 + "";//预支完了
+                                }
+                                $scope.lengthTabList.push({
+                                    tabClass: "tab" + i, tabList: $scope.temporaryTab,
+                                    jinexiaoji: jinexiaoji, ljinexiaoji:
+                                        $scope.daxieJine(parseFloat(jinexiaoji).toFixed(2)),
+                                    qita: qita,
+                                    jintie: jintie,
+                                    shineijiaotong: shineijiaotong,
+                                    chuchaijiaotong: chuchaijiaotong,
+                                    zhusu: zhusu,
+                                    chechuan: chechuan,
+                                    jipiao: jipiao,
+                                    tianshu: tianshu,
+                                    tabJine: jinexiaoji,
+                                    yuzhijine: yuzhijine,
+                                    yinhuan: yinhuan,
+                                })//添加到表中//添加到表中
+                                $scope.one.piaoju.push({
+                                    tabClass: "tab" + i,
+                                    yuzhijine: yuzhijine,
+                                    yinhuan: yinhuan,
+                                    Detail: $scope.temporaryTab
+                                });
+                                $scope.temporaryTab = [];//清空临时表
+                            }
+                        }
+                    }).error(function (msg) {
+                        console.log(msg);
+
+                    })
+
+                }
+                //读取流程签字
+                $scope.getProcessList = function (datas) {
+                    console.log(datas);
+                    if (datas = null || datas.colId == undefined) {
+                        return;
+                    }
+                    $http({
+                        method: 'Post',
+                        url: '../api/List/getProcess',
+                        data: { col_id: datas.colId }
+                    }).success(function (data) {
+                        $scope.sqjl = ""//申请部门经理
+                        $scope.sqfzr = "";
+                        $scope.syjl = "";
+                        $scope.syfzr = "";
+                        $scope.cwjl = "";
+                        $scope.cwzj = "";
+                        $scope.zjl = "";
+                        $scope.cn = "";
+                        if ($scope.one.lAmount < 100000) {
+                            $scope.zjl = "";
+                        }
+                    }).error(function (msg) {
+                        console.log(msg);
+
+                    })
+
+                }
+                //下拉刷新
+                $scope.changeFun = function () {
+                    if ($scope.one.contents == null || $scope.one.contents == "") {
+                        for (var i in $scope.AccInfo) {
+                            if ($scope.one.content == $scope.AccInfo[i].ID) {
+                                $scope.one.contentName = $scope.AccInfo[i].AcctName;
+                                break;
+                            }
+                        }
+                    }
+                }
+                //打印单据
+                $scope.dayin = function (divId) {
+                    $(".selectKemu").hide();
+                    $(".shouyibumenSun").hide();
+                    $(".dayinShouyibumen").show();
+                    var k = $("." + divId).prop("outerHTML");
+                    $("body *").hide();
+                    $("body").append(k);
+                    window.print();
+                    window.location.reload();
+                    /* $("body *").show();
+                     $("body ." + divId + ":last").remove();
+                     $(".loading").css("display", "none");
+                     $(".swal2-container").remove();*/
+
+                }
+                //大写金额设置
+                $scope.daxieJine = function (Num) {
+                    //如果输入的不是数字，则将其设置为空
+                    // this.value = this.value.replace(/[^\d\.]/g, '').replace(/^0/, '');
+                    // var Num = this.value;
+                    if (Num == "") {
+                        //输入框删减为空时，将大写金额的内容值设为原始状态，当然也可以根据需求进行修改
+                        return "零元整";
+                        return false;
+                    }
+                    part = String(Num).split(".");
+                    newchar = "";
+                    for (i = part[0].length - 1; i >= 0; i--) {
+                        if (part[0].length > 10) {
+                            alert("位数过大，无法计算");//前面如果有验证位数的，此处判断可去掉
+                            return "";
+                        }
+                        tmpnewchar = ""
+                        perchar = part[0].charAt(i);
+                        switch (perchar) {
+                            case "0": tmpnewchar = "零" + tmpnewchar; break;
+                            case "1": tmpnewchar = "壹" + tmpnewchar; break;
+                            case "2": tmpnewchar = "贰" + tmpnewchar; break;
+                            case "3": tmpnewchar = "叁" + tmpnewchar; break;
+                            case "4": tmpnewchar = "肆" + tmpnewchar; break;
+                            case "5": tmpnewchar = "伍" + tmpnewchar; break;
+                            case "6": tmpnewchar = "陆" + tmpnewchar; break;
+                            case "7": tmpnewchar = "柒" + tmpnewchar; break;
+                            case "8": tmpnewchar = "捌" + tmpnewchar; break;
+                            case "9": tmpnewchar = "玖" + tmpnewchar; break;
+                        }
+                        switch (part[0].length - i - 1) {
+                            case 0: tmpnewchar = tmpnewchar + "元"; break;
+                            case 1: if (perchar != 0) tmpnewchar = tmpnewchar + "拾"; break;
+                            case 2: if (perchar != 0) tmpnewchar = tmpnewchar + "佰"; break;
+                            case 3: if (perchar != 0) tmpnewchar = tmpnewchar + "仟"; break;
+                            case 4: tmpnewchar = tmpnewchar + "万"; break;
+                            case 5: if (perchar != 0) tmpnewchar = tmpnewchar + "拾"; break;
+                            case 6: if (perchar != 0) tmpnewchar = tmpnewchar + "佰"; break;
+                            case 7: if (perchar != 0) tmpnewchar = tmpnewchar + "仟"; break;
+                            case 8: tmpnewchar = tmpnewchar + "亿"; break;
+                            case 9: tmpnewchar = tmpnewchar + "拾"; break;
+                        }
+                        newchar = tmpnewchar + newchar;
+                    }
+                    if (Num.indexOf(".") != -1) {
+                        if (part[1].length > 2) {
+                            part[1] = part[1].substr(0, 2)
+                        }
+                        for (i = 0; i < part[1].length; i++) {
+                            tmpnewchar = ""
+                            perchar = part[1].charAt(i)
+                            switch (perchar) {
+                                case "0": tmpnewchar = "零" + tmpnewchar; break;
+                                case "1": tmpnewchar = "壹" + tmpnewchar; break;
+                                case "2": tmpnewchar = "贰" + tmpnewchar; break;
+                                case "3": tmpnewchar = "叁" + tmpnewchar; break;
+                                case "4": tmpnewchar = "肆" + tmpnewchar; break;
+                                case "5": tmpnewchar = "伍" + tmpnewchar; break;
+                                case "6": tmpnewchar = "陆" + tmpnewchar; break;
+                                case "7": tmpnewchar = "柒" + tmpnewchar; break;
+                                case "8": tmpnewchar = "捌" + tmpnewchar; break;
+                                case "9": tmpnewchar = "玖" + tmpnewchar; break;
+                            }
+                            if (i == 0) tmpnewchar = tmpnewchar + "角";
+                            if (i == 1) tmpnewchar = tmpnewchar + "分";
+                            newchar = newchar + tmpnewchar;
+                        }
+                    }
+                    while (newchar.search("零元") != -1) {
+                        newchar = newchar.replace("零零", "零");
+                        newchar = newchar.replace("零亿", "亿");
+                        newchar = newchar.replace("亿万", "亿");
+                        newchar = newchar.replace("零万", "万");
+                        newchar = newchar.replace("零元", "元");
+                        newchar = newchar.replace("零角", "");
+                        newchar = newchar.replace("零分", "");
+                    }
+                    if (newchar.charAt(newchar.length - 1) == "元" || newchar.charAt(newchar.length - 1) == "角") {
+                        newchar = newchar + "整";
+                    }
+                    return newchar;
+                }
+                //返回列表
+                $scope.back = function () {
+                    window.location.replace("./userIndex.html");
+                }
+
+            })
+        </script>
+    </div>
+</body>
+
+</html>

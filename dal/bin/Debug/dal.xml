@@ -1,0 +1,228 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>dal</name>
+    </assembly>
+    <members>
+        <member name="M:dal.FromOA.getCode(System.String)">
+            <summary>
+            获取科目大纲
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromOA.getProcessList(model.WriteModel)">
+            <summary>
+            流程签字
+            </summary>
+            <param name="pro"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromOA.getV3x_attachment(model.ResultListModel)">
+            <summary>
+            获取关联的预支单
+            </summary>
+        </member>
+        <member name="M:dal.FromOA.getSunByattachment(model.ResultListModel)">
+            <summary>
+            获取关联的预支单（用于预支单报销）
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromOA.getDetail(model.ResultListModel)">
+            <summary>
+            获取每个单据的详细金额和说明
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromOA.getList(model.Condition)">
+            <summary>
+            获取单据列表
+            </summary>
+            <param name="condition"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.getAccInfo(System.Int32)">
+            <summary>
+            获取付款银行，只做第四期的，
+            </summary>
+        </member>
+        <member name="M:dal.FromU8.getSettleStyle">
+            <summary>
+            获取现金交易还是转账交易
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.getCode(System.String)">
+            <summary>
+            获取科目
+            </summary>
+            <param name="ccode_name">科目描述（根据OA归类大纲来）</param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.getCodeInU8Byccode(System.String)">
+            <summary>
+            获取u8单个科目明细
+            </summary>
+            <param name="ccode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.getCodeList">
+            <summary>
+            获取常用的科目便于操作人员修改
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.getProject(System.String)">
+            <summary>
+            获取流量科目
+            </summary>
+            <param name="citemname"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.getProjectBycode(System.String)">
+            <summary>
+            获取流量科目
+            </summary>
+            <param name="citemcode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.getDepatementList">
+            <summary>
+            获取部门List
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.getCashSerialNumberBySql">
+            <summary>
+            获取出纳类别字（收、付）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.getRecordTableByPid(System.String)">
+            <summary>
+            如何已经生成付款单则不允许再修改付款银行
+            </summary>
+            <param name="pid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.getDepatement(System.String)">
+            <summary>
+            获取U8发起部门的编码 CN_LevelListID（部门和oa有差异导致有些部门取不到，所以要调整公司架构）
+            </summary>
+            <param name="departementName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.getDepatements(System.String)">
+            <summary>
+            获取部门 Department
+            </summary>
+            <param name="departementName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.geVendortUnit(System.String)">
+            <summary>
+            获取供应商的UnitID，但是呢由于OA没有此表，顾后续打算放入部门表中，根据部门名称来作为查询(供应商)
+            </summary>
+            <param name="departementName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.geCustomertUnit(System.String)">
+            <summary>
+            获取供应商的UnitID，但是呢由于OA没有此表，顾后续打算放入部门表中，根据部门名称来作为查询（客户）
+            </summary>
+            <param name="departementName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.getCashSerialNumber(System.String,System.String)">
+            <summary>
+            获取收付出纳编号（收xxxx或者付xxxx）
+            </summary>
+            <param name="content"></param>
+            <param name="shoufu">输入收/付</param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.getCashSerialNumber(System.String)">
+            <summary>
+            duiqudiyigeshoufukemu
+            </summary>
+            <param name="shoufu"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.getPerson(System.String)">
+            <summary>
+            获取U8人员信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.addToAcctBook(model.ResultListModel)">
+            <summary>
+            单据只做付款操作，收款的后续更新
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.addToCloseBill(model.ResultListModel)">
+            <summary>
+            生单
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.addToCashSignRelate(model.ResultListModel)">
+            <summary>
+            制单
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.FromU8.addToCcashier(model.ResultListModel)">
+            <summary>
+            签字
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.OAApplyDal.getList(Model.ConditionModel)">
+            <summary>
+            获取单据列表
+            </summary>
+            <param name="condition"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.U8DAL.addToAcctBook(model.ResultListModel,Models.userInfo)">
+            <summary>
+            单据只做付款操作，收款的后续更新
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.U8DAL.addToCloseBill(model.ResultListModel,Models.userInfo)">
+            <summary>
+            生单
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:dal.U8DAL.addToCashSignRelate(model.ResultListModel,Models.userInfo)">
+            <summary>
+            制单
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:dal.UserInfoDal">
+            <summary>
+            员工登录信息获取
+            </summary>
+        </member>
+        <member name="M:dal.UserInfoDal.getUserInfo(Model.UserModel)">
+            <summary>
+            获取用户信息，登录
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,300 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="OAtoU8DATAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="contrast">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="baoxiaoId" Type="bigint" Nullable="false" />
+          <Property Name="yuzhiId" Type="bigint" Nullable="false" />
+          <Property Name="l4" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="l5" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="l6" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="l7" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="l13" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="producehelp">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="col_id" Type="bigint" Nullable="false" />
+          <Property Name="isShow" Type="int" Nullable="false" />
+          <Property Name="intoForm" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RecordTable">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Pid" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsIntoBook" Type="int" />
+          <Property Name="IsIntoCloseBill" Type="int" />
+          <Property Name="IsIntoAccvouch" Type="int" />
+          <Property Name="PayingBank" Type="nvarchar(max)" />
+          <Property Name="voucher" Type="nvarchar" MaxLength="50" />
+          <Property Name="updateTime" Type="datetime" />
+          <Property Name="updateTime2" Type="datetime" />
+          <Property Name="updateTime3" Type="datetime" />
+          <Property Name="ip" Type="nvarchar" MaxLength="50" />
+          <Property Name="ip2" Type="nvarchar" MaxLength="50" />
+          <Property Name="ip3" Type="nvarchar" MaxLength="50" />
+          <Property Name="Bid" Type="int" />
+          <Property Name="contents" Type="nvarchar" MaxLength="50" />
+          <Property Name="voucherno" Type="nvarchar" MaxLength="50" />
+          <Property Name="piaojuId" Type="int" />
+          <Property Name="liushuihao" Type="bigint" />
+          <Property Name="type" Type="int" />
+          <Property Name="amountMoney" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="chunabianhao" Type="nvarchar" MaxLength="50" />
+          <Property Name="pingzhenhao" Type="nvarchar" MaxLength="50" />
+          <Property Name="danjubianhao" Type="nvarchar" MaxLength="50" />
+          <Property Name="userName" Type="nvarchar" MaxLength="50" />
+          <Property Name="l4" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="l5" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="l6" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="l7" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="l13" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="triggerSummary">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="state" Type="int" />
+          <Property Name="subject" Type="nvarchar" MaxLength="255" />
+          <Property Name="create_date" Type="datetime" />
+          <Property Name="start_date" Type="datetime" />
+          <Property Name="finish_date" Type="datetime" />
+          <Property Name="templete_id" Type="bigint" />
+          <Property Name="start_member_id" Type="bigint" />
+        </EntityType>
+        <EntityType Name="userInfo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="start" Type="bit" Nullable="false" />
+          <Property Name="type" Type="int" Nullable="false" />
+          <Property Name="phnoe" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityContainer Name="OAtoU8DATAModelStoreContainer">
+          <EntitySet Name="contrast" EntityType="Self.contrast" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="producehelp" EntityType="Self.producehelp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RecordTable" EntityType="Self.RecordTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="triggerSummary" EntityType="Self.triggerSummary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="userInfo" EntityType="Self.userInfo" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OAtoU8DATAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="OAtoU8DATAEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="triggerSummary" EntityType="OAtoU8DATAModel.triggerSummary" />
+          <EntitySet Name="producehelp" EntityType="OAtoU8DATAModel.producehelp" />
+          <EntitySet Name="userInfo" EntityType="OAtoU8DATAModel.userInfo" />
+          <EntitySet Name="contrast" EntityType="OAtoU8DATAModel.contrast" />
+          <EntitySet Name="RecordTable" EntityType="OAtoU8DATAModel.RecordTable" />
+        </EntityContainer>
+        <EntityType Name="triggerSummary">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="state" Type="Int32" />
+          <Property Name="subject" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="create_date" Type="DateTime" Precision="3" />
+          <Property Name="start_date" Type="DateTime" Precision="3" />
+          <Property Name="finish_date" Type="DateTime" Precision="3" />
+          <Property Name="templete_id" Type="Int64" />
+          <Property Name="start_member_id" Type="Int64" />
+        </EntityType>
+        <EntityType Name="producehelp">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="col_id" Type="Int64" Nullable="false" />
+          <Property Name="isShow" Type="Int32" Nullable="false" />
+          <Property Name="intoForm" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="userInfo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="start" Type="Boolean" Nullable="false" />
+          <Property Name="type" Type="Int32" Nullable="false" />
+          <Property Name="phnoe" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="contrast">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="baoxiaoId" Type="Int64" Nullable="false" />
+          <Property Name="yuzhiId" Type="Int64" Nullable="false" />
+          <Property Name="l4" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="l5" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="l6" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="l7" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="l13" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="RecordTable">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Pid" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsIntoBook" Type="Int32" />
+          <Property Name="IsIntoCloseBill" Type="Int32" />
+          <Property Name="IsIntoAccvouch" Type="Int32" />
+          <Property Name="PayingBank" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="voucher" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="updateTime" Type="DateTime" Precision="3" />
+          <Property Name="updateTime2" Type="DateTime" Precision="3" />
+          <Property Name="updateTime3" Type="DateTime" Precision="3" />
+          <Property Name="ip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ip2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ip3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Bid" Type="Int32" />
+          <Property Name="contents" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="voucherno" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="piaojuId" Type="Int32" />
+          <Property Name="liushuihao" Type="Int64" />
+          <Property Name="type" Type="Int32" />
+          <Property Name="amountMoney" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="chunabianhao" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="pingzhenhao" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="danjubianhao" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="l4" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="l5" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="l6" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="l7" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="l13" Type="Decimal" Precision="18" Scale="2" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OAtoU8DATAModelStoreContainer" CdmEntityContainer="OAtoU8DATAEntities">
+          <EntitySetMapping Name="triggerSummary">
+            <EntityTypeMapping TypeName="OAtoU8DATAModel.triggerSummary">
+              <MappingFragment StoreEntitySet="triggerSummary">
+                <ScalarProperty Name="start_member_id" ColumnName="start_member_id" />
+                <ScalarProperty Name="templete_id" ColumnName="templete_id" />
+                <ScalarProperty Name="finish_date" ColumnName="finish_date" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="create_date" ColumnName="create_date" />
+                <ScalarProperty Name="subject" ColumnName="subject" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="producehelp">
+            <EntityTypeMapping TypeName="OAtoU8DATAModel.producehelp">
+              <MappingFragment StoreEntitySet="producehelp">
+                <ScalarProperty Name="intoForm" ColumnName="intoForm" />
+                <ScalarProperty Name="isShow" ColumnName="isShow" />
+                <ScalarProperty Name="col_id" ColumnName="col_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="userInfo">
+            <EntityTypeMapping TypeName="OAtoU8DATAModel.userInfo">
+              <MappingFragment StoreEntitySet="userInfo">
+                <ScalarProperty Name="phnoe" ColumnName="phnoe" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="start" ColumnName="start" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="contrast">
+            <EntityTypeMapping TypeName="OAtoU8DATAModel.contrast">
+              <MappingFragment StoreEntitySet="contrast">
+                <ScalarProperty Name="l13" ColumnName="l13" />
+                <ScalarProperty Name="l7" ColumnName="l7" />
+                <ScalarProperty Name="l6" ColumnName="l6" />
+                <ScalarProperty Name="l5" ColumnName="l5" />
+                <ScalarProperty Name="l4" ColumnName="l4" />
+                <ScalarProperty Name="yuzhiId" ColumnName="yuzhiId" />
+                <ScalarProperty Name="baoxiaoId" ColumnName="baoxiaoId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RecordTable">
+            <EntityTypeMapping TypeName="OAtoU8DATAModel.RecordTable">
+              <MappingFragment StoreEntitySet="RecordTable">
+                <ScalarProperty Name="l13" ColumnName="l13" />
+                <ScalarProperty Name="l7" ColumnName="l7" />
+                <ScalarProperty Name="l6" ColumnName="l6" />
+                <ScalarProperty Name="l5" ColumnName="l5" />
+                <ScalarProperty Name="l4" ColumnName="l4" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="danjubianhao" ColumnName="danjubianhao" />
+                <ScalarProperty Name="pingzhenhao" ColumnName="pingzhenhao" />
+                <ScalarProperty Name="chunabianhao" ColumnName="chunabianhao" />
+                <ScalarProperty Name="amountMoney" ColumnName="amountMoney" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="liushuihao" ColumnName="liushuihao" />
+                <ScalarProperty Name="piaojuId" ColumnName="piaojuId" />
+                <ScalarProperty Name="voucherno" ColumnName="voucherno" />
+                <ScalarProperty Name="contents" ColumnName="contents" />
+                <ScalarProperty Name="Bid" ColumnName="Bid" />
+                <ScalarProperty Name="ip3" ColumnName="ip3" />
+                <ScalarProperty Name="ip2" ColumnName="ip2" />
+                <ScalarProperty Name="ip" ColumnName="ip" />
+                <ScalarProperty Name="updateTime3" ColumnName="updateTime3" />
+                <ScalarProperty Name="updateTime2" ColumnName="updateTime2" />
+                <ScalarProperty Name="updateTime" ColumnName="updateTime" />
+                <ScalarProperty Name="voucher" ColumnName="voucher" />
+                <ScalarProperty Name="PayingBank" ColumnName="PayingBank" />
+                <ScalarProperty Name="IsIntoAccvouch" ColumnName="IsIntoAccvouch" />
+                <ScalarProperty Name="IsIntoCloseBill" ColumnName="IsIntoCloseBill" />
+                <ScalarProperty Name="IsIntoBook" ColumnName="IsIntoBook" />
+                <ScalarProperty Name="Pid" ColumnName="Pid" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
