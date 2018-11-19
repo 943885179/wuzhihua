@@ -184,8 +184,8 @@
                     </span>
                     <a ng-click="back()" class="btn btn-info btn_help1"> <span class="glyphicon glyphicon-list"></span>返回单据列表</a>
                     <a ng-click="addToCcashier()" class="btn btn-success btn_help1" style="display:none"><span class="glyphicon glyphicon-floppy-saved"></span>签字</a>
-                    <a ng-click="addToCashSignRelate()" class="btn btn-success btn_help1 zhidan" ng-if="one.shifouZhidan!=1"><span class="glyphicon glyphicon-check"></span>生成凭证</a>
-                    <a ng-click="addToCloseBill()" class="btn btn-success btn_help1 shengdan" ng-if="one.shifouShengdan!=1"><span class="glyphicon glyphicon-floppy-saved"></span>生成收付款单</a>
+                    <a ng-click="addToCashSignRelate()" class="btn btn-success btn_help1 zhidan" ng-if="one.shifouZhidan!=1 && one.shifouShengdan!=1 && one.shifouPingzhen!=1"><span class="glyphicon glyphicon-check"></span>生成凭证</a>
+                    <a ng-click="addToCloseBill()" class="btn btn-success btn_help1 shengdan" ng-if="one.shifouShengdan!=1 && one.shifouPingzhen!=1"><span class="glyphicon glyphicon-floppy-saved"></span>生成收付款单</a>
                     <a ng-click="addToBook()" class="btn btn-success btn_help1 rijizhang" ng-if="one.shifouPingzhen!=1"><span class="glyphicon glyphicon-log-in"></span>录日记账</a>
                 </div>
                 <div class="biaodanDiv">
@@ -248,7 +248,7 @@
                                     <tbody>
                                         <tr>
                                             <td style="width:20%;">收款单位（或个人）</td>
-                                            <td style="width:40%"><input type="text" class="form-control" ng-model="one.shoukuandanwei" /> </td>
+                                            <td style="width:40%"><input type="text"  id="isLodinMiaoshu" class="form-control" ng-model="one.shoukuandanwei" /> </td>
                                             <td style="width:20%">收款银行</td>
                                             <td style="width:20%">{{one.shoukuanyh}}</td>
                                         </tr>
@@ -303,8 +303,7 @@
                                                 <td>{{tab.pingzhenhao}}</td>
                                                 <td>转账</td>
                                                 <td>
-
-                                                    <textarea id="isLodinMiaoshu" class=" test-textarea" contenteditable="true" type="text" ng-model="tab.Yinhan.miaoshu"></textarea>
+                                                    <textarea class=" test-textarea" contenteditable="true" type="text" ng-model="tab.Yinhan.miaoshu"></textarea>
                                                 </td>
                                                 <td>人民币</td>
                                                 <td></td>
@@ -896,6 +895,8 @@
                                     break;
                                 }
                             }
+
+                            zhaiyao = zhaiyao.substring(0, zhaiyao.length-1);
                             $scope.one.piaoju.push({
                                 tabClass: tabNum,
                                 yuzhijine: yuzhijine,

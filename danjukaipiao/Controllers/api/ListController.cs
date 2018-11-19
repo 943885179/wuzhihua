@@ -61,8 +61,8 @@ namespace danjukaipiao.Controllers.api
                 ResultListModel re = new ResultListModel();
                 re.list = new List<Detail>();
                 Detail d = new Detail();
-                re.lAmount =null;
-                d.jine = null;
+                re.lAmount =0;
+                d.jine = 0;
                 re.list.Add(d);
                 return re;
             }

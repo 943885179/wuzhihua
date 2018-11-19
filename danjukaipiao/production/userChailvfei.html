@@ -133,7 +133,7 @@
                 <div>
 
                     <div id="chunaDiv">
-                        <a ng-click="back()" class="btn btn-info btn_help1">
+                        <a ng-click="back()" class="btn btn-info" style="float:right;">
                             <span class="glyphicon glyphicon-list"></span>返回单据列表
                         </a>
                     </div>
@@ -150,9 +150,9 @@
                                             <br>
                                         </td>
                                         <td style="width:20%">
-                                            <h3>
+                                            <h2>
                                                 <b>差旅费报销单</b>
-                                            </h3>
+                                            </h2>
                                         </td>
                                         <td style="width:20%">
                                             <br>
@@ -213,7 +213,7 @@
                                             出差起止日期自{{one.starDates | date:'yyyy年MM月dd日'}}至 {{one.endDates | date:'yyyy年MM月dd日'}}止共{{one.gongjitianshu}}天付单据2张
                                         </td>
                                     </tr>
-                                    <tr style="text-align:center;line-height:40px;">
+                                    <tr style="text-align:center;line-height:20px;">
                                         <td colspan="2">日期</td>
                                         <td rowspan="2" colspan="2">起止地点</td>
                                         <td rowspan="2">天数</td>
@@ -229,7 +229,7 @@
                                     <tr>
                                         <td colspan="2">月 &nbsp;&nbsp;|&nbsp;&nbsp; 日</td>
                                     </tr>
-                                    <tr ng-repeat="yt in tab.tabList track by $index" style="height:40px">
+                                    <tr ng-repeat="yt in tab.tabList track by $index" style="height:30px">
                                         <td colspan="2">{{yt.riqi}}</td>
                                         <td colspan="2">{{yt.qizhididian}}</td>
                                         <td>{{yt.tianshu}}</td>
@@ -267,7 +267,7 @@
                                 <thead>
                                 </thead>
                                 <tbody>
-                                    <tr style="font-size:14px">
+                                    <tr style="font-size:12px">
                                         <td style="width:10%;">&nbsp;&nbsp;会&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计&nbsp;&nbsp;</td>
                                         <td style="width:10%;">&nbsp;&nbsp;总&nbsp;经&nbsp;理&nbsp;&nbsp;</td>
                                         <td style="width:10%;">财务总监</td>

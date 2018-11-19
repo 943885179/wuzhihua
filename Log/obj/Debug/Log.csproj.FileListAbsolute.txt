@@ -8,3 +8,4 @@ E:\stu\wuzhihua\Log\bin\Debug\Log.pdb
 E:\stu\wuzhihua\Log\obj\Debug\Log.csproj.CoreCompileInputs.cache
 E:\stu\wuzhihua\Log\obj\Debug\Log.dll
 E:\stu\wuzhihua\Log\obj\Debug\Log.pdb
+E:\stu\wuzhihua\Log\obj\Debug\Log.csprojAssemblyReference.cache

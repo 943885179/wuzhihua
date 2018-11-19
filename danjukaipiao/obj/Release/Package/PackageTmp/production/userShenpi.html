@@ -303,6 +303,7 @@
 
                     </div>
                 </div>
+                <div class="alert-danger" style="text-align:center;">*备注：所有单据摘要如果描述内容相同，税点相同，将合并成一条摘要</div>
             </div>
             <!-- /page content -->
             <!-- footer content -->
@@ -429,20 +430,26 @@
                         url: '../api/List/getDetail',
                         data: datas
                     }).success(function (data) {
+                        console.log(data.list);
                         if (data.length == 0) {
                             return;
                         }
                         $scope.list = [];//获取明细
+                        //摘要合并(相同税点和相同税额的将合并成一条摘要)
                         for (var t in data.list) {
-
-                           /* if (data.list[t].shouyibumen.length == 1)
-                            {
-                                data.list[t].shouyibumen = "0" + data.list[t].shouyibumen;
-
-                            }*/
-                            $scope.list.push(data.list[t]);
+                            var isHave = false;
+                            for (var l in $scope.list) {
+                                if ($scope.list[l].miaoshu == data.list[t].miaoshu && $scope.list[l].shuidian == data.list[t].shuidian) {
+                                    $scope.list[l].jine = (parseFloat($scope.list[l].jine) + parseFloat(data.list[t].jine)).toFixed(2);
+                                    $scope.list[l].shuie = (parseFloat($scope.list[l].shuie) + parseFloat(data.list[t].shuie)).toFixed(2);
+                                    isHave = true;
+                                }
+                            }
+                            if (!isHave) {
+                                $scope.list.push(data.list[t]);
+                            }
                         }
-                        $scope.one.list = data.list;//直接赋值给大类，然后提交的时候再遍历提交
+                        $scope.one.list =  $scope.list;//直接赋值给大类，然后提交的时候再遍历提交
                         var listlength = $scope.list.length % 4;//获取数量
                         /*将金额用途分成四行，有的则用金额用途遍历，没有的用空值替换*/
                         if (listlength != 0) {//不是4条的倍数遍历添加成4条的倍数

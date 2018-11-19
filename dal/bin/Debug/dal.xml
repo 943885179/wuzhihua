@@ -88,6 +88,12 @@
             <param name="citemcode"></param>
             <returns></returns>
         </member>
+        <member name="M:dal.FromU8.getProject">
+            <summary>
+            获取科目
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:dal.FromU8.getDepatementList">
             <summary>
             获取部门List

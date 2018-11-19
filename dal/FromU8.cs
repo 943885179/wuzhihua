@@ -141,6 +141,17 @@ namespace dal
             }
         }
         /// <summary>
+        /// 获取科目
+        /// </summary>
+        /// <returns></returns>
+        public List<fitemss98> getProject()
+        {
+            using (var db = new UFDATA_048_2017Entities())
+            {
+                return db.fitemss98.ToList();
+            }
+        }
+        /// <summary>
         /// 获取部门List
         /// </summary>
         /// <returns></returns>
@@ -488,7 +499,7 @@ namespace dal
                             }
                             foreach (Detail list in piaoju.Detail)
                             {
-                                if (model.type.Equals("上海悦目-差旅费报销单") && !string.IsNullOrEmpty(list.jinexiaoji.Trim()))
+                                if (model.type.Equals("上海悦目-差旅费报销单"))
                                 {
                                     list.miaoshu = model.chuangjinshijin + model.chuchaishiyou;//将差旅费报销单的出差事由转移给描述
                                     list.shouyibumen = model.shouyibumen;
@@ -894,7 +905,7 @@ namespace dal
                                     }  //收款单位是供应商还是客户，用收款单位来确定
                                     foreach (var detail in piaoju.Detail)
                                     {//付款明细遍历
-                                        if (model.type.Equals("上海悦目-差旅费报销单") && !string.IsNullOrEmpty(detail.jinexiaoji.Trim()))
+                                        if (model.type.Equals("上海悦目-差旅费报销单"))
                                         {
                                             detail.miaoshu = detail.riqi + model.chuchaishiyou;//将差旅费报销单的出差事由转移给描述
                                             detail.kemu = "660118";//差旅费
@@ -945,7 +956,7 @@ namespace dal
                                                 }
                                             }
                                             ccodeList = detail.kemu + ",";
-                                            if (!string.IsNullOrEmpty(detail.shuie) && Convert.ToDecimal(detail.shuie) != 0)
+                                            if (detail.shuie != 0)
                                             {//当需要交税额的时候
                                                 acc = new GL_accvouch()
                                                 {

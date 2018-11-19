@@ -163,11 +163,11 @@
                     付款账号&nbsp;&nbsp;
                     <span class="contentDiv">
                         <!--<select name="" id="" class="fukuanZhanghao" ng-model="one.ccode_name" data-style="btn-info" data-live-search="true">
-            <option ng-repeat="acc in AccInfo" value="{{acc.ID}}">
-                {{acc.AcctName}}
-            </option>
-        </select>
-           -->
+                            <option ng-repeat="acc in AccInfo" value="{{acc.ID}}">
+                                {{acc.AcctName}}
+                            </option>
+                        </select>
+                           -->
                         <select class="fukuanZhanghao" ng-init="one.content= AccInfo[0].AcctName" ng-model="one.content" ng-options="x.AcctName for x in AccInfo"></select>
                     </span>
                     <a ng-click="back()" class="btn btn-info btn_help1"> <span class="glyphicon glyphicon-list"></span>返回单据列表</a>
@@ -324,165 +324,190 @@
 
                     <!--财务-->
                     <div ng-repeat="tab in one.piaoju" ng-if="userInfo.type==1  && tab.Yinhan.jiefan!=0">
-                            <div class="x_panel" id="pannel{{tab.tabClass}}">
-                                <div class="x_title">
-                                    <h2>
-                                        <i class="fa fa-bars"></i> 单据{{tab.tabClass}}
-                                        <small style="text-align:center" ng-if="tab.chunabianhao!=null && tab.chunabianhao!=''">出纳编号：{{tab.chunabianhao}}</small>
-                                        <small style="text-align:center" ng-if="tab.danjubianhao!=null && tab.danjubianhao!=''">单据编号：{{tab.danjubianhao}}</small>
-                                        <small style="text-align:center" ng-if="tab.pingzhenhao!=null && tab.pingzhenhao!=''">制单凭证编号：{{tab.pingzhenhao}}</small>
-                                        <small style="text-align:center">预支金额：{{tab.yuzhijine}}元，应退/应补金额：{{tab.yinhuan}}</small>
-                                    </h2>
-                                    <ul class="nav navbar-right panel_toolbox">
-                                        <li>
-                                            <a class="btn btn-success " ng-click="addDetail(tab.tabClass)"><span class="fa fa-plus"></span>增行</a>
-                                        </li>
-                                        <li>
-                                            <a ng-click="closecontent(tab.tabClass)" id="close{{tab.tabClass}}"><i class="fa fa-chevron-up"></i></a>
-                                            <a style="display:none" ng-click="opencontent(tab.tabClass)" id="open{{tab.tabClass}}"><i class="fa fa-chevron-down"></i></a>
-                                        </li>
-                                    </ul>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="x_content" id="content{{tab.tabClass}}">
-                                    <table class="table table-bordered table-hover table-condensed" style="text-align:center;" border="1" cellspacing="0" cellpadding="0">
-                                        <thead>
-                                            <tr>
-                                                <td style="width:30%">摘要</td>
-                                                <td style="width:20%">科目</td>
-                                                <td style="width:20%">部门</td>
-                                                <td style="width:10%">借方金额</td>
-                                                <td style="width:10%">贷方金额</td>
-                                                <td style="width:10%">操作</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr ng-repeat="yt in tab.Detail track by $index" style="min-height:30px">
-                                                <td style="width:40%;height:30px" rowspan="1">
-                                                    <input class="form-control" type="text" ng-model="yt.miaoshu" />
-                                                </td>
-                                                <td ng-if="yt.kemu!='22210101'">
-                                                    <select class="selectKemu" data-style="btn-info" ng-model="yt.kemu" data-live-search="true" ng-change="changeKemus(tab.tabClass,yt)">
-                                                        <option ng-repeat="acc in CodeLists" value="{{acc.enumvalue}}">
-                                                            {{acc.showValue}}
-                                                    </select>
-                                                </td>
-
-                                                <td ng-if="yt.kemu=='22210101'">
-                                                    <span ng-if="yt.kemu=='22210101'">进项税额({{yt.kemu}})</span>
-                                                </td>
-                                                <td>
-                                                    <select class="shouyibumenSun" ng-model="yt.shouyibumen" data-style="btn-info" data-live-search="true">
-                                                        <option ng-repeat="acc in depatementList" value="{{acc.cDepCode}}">
-                                                            {{acc.cDepName}}
-                                                        </option>
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input class="form-control" type="text" ng-if="yt.kemu!='22210101'" ng-model="yt.jine" onkeyup="clearNoNum(this) " ng-blur="changeKemus(tab.tabClass,yt)" />
-                                                    <input class="form-control" type="text" ng-if="yt.kemu=='22210101'" ng-model="yt.shuie" onkeyup="clearNoNum(this) " ng-blur="changeKemus(tab.tabClass,yt)" />
-                                                </td>
-                                                <td><input class="form-control" readonly type="text" ng-model="yt.jiefan" /></td>
-                                                <td><a class="btn btn-sm btn-danger" ng-if="yt.kemu!='22210101'" ng-click="removeDetail(tab.tabClass,yt)">删除</a></td>
-                                            </tr>
-                                            <tr style="min-height:30px;" ng-repeat="yz in tab.Yuzhi track by $index">
-                                                <td style="width:40%;height:30px" rowspan="1">
-                                                    <input class="form-control" type="text" ng-model="yz.miaoshu" />
-                                                </td>
-                                                <td>
-                                                    <select class="selectKemu" data-style="btn-info" ng-model="yz.kemu" data-live-search="true">
-                                                        <option ng-repeat="acc in CodeList" value="{{acc.enumvalue}}">
-                                                            {{acc.showValue}}
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <select class="shouyibumenSun" ng-model="yz.shouyibumen" data-style="btn-info" data-live-search="true">
-                                                        <option ng-repeat="acc in depatementList" value="{{acc.cDepCode}}">
-                                                            {{acc.cDepName}}
-                                                        </option>
-                                                    </select>
-                                                </td>
-                                                <td><input class="form-control" readonly type="text" ng-model="yz.jine" onkeyup="clearNoNum(this) " /></td>
-                                                <td><input class="form-control" readonly type="text" ng-model="yz.jiefan" /></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr style="min-height:30px;" ng-if="tab.Yinhan.jiefan!=0 ">
-                                                <td style="width:40%;height:30px" rowspan="1">
-                                                    <input class="form-control" type="text" ng-model="tab.Yinhan.miaoshu" />
-                                                </td>
-                                                <td>
-                                                    {{one.content.ccode_name}}({{one.content.SubjectCode}})
-                                                </td>
-                                                <td>{{one.faqibumen=="NULL"?"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;":one.faqibumen}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                                                <td><input class="form-control" readonly type="text" ng-model="tab.Yinhan.jine" onkeyup="clearNoNum(this) " /></td>
-                                                <td><input class="form-control" readonly type="text" ng-model="tab.Yinhan.jiefan" /></td>
-                                                <td></td>
-                                            </tr>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr><td colspan="6">科目流量</td></tr>
-                                            <tr style="min-height:30px" ng-repeat="yt in tab.liuliangList track by $index" ng-if="yt.jine!=0">
-                                                <td style="height:30px" rowspan="1" colspan="2">
-                                                    {{tab.Yinhan.miaoshu}}
-                                                </td>
-                                                <td style="height:30px" rowspan="1">
-                                                    {{ yt.citemcode}}
-                                                </td>
-                                                <td colspan="2">{{yt.citemname}}</td>
-                                                <td>{{yt.jine}}</td>
-                                            </tr>
-
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <!--签字信息-->
-                        <div class="x_panel">
+                        <div class="x_panel" id="pannel{{tab.tabClass}}">
                             <div class="x_title">
-                                <h2><i class="fa fa-bars"></i> 签字信息 <small></small></h2>
+                                <h2>
+                                    <i class="fa fa-bars"></i> 单据{{tab.tabClass}}
+                                    <span style="text-align:center" ng-if="tab.chunabianhao!=null && tab.chunabianhao!=''">出纳编号：{{tab.chunabianhao}}</span>
+                                    <span style="text-align:center" ng-if="tab.danjubianhao!=null && tab.danjubianhao!=''">单据编号：{{tab.danjubianhao}}</span>
+                                    <span style="text-align:center" ng-if="tab.pingzhenhao!=null && tab.pingzhenhao!=''">制单凭证编号：{{tab.pingzhenhao}}</span>
+                                    <span style="text-align:center;color:springgreen">预支金额：{{tab.yuzhijine}}元，应退/应补金额：{{tab.yinhuan}}</span>
+                                </h2>
                                 <ul class="nav navbar-right panel_toolbox">
+                                    <li style="color:#000000">
+                                        <a class="btn btn-success " ng-click="addDetail(tab.tabClass)"  style="color:#000000"><span class="fa fa-plus"></span>增行</a>
+                                    </li>         
+                                    <li  style="color:#000000"> 
+                                        <a class="btn btn-info" ng-click="addYuzhi(tab.tabClass)"  style="color:#000000"><span class="fa fa-plus"></span>增加预支行</a>
+                                    </li>
                                     <li>
-                                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                        <a ng-click="closecontent(tab.tabClass)" id="close{{tab.tabClass}}"><i class="fa fa-chevron-up"></i></a>
+                                        <a style="display:none" ng-click="opencontent(tab.tabClass)" id="open{{tab.tabClass}}"><i class="fa fa-chevron-down"></i></a>
                                     </li>
                                 </ul>
                                 <div class="clearfix"></div>
                             </div>
-                            <div class="x_content">
-                                <table class="table table-bordered tables" style="text-align:center;" border="1" cellspacing="0" cellpadding="0">
+                            <div class="x_content" id="content{{tab.tabClass}}">
+                                <table class="table table-bordered table-hover table-condensed" style="text-align:center;" border="1" cellspacing="0" cellpadding="0">
                                     <thead>
+                                        <tr>
+                                            <td style="width:30%">摘要</td>
+                                            <td style="width:20%">科目</td>
+                                            <td style="width:20%">部门</td>
+                                            <td style="width:10%">借方金额</td>
+                                            <td style="width:10%">贷方金额</td>
+                                            <td style="width:10%">操作</td>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td style="width:10%;line-height:35px;font-size:12px;">会&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计</td>
-                                            <td style="width:10%;line-height:35px;font-size:12px;">总经理</td>
-                                            <td style="width:10%;line-height:35px;font-size:12px;">财务总监</td>
-                                            <td style="width:10%;line-height:35px;font-size:12px;">财务经理</td>
-                                            <td style="width:10%;line-height:35px;font-size:12px;">会&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计</td>
-                                            <td style="width:10%;line-height:35px;font-size:12px;">收益部门负责人</td>
-                                            <td style="width:10%;line-height:35px;font-size:12px;">收益部门经理</td>
-                                            <td style="width:10%;line-height:35px;font-size:12px;">报销部门负责人</td>
-                                            <td style="width:10%;line-height:35px;font-size:12px;">报销部门经理</td>
-                                            <td style="width:10%;line-height:35px;font-size:12px;">经手人</td>
+                                        <tr ng-repeat="yt in tab.Detail track by $index" style="min-height:30px">
+                                            <td style="width:40%;height:30px" rowspan="1">
+                                                <input class="form-control" type="text" ng-model="yt.miaoshu" />
+                                            </td>
+                                            <td ng-if="yt.kemu!='22210101'">
+                                                <select class="selectKemu" data-style="btn-info" ng-model="yt.kemu" data-live-search="true" ng-change="changeKemu(tab.tabClass)">
+                                                    <option ng-repeat="acc in CodeLists" value="{{acc.enumvalue}}">
+                                                        {{acc.showValue}}
+                                                </select>
+                                            </td>
+
+                                            <td ng-if="yt.kemu=='22210101'">
+                                                <span ng-if="yt.kemu=='22210101'">进项税额({{yt.kemu}})</span>
+                                            </td>
+                                             <td ng-if="yt.kemu!='22210101'">
+                                                <select class="shouyibumenSun" ng-model="yt.shouyibumen" data-style="btn-info" data-live-search="true">
+                                                    <option ng-repeat="acc in depatementList" value="{{acc.cDepCode}}">
+                                                        {{acc.cDepName}}
+                                                    </option>
+                                                </select>
+                                             </td>
+                                            <td ng-if="yt.kemu=='22210101'">
+                                                
+                                            </td>
+                                            <td>
+                                                <input class="form-control" type="text" ng-model="yt.jine" onkeyup="clearNoNum(this) " ng-blur="changeKemu(tab.tabClass)" />
+                                             </td>
+                                            <td><input class="form-control" readonly type="text" ng-model="yt.jiefan" /></td>
+                                            <td><a class="btn btn-sm btn-danger" ng-click="removeDetail(tab.tabClass,yt)">删除</a></td>
                                         </tr>
-                                        <tr style="font:1 12px FangSong">
+                                        <tr style="min-height:30px;" ng-repeat="yz in tab.Yuzhi track by $index">
+                                            <td style="width:40%;height:30px" rowspan="1">
+                                                <input class="form-control" type="text" ng-model="yz.miaoshu" />
+                                            </td>
+                                            <td>
+                                                <select class="selectKemu" data-style="btn-info" ng-model="yz.kemu" data-live-search="true"  ng-change="changeKemu(tab.tabClass)">
+                                                    <option ng-repeat="acc in CodeList" value="{{acc.enumvalue}}">
+                                                        {{acc.showValue}}
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <!--<select class="shouyibumenSun" ng-model="yz.shouyibumen" data-style="btn-info" data-live-search="true">
+                                                    <option ng-repeat="acc in depatementList" value="{{acc.cDepCode}}">
+                                                        {{acc.cDepName}}
+                                                    </option>
+                                                </select>-->
+                                            </td>
+                                            <td><input class="form-control" readonly type="text" ng-model="yz.jine" onkeyup="clearNoNum(this) " /></td>
+                                            <td><input class="form-control"  type="text" ng-model="yz.jiefan" /></td>
+                                            <td><a class="btn btn-sm btn-danger" ng-click="removeYuzhi(tab.tabClass,yz)">删除预支摘要</a></td>
+                                        </tr>
+                                        <tr style="min-height:30px;" ng-if="tab.Yinhan.jiefan!=0 ">
+                                            <td style="width:40%;height:30px" rowspan="1">
+                                                <input class="form-control" type="text" ng-model="tab.Yinhan.miaoshu" />
+                                            </td>
+                                            <td>
+                                                {{one.content.ccode_name}}({{one.content.SubjectCode}})
+                                            </td>
+                                            <td>{{one.faqibumen=="NULL"?"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;":one.faqibumen}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td><input class="form-control" readonly type="text" ng-model="tab.Yinhan.jine" onkeyup="clearNoNum(this) " /></td>
+                                            <td><input class="form-control" readonly type="text" ng-model="tab.Yinhan.jiefan" /></td>
                                             <td></td>
-                                            <td>{{zjl.name}}<br />{{zjl.create_date| date:'yyyy/MM/dd'}}</td>
-                                            <td>{{cwzj.name}}<br />{{cwzj.create_date| date:'yyyy/MM/dd'}}</td>
-                                            <td>{{cwjl.name}}<br />{{cwjl.create_date| date:'yyyy/MM/dd'}}</td>
-                                            <td>{{caiwu.name}}<br />{{caiwu.create_date | date:'yyyy/MM/dd'}}</td>
-                                            <td>{{syfzr.name}}<br />{{syfzr.create_date | date:'yyyy/MM/dd'}}</td>
-                                            <td>{{syjl.name}}<br />{{syjl.create_date | date:'yyyy/MM/dd'}}</td>
-                                            <td>{{sqfzr.name}}<br />{{sqfzr.create_date | date:'yyyy/MM/dd'}}</td>
-                                            <td>{{sqjl.name}}<br />{{sqjl.create_date | date:'yyyy/MM/dd'}}</td>
-                                            <td>{{one.faqiren}} <br />{{one.date | date:'yyyy/MM/dd'}}</td>
                                         </tr>
                                     </tbody>
+                                    <tfoot>
+                                        <tr><td colspan="6">科目流量</td></tr>
+                                        <tr style="min-height:30px" ng-repeat="yt in tab.liuliangList track by $index" ng-if="yt.jine!=0">
+                                            <td style="height:30px" rowspan="1" colspan="2">
+                                                {{tab.Yinhan.miaoshu}}
+                                            </td>
+                                            <td style="height:30px" rowspan="1">
+                                                {{ yt.citemcode}}
+                                            </td>
+                                            <td colspan="2">{{yt.citemname}}</td>
+                                            <td>{{yt.jine}}</td>
+                                        </tr>
+
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>
                     </div>
+                    <!--签字信息-->
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2><i class="fa fa-bars"></i> 签字信息 <small></small></h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li>
+                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table class="table table-bordered tables" style="text-align:center;" border="1" cellspacing="0" cellpadding="0">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="width:10%;line-height:35px;font-size:12px;">会&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计</td>
+                                        <td style="width:10%;line-height:35px;font-size:12px;">总经理</td>
+                                        <td style="width:10%;line-height:35px;font-size:12px;">财务总监</td>
+                                        <td style="width:10%;line-height:35px;font-size:12px;">财务经理</td>
+                                        <td style="width:10%;line-height:35px;font-size:12px;">会&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计</td>
+                                        <td style="width:10%;line-height:35px;font-size:12px;">收益部门负责人</td>
+                                        <td style="width:10%;line-height:35px;font-size:12px;">收益部门经理</td>
+                                        <td style="width:10%;line-height:35px;font-size:12px;">报销部门负责人</td>
+                                        <td style="width:10%;line-height:35px;font-size:12px;">报销部门经理</td>
+                                        <td style="width:10%;line-height:35px;font-size:12px;">经手人</td>
+                                    </tr>
+                                    <tr style="font:1 12px FangSong">
+                                        <td></td>
+                                        <td>{{zjl.name}}<br />{{zjl.create_date| date:'yyyy/MM/dd'}}</td>
+                                        <td>{{cwzj.name}}<br />{{cwzj.create_date| date:'yyyy/MM/dd'}}</td>
+                                        <td>{{cwjl.name}}<br />{{cwjl.create_date| date:'yyyy/MM/dd'}}</td>
+                                        <td>{{caiwu.name}}<br />{{caiwu.create_date | date:'yyyy/MM/dd'}}</td>
+                                        <td>{{syfzr.name}}<br />{{syfzr.create_date | date:'yyyy/MM/dd'}}</td>
+                                        <td>{{syjl.name}}<br />{{syjl.create_date | date:'yyyy/MM/dd'}}</td>
+                                        <td>{{sqfzr.name}}<br />{{sqfzr.create_date | date:'yyyy/MM/dd'}}</td>
+                                        <td>{{sqjl.name}}<br />{{sqjl.create_date | date:'yyyy/MM/dd'}}</td>
+                                        <td>{{one.faqiren}} <br />{{one.date | date:'yyyy/MM/dd'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--系统说明-->
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2><i class="fa fa-bars"></i> 系统说明 <small></small></h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li>
+                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <p class="alert alert-danger">
+                                进项增值税统计规则：税点相同的合并成一条进项增值税摘要
+                            </p>
+                            <p class="alert alert-danger">
+                                摘要统计规则：预支完的摘要将统计到下一张中（第一张应付的金额为0将转移到第二张中）
+                            </p>
+                        </div>
+                    </div>
                 </div>
+            </div>
             <!-- /page content -->
             <!-- footer content -->
             <footer>
@@ -596,10 +621,10 @@
                     buttonsStyling: true
                 }).then(function (isConfirm) {
                     if (isConfirm === true) {
-                        if ($scope.keyuzhi < parseFloat($scope.one.yuzhiShengyu)) {
-                            swal("关联的预支单总共可预支" + $scope.keyuzhi + "元，本次需要预支" + $scope.one.yuzhiShengyu+",请先完成预支单的制单操作");
-                            return;
-                        }
+                        /* if ($scope.keyuzhi < parseFloat($scope.one.yuzhiShengyu)) {
+                             swal("关联的预支单总共可预支" + $scope.keyuzhi + "元，本次需要预支" + $scope.one.yuzhiShengyu+",请先完成预支单的制单操作");
+                             return;
+                         }*/
                         $http({
                             method: 'Post',
                             url: '../api/U8/addToAcctBook',
@@ -650,10 +675,10 @@
                             swal("已经制单，无法生单");
                             return;
                         }/*
-                             if ($scope.one.shifouPingzhen != 1) {
-                                 swal("还未生成凭证，无法生单");
-                                 return;
-                             }*/
+                                     if ($scope.one.shifouPingzhen != 1) {
+                                         swal("还未生成凭证，无法生单");
+                                         return;
+                                     }*/
                         console.log($scope.one);
                         $http({
                             method: 'Post',
@@ -722,7 +747,23 @@
                                     dmoney += parseFloat($scope.one.piaoju[p].Detail[d].shuie);
                                 }
                             }
-                            console.log($scope.one.piaoju[p]);
+                            var yuzhiHeji = 0;
+                            for (var y in $scope.one.piaoju[p].Yuzhi) {
+
+                                if ($scope.one.piaoju[p].Yuzhi[d].miaoshu == null || $scope.one.piaoju[p].Yuzhi[d].miaoshu.trim() == "") {
+                                    swal("请完善所有摘要");
+                                    return;
+                                }
+                                if ($scope.one.piaoju[p].Yuzhi[d].kemu == null || $scope.one.piaoju[p].Yuzhi[d].kemu.trim() == "") {
+                                    swal("请完善所有科目");
+                                    return;
+                                }
+                                yuzhiHeji += $scope.one.piaoju[p].Yuzhi[y].jiefan;
+                            }
+                            if (yuzhiHeji != parseFloat($scope.one.piaoju[p].yuzhijine)) {
+                                swal("预支摘要总金额为"+yuzhiHeji+"，而本单只能预支"+parseFloat($scope.one.piaoju[p].yuzhijine));
+                                return;
+                            }
                             ymoney = parseFloat($scope.one.piaoju[p].yuzhijine) + parseFloat($scope.one.piaoju[p].yinhuan);
                             if (ymoney != dmoney) {
                                 swal("收支不平衡,借方金额为：" + dmoney + "，贷方金额为" + ymoney);
@@ -825,7 +866,7 @@
 
             }
             //流量获取
-            $scope.getProjectBycode = function (code, jine) {
+            $scope.getProjectBycode = function (code, jine, d) {
                 var delay = $q.defer();
                 $http({
                     method: 'Get',
@@ -834,6 +875,7 @@
                 }).success(function (data) {
                     //var datas = JSON.parse(data);
                     data.jine = jine;
+                    data.d = d;
                     delay.resolve(data);
                 }).error(function (msg) {
                     delay.reject("数据查询失败");
@@ -841,165 +883,163 @@
                 return delay.promise;
             }
             $scope.changeKemu = function (tab) {
+
                 for (var p in $scope.one.piaoju) {
                     var dmoney = 0;
-                    var ymoney = 0;
+                    var ymoney = parseFloat($scope.one.piaoju[p].yinhuan);
                     for (var d in $scope.one.piaoju[p].Detail) {//付款方
-                        if ($scope.one.piaoju[p].Detail[d].id < 1000000) {
-                            dmoney += parseFloat($scope.one.piaoju[p].Detail[d].jine);
-                        }
-                        else {
-                            dmoney += parseFloat($scope.one.piaoju[p].Detail[d].shuie);
-                        }
+                        dmoney += parseFloat($scope.one.piaoju[p].Detail[d].jine);
                     }
-                    ymoney = parseFloat($scope.one.piaoju[p].yuzhijine) + parseFloat($scope.one.piaoju[p].yinhuan);
-
+                    for (var y in $scope.one.piaoju[p].Yuzhi) {//预支项
+                       ymoney+= $scope.one.piaoju[p].Yuzhi[y].jiefan;
+                    }
                     if (ymoney != dmoney) {
-                        swal("收支不平衡,借方金额为：" + dmoney + "，贷方金额为" + ymoney);
+                      //  swal("收支不平衡,借方金额为：" + dmoney + "，贷方金额为" + ymoney);
                         return;
                     }
                 }
                 for (var p in $scope.one.piaoju) {
                     if ($scope.one.piaoju[p].tabClass == tab) {
-                        $scope.one.piaoju[p].liuliangList = [];
-                        $scope.one.piaoju[p].Yuzhi;//这个是预支List的
-                        var liuliangList = [];
-                        var dlength = $scope.one.piaoju[p].Detail.length;
-                        var DetailLength = 0;
-                        for (var d in $scope.one.piaoju[p].Detail) {
-                            if ($scope.one.piaoju[p].Detail[d].kemu != "22210101") {
-                                DetailLength++;
+                        var lengthLast = 0;//最后一个有效值
+                        for (var d in $scope.one.piaoju[p].Detail) {//遍历读取流量
+
+                            if ($scope.one.piaoju[p].Detail[d].kemu != "22210101" && $scope.one.piaoju[p].Detail[d].kemu != "") {//正式摘要科目
+                                lengthLast = d;
                             }
                         }
-                        for (var d = 0; d < dlength; d++) {
-                            if ($scope.one.piaoju[p].Detail[d].kemu != "22210101" && $scope.one.piaoju[p].Detail[d].kemu != "") {
-
+                        $scope.lianshiLiuliang = [];
+                            var liuliangList = [];
+                        for (var d in $scope.one.piaoju[p].Detail) {//遍历读取流量
+                            if ($scope.one.piaoju[p].Detail[d].kemu != "22210101" && $scope.one.piaoju[p].Detail[d].kemu != "") {//正式摘要科目
                                 var liuliang = $scope.one.piaoju[p].Detail[d].kemu.substring($scope.one.piaoju[p].Detail[d].kemu.length - 2, $scope.one.piaoju[p].Detail[d].kemu.length);
-                                var isinto = false;
-                                var jine = parseFloat($scope.one.piaoju[p].Detail[d].jine) + parseFloat($scope.one.piaoju[p].Detail[d].shuie);
-                                $scope.getProjectBycode(liuliang, jine).then(function (datas) {
-                                    liuliangList.push(datas);
-                                    if (liuliangList.length == DetailLength) {
-                                        for (var pp in $scope.one.piaoju) {
-                                            if ($scope.one.piaoju[pp].tabClass == tab) {
-                                                $scope.one.piaoju[pp].Yuzhi = [];
-                                                for (var l in liuliangList) {
-                                                    var isHave = false;
-                                                    for (var lis in $scope.one.piaoju[pp].liuliangList) {
-                                                        if ($scope.one.piaoju[pp].liuliangList[lis].citemcode == liuliangList[l].citemcode) {
-                                                            isHave = true;
-                                                        }
-                                                    }
-                                                    if (isHave) {//存在重复值，渠道重复值
-                                                        for (var li in $scope.one.piaoju[pp].liuliangList) {
-                                                            if ($scope.one.piaoju[pp].liuliangList[li].citemcode == liuliangList[l].citemcode) {
-                                                                if (liuliangList[l].jine > 0) {
-                                                                    $scope.one.piaoju[pp].liuliangList[li].jine = parseFloat($scope.one.piaoju[pp].liuliangList[li].jine) + parseFloat(liuliangList[l].jine);
-                                                                }
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                    else {
-                                                        if (liuliangList[l].jine > 0) {
-                                                            $scope.one.piaoju[pp].liuliangList.push(liuliangList[l]);
-                                                        }
-                                                    }
+                                var liuliangs = {};
+                                for (var liulian in $scope.liuliangKemu) {
+                                    if (liuliang.toString() == $scope.liuliangKemu[liulian].citemcode) {
+                                        var sss = JSON.stringify($scope.liuliangKemu[liulian]);
+                                        liuliangs = JSON.parse(sss);
+                                        break;
+                                    }
+                                }
+                                liuliangs.jine = parseFloat($scope.one.piaoju[p].Detail[d].jine) + parseFloat($scope.one.piaoju[p].Detail[d].shuie);
+                                
+                                liuliangList.push(liuliangs);
+                                //读取流量描述结束，开始去重
+                                if (d == lengthLast) {
+                                    var lastLiuliang = [];
+                                        for (var ll = 0; ll < liuliangList.length;ll++) {
+                                            var isInto = false;
+                                            for (var last= 0; last < lastLiuliang.length; last++) {
+                                                if (lastLiuliang[last].I_id == liuliangList[ll].I_id) {
+                                                    lastLiuliang[last].jine +=liuliangList[ll].jine;
+                                                    isInto = true;
                                                 }
-                                                //扣除预支
-                                                var yuzhi = $scope.one.piaoju[pp].yuzhijine;
-                                                var isShow = false;
-                                                for (var i in $scope.one.piaoju[pp].liuliangList) {
-                                                    var yuzhiList = $scope.yuzhiList;
-                                                    var yuzhiDetail;
-                                                    for (var y in yuzhiList) {
-                                                        var xx = yuzhiList[y].kemu.substring(yuzhiList[y].kemu.length - 2, yuzhiList[y].kemu.length);
+                                            }
+                                            if (!isInto) {
+                                                lastLiuliang.push(liuliangList[ll]);
+                                            }
+                                    }
+                                  
+                                    for (var y in $scope.one.piaoju[p].Yuzhi) {//冲掉预支
+                                        var kemu = $scope.one.piaoju[p].Yuzhi[y].kemu;
+                                        var jiezhi = $scope.one.piaoju[p].Yuzhi[y].jiefan;//改摘要的借支金额
+                                        if (kemu != null && jiezhi!=0) {//选择了科目
+                                            var kemuliuliang = kemu.substring(kemu.length - 2, kemu.length);
+                                            for (var liu in lastLiuliang) {
+                                                if (lastLiuliang[liu].citemcode == kemuliuliang) {//直接冲掉
 
-                                                        if ($scope.one.piaoju[pp].liuliangList[i].citemcode != xx) {//预支单有相同科目的话走已预支流量
-                                                            if (!isShow) {
-                                                                swal($scope.one.piaoju[pp].liuliangList[i].citemcode + "所对应的科目在预支单中无记录，将强制预支，请选择强制预支的项目");
-                                                            }
-                                                            isShow = true;
+                                                    if (lastLiuliang[liu].jine > jiezhi) {//流量的金额可以冲销
+                                                            lastLiuliang[liu].jine -= jiezhi;
+                                                            jiezhi = 0;
                                                         }
-                                                        else {
-                                                            yuzhiDetail = yuzhiList[y];
-                                                        }
-
-                                                    }
-                                                    var kemu = '';
-                                                    var shouyibumen = '';
-                                                    if (yuzhiDetail != null) {
-                                                        kemu = yuzhiDetail.kemu;
-                                                        shouyibumen = yuzhiDetail.shouyibumen < 10 ? '0' + yuzhiDetail.shouyibumen : '' + yuzhiDetail.shouyibumen;
-                                                    }
-                                                    if (yuzhi > $scope.one.piaoju[pp].liuliangList[i].jine) {//单据预支金额大于流量金额
-                                                        //获取预支单中的第一个科目
-
-                                                        yuzhi = yuzhi - $scope.one.piaoju[pp].liuliangList[i].jine > 0 ? yuzhi - $scope.one.piaoju[pp].liuliangList[i].jine : 0;
-                                                        $scope.one.piaoju[pp].Yuzhi.push({
-                                                            id: $scope.one.piaoju[pp].tabClass, miaoshu: $scope.one.piaoju[pp].Yinhan.miaoshu + "预支冲账", xianqing: '', jine: '',
-                                                            shijin: '', kemu: kemu,
-                                                            shouyibumen: shouyibumen,
-                                                            jiefan: $scope.one.piaoju[pp].liuliangList[i].jine
-                                                        });
-                                                        $scope.one.piaoju[pp].liuliangList[i].jine = 0;
-
-                                                    }
-                                                    else if (yuzhi > 0) {
-                                                        $scope.one.piaoju[pp].Yuzhi.push({
-                                                            id: $scope.one.piaoju[pp].tabClass, miaoshu: $scope.one.piaoju[pp].Yinhan.miaoshu + "预支冲账", xianqing: '', jine: '',
-                                                            shijin: '', kemu: kemu,
-                                                            shouyibumen: shouyibumen,
-                                                            jiefan: yuzhi
-                                                        });
-                                                        $scope.one.piaoju[pp].liuliangList[i].jine -= yuzhi;
-                                                        yuzhi = 0;
-                                                    }
                                                     else {
+                                                            jiezhi -= lastLiuliang[liu].jine;
+                                                            lastLiuliang.splice(liu,1);
                                                     }
+
                                                 }
-                                                setTimeout(function () {
-                                                    $('.selectKemu').selectpicker();
-                                                    $('.shouyibumenSun').selectpicker();
-                                                }, 20)
+                                            }
+
+                                        }
+                                        $scope.one.piaoju[p].Yuzhi[y].weichongjiezhi = jiezhi;
+
+                                    }
+                                        //强制冲流量
+                                    for (var y in $scope.one.piaoju[p].Yuzhi) {//冲掉预支
+                                        for (var liu = 0; liu < lastLiuliang.length; liu++) {
+                                            if ($scope.one.piaoju[p].Yuzhi[y].weichongjiezhi != 0) {
+                                                if (lastLiuliang[liu].jine > $scope.one.piaoju[p].Yuzhi[y].weichongjiezhi) {//流量的金额可以冲销
+                                                    lastLiuliang[liu].jine -= $scope.one.piaoju[p].Yuzhi[y].weichongjiezhi;
+                                                    $scope.one.piaoju[p].Yuzhi[y].weichongjiezhi = 0;
+                                                }
+                                                else {
+                                                    $scope.one.piaoju[p].Yuzhi[y].weichongjiezhi -= lastLiuliang[liu].jine;
+                                                    lastLiuliang.splice(liu,1);
+                                                }
                                             }
                                         }
                                     }
-                                    else {
+                                    $scope.one.piaoju[p].liuliangList = lastLiuliang;
+                                   /* for (var la in lastLiuliang) {
+                                        if (lastLiuliang[la]!= null) {
 
+                                            $scope.one.piaoju[p].liuliangList.push(lastLiuliang[la]);//不排除预支生成的流量
+                                        }
+                                    }*/
+                                }
+                                // $scope.liuliangKemu
+                                /*$scope.getProjectBycode(liuliang, jine, d).then(function (datas) {
+                                     liuliangList.push(datas);
+                                    if (datas.d == lengthLast) {
+                                        console.log(liuliangList);                                      
+                                        var lastLiuliang = [];
+                                        for (var ll = 0; ll < liuliangList.length;ll++) {
+                                            var isInto = false;
+                                            for (var last= 0; last < lastLiuliang.length; last++) {
+                                                if (lastLiuliang[last].I_id == liuliangList[ll].I_id) {
+                                                    lastLiuliang[last].jine +=liuliangList[ll].jine;
+                                                    isInto = true;
+                                                }
+                                            }
+                                            if (!isInto) {
+                                                lastLiuliang.push(liuliangList[ll]);
+                                            }
+                                        }
+                                        $scope.one.piaoju[p].liuliangList = [];
+                                        //$scope.one.piaoju[p].liuliangList = lastLiuliang;//不排除预支生成的流量
+                                     /  for (var y in $scope.one.piaoju[p].Yuzhi) {//冲掉预支
+                                            var kemu = $scope.one.piaoju[p].Yuzhi[y].kemu;
+                                            var jiezhi= $scope.one.piaoju[p].Yuzhi[y].jiefan;//改摘要的借支金额
+                                            if (kemu != null) {//选择了科目
+                                                var kemuliuliang = kemu.substring(kemu.length - 2, kemu.length);
+                                                for (var liu in lastLiuliang) {
+                                                    if (lastLiuliang[liu].citemcode == kemuliuliang) {//直接冲掉
+                                                        lastLiuliang[liu].jine = lastLiuliang[liu].jine > jiezhi ? lastLiuliang[liu].jine - jiezhi : null;
+                                                        jiezhi = lastLiuliang[liu].jine > jiezhi ? 0 : jiezhi - lastLiuliang[liu].jine;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            $scope.one.piaoju[p].Yuzhi[y].weichongjiezhi = jiezhi;
+                                        }
+                                        //强制冲流量
+                                        for (var y in $scope.one.piaoju[p].Yuzhi) {//冲掉预支
+                                            var weichongjiezhi = $scope.one.piaoju[p].Yuzhi[y].weichongjiezhi;
+                                            for (var liu in lastLiuliang) {
+                                                   lastLiuliang[liu].jine = lastLiuliang[liu].jine > jiezhi ? lastLiuliang[liu].jine - jiezhi : null;
+                                                   jiezhi = lastLiuliang[liu].jine > jiezhi ? 0 : jiezhi - lastLiuliang[liu].jine;
+                                            }
+                                            $scope.one.piaoju[p].Yuzhi[y].weichongjiezhi = jiezhi;
+                                        }
+                                        $scope.one.piaoju[p].liuliangList = lastLiuliang;//不排除预支生成的流量
                                     }
-                                });
-                            }
-                        }
-                    }
-                }
-            }
+                                    
 
-            $scope.changeKemus = function (tab, detali) {
-                for (var p in $scope.one.piaoju) {
-                    if ($scope.one.piaoju[p].tabClass == tab) {
-                        for (var d in $scope.one.piaoju[p].Detail) {
-                            if (detali.kemu == "22210101") {//改变的是税费
-                                if (detali.id == $scope.one.piaoju[p].Detail[d].id + 1000000) {
-                                    //获取对应的缴费项目
-                                    $scope.one.piaoju[p].Detail[d].shuie = detali.shuie;
-                                    $scope.one.piaoju[p].Detail[d].shuihoujine = parseFloat(detali.shuie) + parseFloat($scope.one.piaoju[p].Detail[d].jine);
-                                    break;
-                                }
+                                   });*/
                             }
-                            /*else {//改变的是缴费金额
-                                //改变税额项目
-                                if (detali.id == $scope.one.piaoju[p].Detail[d].id - 1000000) {
-                                    //获取对应的缴费项目
-                                    $scope.one.piaoju[p].Detail[d].jine = detali.jine;
-                                    break;
-                                }
-                            }*/
                         }
-                        $scope.changeKemu(tab);
                     }
                 }
-            }
+           }
             //获取大纲5
             $scope.getList = function (condition) {
                 var contenttype = $scope.one.contentType;
@@ -1037,45 +1077,83 @@
                     url: '../api/List/getDetail',
                     data: datas
                 }).success(function (data) {
-                    $scope.list = [];//获取明细
-                    $scope.one.piaoju = [];
-                    var num = 0;
-                    var tabNum = 0;
-                    var listLength = data.list.length;
                     var datail = [];
+                    var tabNum = 0;
+                     var tabJine = 0;
                     var zhaiyao = $scope.one.faqibumen + $scope.one.faqiren + "报销";//zhaiyao
-                    var tabJine = 0;
-                    var tabJine = 0;
-                    for (var t = 0; t < listLength; t++) {
-                        // test.push(i);
-                        num++;
-                        if (data.list[t].shouyibumen.length == 1) {
-                            data.list[t].shouyibumen = "0" + data.list[t].shouyibumen;
-                        }
-                        data.list[t].jiefan = "";
-                        data.list[t].id = t;
-                        var depName = "";
-                        for (var d in $scope.depatementList) {
-                            if ($scope.depatementList[d].cDepCode == data.list[t].shouyibumen) {
-                                depName = $scope.depatementList[d].cDepName;
-                                break;
+                    $scope.newlist = [];//获取明细
+                    var num = 0;
+                    for (var t in data.list) {
+                        var isHave = false;
+                        for (var l in $scope.newlist) {
+                            if ($scope.newlist[l].miaoshu == data.list[t].miaoshu && $scope.newlist[l].shuidian == data.list[t].shuidian) {
+                                //$scope.newlist[l].jine = (parseFloat($scope.newlist[l].jine) + parseFloat(data.list[t].jine)).toFixed(2);
+                                //$scope.newlist[l].shuie = (parseFloat($scope.newlist[l].shuie) + parseFloat(data.list[t].shuie)).toFixed(2);
+                                isHave = true;
                             }
                         }
-                        zhaiyao = zhaiyao + depName + data.list[t].miaoshu + ",";
-                        data.list[t].miaoshu = $scope.one.faqibumen + $scope.one.faqiren + "报销" + depName + data.list[t].miaoshu;
-                        datail.push(JSON.parse(JSON.stringify(data.list[t])));
-                        data.list[t].miaoshu = $scope.one.faqibumen + $scope.one.faqiren + "报销" + depName + data.list[t].miaoshu + "的税费";
-                        data.list[t].kemu = "22210101";
-                        data.list[t].id = 1000000 + t;
-                        tabJine += parseFloat(data.list[t].shuihoujine);
-                        datail.push(JSON.parse(JSON.stringify(data.list[t])));
-                        if (num % 4 == 0 || t == listLength - 1) {
-                            num == 0;
+                        if (!isHave) {
+                            $scope.newlist.push(data.list[t]);
+                        }
+                    }
+                    var zenzhishui = [];
+                    for (var l in $scope.newlist) {
+                        num++;
+                        //{ id: length, miaoshu: '', xianqing: '', jine: 0, shijin: '', shuie: 0, shouyibumen: $scope.depatementList[0].cDepCode, kemu: '', jiefan: '' }
+                        var zenzhiShuiMiaoshu = "应交增值税进项税额" +$scope.newlist[l].shuidian + "%（";
+                        for (var t in data.list) {
+                            if ($scope.newlist[l].miaoshu == data.list[t].miaoshu && $scope.newlist[l].shuidian == data.list[t].shuidian) {
+                                zenzhiShuiMiaoshu = zenzhiShuiMiaoshu + data.list[t].miaoshu + "，";
+                                if (data.list[t].shouyibumen.length == 1) {
+                                    data.list[t].shouyibumen = "0" + data.list[t].shouyibumen;
+                                }
+                                var depName = "";
+                                    for (var d in $scope.depatementList) {
+                                        if ($scope.depatementList[d].cDepCode == data.list[t].shouyibumen) {
+                                            depName = $scope.depatementList[d].cDepName;
+                                            break;
+                                        }
+                                    }
+                                zhaiyao = zhaiyao + depName + data.list[t].miaoshu + ",";
+
+                                datail.push({
+                                    id: t, miaoshu: $scope.one.faqibumen + $scope.one.faqiren + "报销" + depName + data.list[t].miaoshu,
+                                    xianqing: '', jine: parseFloat(data.list[t].jine),
+                                    shijin: '', shuie: parseFloat(data.list[t].shuie), shuidian: data.list[t].shuidian,
+                                    shouyibumen:  data.list[t].shouyibumen, kemu: data.list[t].kemu, jiefan: null
+                                });
+                                
+                                tabJine += parseFloat(data.list[t].shuihoujine);
+                                //构成增值税摘要  
+                                zenzhiShuiMiaoshu = zenzhiShuiMiaoshu.substring(0, zenzhiShuiMiaoshu.length - 1) + ")";
+                                var isAddZenzhiShui = false;
+                                for (var z in zenzhishui) {
+                                    if ($scope.newlist[l].shuidian == zenzhishui[z].shuidian) {//读取到增值税一样的合并
+                                        zenzhishui[z].shuie += parseFloat(data.list[t].shuie);//税额和计算
+                                        zenzhishui[z].jine +=parseFloat(data.list[t].shuie)
+                                        zenzhishui[z].miaoshu = zenzhiShuiMiaoshu;
+                                    }
+                                }
+                                if (!isAddZenzhiShui) {
+                                    if (parseFloat(data.list[t].shuie) != 0) {//税额为0则过滤掉
+                                        zenzhishui.push({
+                                            id: 1000000000 + t, miaoshu: zenzhiShuiMiaoshu, xianqing: '', jine: parseFloat(data.list[t].shuie),
+                                            shijin: '', shuie: parseFloat(data.list[t].shuie), shuidian: data.list[t].shuidian,
+                                            shouyibumen: null, kemu: "22210101", jiefan: null
+                                        });
+                                    }
+                                }
+                                datail.concat(zenzhishui);
+                            }
+                        }
+                        if (num == 4 || l == $scope.newlist.length - 1) {
+                            datail = $.merge(datail, zenzhishui);
+
+                            zenzhishui = [];
                             tabNum++;
                             var yinhuan = 0;//该票据的付款金额
                             var yuzhi = 0;
                             var yuzhiKemu = "";
-
                             //console.log($scope.one.yuzhi); yinhuan
                             //yinhuan = $scope.one.yinhuan;
                             if ($scope.one.yuzhi - tabJine >= 0) {
@@ -1101,7 +1179,13 @@
                                     break;
                                 }
                             }
-                            zhaiyao += "的费用";
+                            zhaiyao = zhaiyao.substring(0, zhaiyao.length - 1)+ "的费用";
+                            var yuzhilie = parseInt(yuzhi)== 0 ? [] : [{
+                                id:100000, miaoshu: zhaiyao + "的预支", xianqing: '', jine: '',
+                                shijin: '', kemu: null,
+                                shouyibumen: "",
+                                jiefan: parseInt(yuzhi)
+                            }];                
                             var SubjectCode = $scope.one.content == null ? "" : $scope.one.content.SubjectCode
                             $scope.one.piaoju.push({
                                 tabClass: tabNum,
@@ -1112,7 +1196,7 @@
                                 pingzhenhao: pingzhenhao,
                                 danjubianhao: danjubianhao,
                                 liuliangList: [],
-                                Yuzhi: [],
+                                Yuzhi:yuzhilie,
                                 Yinhan: {
                                     id: tabNum, miaoshu: zhaiyao, xianqing: '', jine: '',
                                     shijin: '', kemu: SubjectCode,
@@ -1120,23 +1204,26 @@
                                     jiefan: yinhuan
                                 }
                             });
+                            //下个单据基本信息初始化
+                            num == 0;
                             zhaiyao = $scope.one.faqibumen + $scope.one.faqiren + "报销";
                             datail = [];
                             tabJine = 0;
                             $scope.liuliangList = [];
-                            if (t == listLength - 1) {
+                            if (t ==  data.list.length - 1) {
                                 for (var p in $scope.one.piaoju) {
                                     $scope.changeKemu($scope.one.piaoju[p].tabClass);
                                 }
                             }
                         }
+                       
                     }
                 }).error(function (msg) {
                     console.log(msg);
 
                 })
             }
-            //获取预支明细9
+            //获取预支明细9，取消
             $scope.getSunByattachment = function () {
                 $http({
                     method: 'Post',
@@ -1175,7 +1262,6 @@
                     if ($scope.keyuzhi < parseFloat($scope.one.yuzhiShengyu)) {
                         swal("关联的预支单总共可预支" + $scope.keyuzhi + "元，本次需要预支" + $scope.one.yuzhiShengyu);
                     }
-                    $scope.gerDetail($scope.one);
                 }).error(function (msg) {
                     console.log(msg);
 
@@ -1184,13 +1270,10 @@
             //添加摘要
             $scope.addDetail = function (tabClass) {
                 for (var i in $scope.one.piaoju) {
-                    if ($scope.one.piaoju[i].tabClass == tabClass) {//读取到所在单据
+                    if ($scope.one.piaoju[i].tabClass == tabClass) {//读取到所在单据1000000000
                         var length = $scope.one.piaoju[i].Detail.length;
                         $scope.one.piaoju[i].Detail.push({ id: length, miaoshu: '', xianqing: '', jine: 0, shijin: '', shuie: 0, shouyibumen: $scope.depatementList[0].cDepCode, kemu: '', jiefan: '' });
-                       // $scope.one.piaoju[i].Detail.push({ id: length + 1000000, miaoshu: '', xianqing: '', jine: 0, shijin: '', shuie: 0, shouyibumen: $scope.depatementList[0].cDepCode, kemu: "22210101", jiefan: '' });
-
-                        //  $scope.changeKemu(tabClass);
-                    }
+                     }
                 }//CodeList.enumvalue depatementList.cDepCode
                 setTimeout(function () {
                     $('.selectKemu').selectpicker();
@@ -1205,13 +1288,44 @@
                             if ($scope.one.piaoju[i].Detail[j].id == detali.id) {//进项税额无法单独删除
                                 $scope.one.piaoju[i].Detail.splice(j, 1);
                             }
-                            if ($scope.one.piaoju[i].Detail[j].id == detali.id + 1000000) {//进项税额无法单独删除
-                                $scope.one.piaoju[i].Detail.splice(j, 1);
+                        }
+                    }
+                }
+                $scope.changeKemu(tabClass);
+                setTimeout(function () {
+                    $('.selectKemu').selectpicker();
+                    $('.shouyibumenSun').selectpicker();
+                }, 20)
+            }
+            
+            $scope.removeYuzhi = function (tabClass, yuzhi) {
+                for (var i in $scope.one.piaoju) {
+                    if ($scope.one.piaoju[i].tabClass == tabClass) {//读取到所在单据
+                        for (var j in $scope.one.piaoju[i].Yuzhi) {
+                            if ($scope.one.piaoju[i].Yuzhi[j].id == yuzhi.id) {//进项税额无法单独删除
+                                $scope.one.piaoju[i].Yuzhi.splice(j, 1);
                             }
                         }
                     }
                 }
                 $scope.changeKemu(tabClass);
+                setTimeout(function () {
+                    $('.selectKemu').selectpicker();
+                    $('.shouyibumenSun').selectpicker();
+                }, 20)
+            }     
+            $scope.addYuzhi = function (tabClass) {
+                for (var i in $scope.one.piaoju) {
+                    if ($scope.one.piaoju[i].tabClass == tabClass) {//读取到所在单据
+                        var length = $scope.one.piaoju[i].Yuzhi.length;
+                        $scope.one.piaoju[i].Yuzhi.push({ 
+                                id:100000+length, miaoshu: $scope.one.piaoju[i].Yinhan.miaoshu + "的预支", xianqing: '', jine: 0,
+                                shijin:0, kemu: null,
+                                shouyibumen: "",
+                                jiefan:0
+                            });
+                     }
+                }//CodeList.enumvalue depatementList.cDepCode
                 setTimeout(function () {
                     $('.selectKemu').selectpicker();
                     $('.shouyibumenSun').selectpicker();
@@ -1292,7 +1406,22 @@
                     if (data.length == 0) {
                         $('.fukuanZhanghao').selectpicker('destroy');
                     }
-                    $scope.getSunByattachment();
+                    // $scope.getSunByattachment();
+
+                    $scope.getProject();
+                }).error(function (msg) {
+                    console.log(msg);
+                })
+            }
+            //获取流量科目
+            $scope.getProject= function () {
+                $http({
+                    method: 'get',
+                    url: '../api/U8/getProject'
+                }).success(function (data) {
+                    $scope.liuliangKemu = data;
+                    console.log( $scope.liuliangKemu);
+                    $scope.gerDetail($scope.one);
                 }).error(function (msg) {
                     console.log(msg);
                 })

@@ -133,11 +133,15 @@ namespace dal
             else if (model.type.Equals("上海悦目-付款审批单"))
             {
 
-                sql = string.Format("SELECT  field0030 as kemu,field0029 as shouyibumen, field0028 as miaoshu ,field0031 as xianqing ,field0036 as jine ,field0033 as shijin,'' as jinexiaoji ,field0033 as riqi ,'' as qita ,'' as jintie ,'' as shineijiaotong , '' as chuchaijiaotong , '' as zhusu , '' as chechuan , '' as jipiao , '' as tianshu , '' as qizhididian,field0032 shuihoujine,field0035 shuidian, field0034  shuie  FROM formson_0616  where  formmain_0615Id = {0}", model.Id);
+                sql = string.Format("SELECT  field0030 as kemu,field0029 as shouyibumen, field0028 as miaoshu ,field0031 as xianqing ,field0036 as jine ,field0033 as shijin,'' as jinexiaoji ,field0033 as riqi ,'' as qita ," +
+                    "'' as jintie ,'' as shineijiaotong , '' as chuchaijiaotong , '' as zhusu , '' as chechuan , '' as jipiao , '' as tianshu , '' as qizhididian,field0032 shuihoujine," +
+                    "showValue shuidian, field0034  shuie  FROM formson_0616 left join form_enumvalue on enumvalue=field0035  where   ref_enumid=4866995226575588265 and formmain_0615Id = {0}", model.Id);
             }
             else if (model.type.Equals("上海悦目-费用报销单"))
             {
-                sql = string.Format("SELECT  field0030 as kemu,field0029 as shouyibumen, field0028 as miaoshu ,field0031 as xianqing ,field0036 as jine ,field0033 as shijin,'' as jinexiaoji ,field0033 as riqi ,'' as qita ,'' as jintie ,'' as shineijiaotong , '' as chuchaijiaotong , '' as zhusu , '' as chechuan , '' as jipiao , '' as tianshu , '' as qizhididian,field0032 shuihoujine,field0035 shuidian, field0034  shuie   FROM formson_0564 f   where  formmain_0563Id = {0}", model.Id);
+                sql = string.Format("SELECT  field0030 as kemu,field0029 as shouyibumen, field0028 as miaoshu ,field0031 as xianqing ,field0036 as jine ,field0033 as shijin,'' as jinexiaoji ,field0033 as riqi ,'' as qita ," +
+                    "'' as jintie ,'' as shineijiaotong , '' as chuchaijiaotong , '' as zhusu , '' as chechuan , '' as jipiao , '' as tianshu , '' as qizhididian,field0032 shuihoujine," +
+                    "showValue shuidian, field0034  shuie  FROM formson_0564 left join form_enumvalue on enumvalue=field0035  where   ref_enumid=4866995226575588265 and formmain_0563Id = {0}", model.Id);
             }
             else
             {
@@ -210,7 +214,7 @@ namespace dal
                 {
                     StringBuilder sb = new StringBuilder();
                     sb.Append("select* from (");
-                    sb.Append(" select level.name zhiwu,IsIntoBook shifouPingzhen,outo.contents contentId,IsIntoCloseBill shifouShengdan,IsIntoAccvouch shifouZhidan , CAST(body.content as varchar(100))bodycontent,CAST( formmain.id as varchar(100)) as Id, '" + condition.type + "'[type], col.finish_date finish_date, col.id colId,");
+                    sb.Append(" select chunabianhao, danjubianhao,pingzhenhao,level.name zhiwu,IsIntoBook shifouPingzhen,outo.contents contentId,IsIntoCloseBill shifouShengdan,IsIntoAccvouch shifouZhidan , CAST(body.content as varchar(100))bodycontent,CAST( formmain.id as varchar(100)) as Id, '" + condition.type + "'[type], col.finish_date finish_date, col.id colId,");
                     sb.Append("col.subject title, col.create_date chuangjinshijin, m.id mid, m.name faqiren, d.name faqibumen, enumvalue.showValue shouyibumen,");
                     sb.Append("formmain.field0021 liuShui,formmain.field0012  lAmount, formmain.field0013  cAmount, '' phone, formmain.field0001 company,");
                     sb.Append("formmain.field0006 chuchaishiyou, formmain.field0014 starDate, formmain.field0015 endDate, formmain.field0016 gongjitianshu,");
@@ -240,7 +244,7 @@ namespace dal
                 {
                     StringBuilder sb = new StringBuilder();
                     sb.Append("select* from (");
-                    sb.Append("select  level.name zhiwu, IsIntoBook shifouPingzhen,IsIntoCloseBill shifouShengdan,IsIntoAccvouch shifouZhidan ,outo.contents contentId, CAST(body.content as varchar(100)) bodycontent,CAST( formmain.id as varchar(100)) as Id, '" + condition.type + "'[type], col.finish_date finish_date, col.id colId,");
+                    sb.Append("select  chunabianhao, danjubianhao,pingzhenhao, level.name zhiwu, IsIntoBook shifouPingzhen,IsIntoCloseBill shifouShengdan,IsIntoAccvouch shifouZhidan ,outo.contents contentId, CAST(body.content as varchar(100)) bodycontent,CAST( formmain.id as varchar(100)) as Id, '" + condition.type + "'[type], col.finish_date finish_date, col.id colId,");
                     sb.Append("col.subject title, col.create_date chuangjinshijin, m.id mid, m.name faqiren, d.name faqibumen, enumvalue.showValue shouyibumen,");
                     sb.Append("formmain.field0001 liuShui,formmain.field0010  lAmount ,formmain.field0011  cAmount,formmain.field0007 phone,formmain.field0002 company , ");
                     sb.Append("'' chuchaishiyou,'' starDate,'' endDate,'' gongjitianshu,");
@@ -273,7 +277,7 @@ namespace dal
                 {
                     StringBuilder sb = new StringBuilder();
                     sb.Append("select* from (");
-                    sb.Append("select level.name zhiwu, IsIntoBook shifouPingzhen,IsIntoCloseBill shifouShengdan,IsIntoAccvouch shifouZhidan , outo.contents contentId,CAST(body.content as varchar(100))bodycontent,CAST( formmain.id as varchar(100)) as Id, '" + condition.type + "'[type], col.finish_date finish_date, col.id colId,");
+                    sb.Append("select  chunabianhao, danjubianhao,pingzhenhao,level.name zhiwu, IsIntoBook shifouPingzhen,IsIntoCloseBill shifouShengdan,IsIntoAccvouch shifouZhidan , outo.contents contentId,CAST(body.content as varchar(100))bodycontent,CAST( formmain.id as varchar(100)) as Id, '" + condition.type + "'[type], col.finish_date finish_date, col.id colId,");
                     sb.Append("col.subject title, col.create_date chuangjinshijin, m.id mid, m.name faqiren, d.name faqibumen, enumvalue.showValue shouyibumen,");
                     sb.Append("formmain.field0001 liuShui,formmain.field0010  lAmount ,formmain.field0011  cAmount,formmain.field0007 phone,formmain.field0002 company ,");
                     sb.Append("'' chuchaishiyou,'' starDate,'' endDate,'' gongjitianshu,");
@@ -307,7 +311,7 @@ namespace dal
                 {
                     StringBuilder sb = new StringBuilder();
                     sb.Append("select* from (");
-                    sb.Append("select level.name zhiwu, IsIntoBook shifouPingzhen,IsIntoCloseBill shifouShengdan,IsIntoAccvouch shifouZhidan , outo.contents contentId,CAST(body.content as varchar(100))bodycontent,CAST( formmain.id as varchar(100)) as Id, '" + condition.type + "'[type], col.finish_date finish_date, col.id colId,");
+                    sb.Append("select chunabianhao, danjubianhao,pingzhenhao, level.name zhiwu, IsIntoBook shifouPingzhen,IsIntoCloseBill shifouShengdan,IsIntoAccvouch shifouZhidan , outo.contents contentId,CAST(body.content as varchar(100))bodycontent,CAST( formmain.id as varchar(100)) as Id, '" + condition.type + "'[type], col.finish_date finish_date, col.id colId,");
                     sb.Append("col.subject title, col.create_date chuangjinshijin, m.id mid, m.name faqiren, d.name faqibumen, enumvalue.showValue shouyibumen,");
                     sb.Append("formmain.field0001 liuShui,formmain.field0010  lAmount ,formmain.field0011  cAmount,formmain.field0007 phone,formmain.field0002 company ,");
                     sb.Append("'' chuchaishiyou,'' starDate,'' endDate,'' gongjitianshu,");
@@ -342,7 +346,7 @@ namespace dal
                     StringBuilder sb = new StringBuilder();
                     //差旅费
                     sb.Append("select* from (");
-                    sb.Append("select level.name zhiwu, IsIntoBook shifouPingzhen,IsIntoCloseBill shifouShengdan,IsIntoAccvouch shifouZhidan , outo.contents contentId,CAST(body.content as varchar(100))bodycontent,CAST( formmain.id as varchar(100)) as Id, '上海悦目-差旅费报销单'[type], col.finish_date finish_date, col.id colId,");
+                    sb.Append("select  chunabianhao, danjubianhao,pingzhenhao, level.name zhiwu, IsIntoBook shifouPingzhen,IsIntoCloseBill shifouShengdan,IsIntoAccvouch shifouZhidan , outo.contents contentId,CAST(body.content as varchar(100))bodycontent,CAST( formmain.id as varchar(100)) as Id, '上海悦目-差旅费报销单'[type], col.finish_date finish_date, col.id colId,");
                     sb.Append("col.subject title, col.create_date chuangjinshijin, m.id mid, m.name faqiren, d.name faqibumen, enumvalue.showValue shouyibumen,");
                     sb.Append("formmain.field0021 liuShui,formmain.field0012  lAmount, formmain.field0013  cAmount, '' phone, formmain.field0001 company,");
                     sb.Append("formmain.field0006 chuchaishiyou, formmain.field0014 starDate, formmain.field0015 endDate, formmain.field0016 gongjitianshu,");
@@ -368,7 +372,7 @@ namespace dal
                     sb.Append(") as a  where a.Id = '' + a.bodycontent; ");
                     //预支单
                     sb.Append("select* from (");
-                    sb.Append("select level.name zhiwu, IsIntoBook shifouPingzhen,IsIntoCloseBill shifouShengdan,IsIntoAccvouch shifouZhidan ,outo.contents contentId, CAST(body.content as varchar(100)) bodycontent,CAST( formmain.id as varchar(100)) as Id, '上海悦目-预支单'[type], col.finish_date finish_date, col.id colId,");
+                    sb.Append("select  chunabianhao, danjubianhao,pingzhenhao,level.name zhiwu, IsIntoBook shifouPingzhen,IsIntoCloseBill shifouShengdan,IsIntoAccvouch shifouZhidan ,outo.contents contentId, CAST(body.content as varchar(100)) bodycontent,CAST( formmain.id as varchar(100)) as Id, '上海悦目-预支单'[type], col.finish_date finish_date, col.id colId,");
                     sb.Append("col.subject title, col.create_date chuangjinshijin, m.id mid, m.name faqiren, d.name faqibumen, enumvalue.showValue shouyibumen,");
                     sb.Append("formmain.field0001 liuShui,formmain.field0010  lAmount ,formmain.field0011  cAmount,formmain.field0007 phone,formmain.field0002 company , ");
                     sb.Append("'' chuchaishiyou,'' starDate,'' endDate,'' gongjitianshu,");
@@ -398,7 +402,7 @@ namespace dal
                     sb.Append(") as a  where a.Id = '' + a.bodycontent; ");
                     //费用报销单
                     sb.Append("select* from (");
-                    sb.Append("select level.name zhiwu, IsIntoBook shifouPingzhen,IsIntoCloseBill shifouShengdan,IsIntoAccvouch shifouZhidan ,outo.contents contentId, CAST(body.content as varchar(100))bodycontent,CAST( formmain.id as varchar(100)) as Id, '上海悦目-费用报销单'[type], col.finish_date finish_date, col.id colId,");
+                    sb.Append("select  chunabianhao, danjubianhao,pingzhenhao,level.name zhiwu, IsIntoBook shifouPingzhen,IsIntoCloseBill shifouShengdan,IsIntoAccvouch shifouZhidan ,outo.contents contentId, CAST(body.content as varchar(100))bodycontent,CAST( formmain.id as varchar(100)) as Id, '上海悦目-费用报销单'[type], col.finish_date finish_date, col.id colId,");
                     sb.Append("col.subject title, col.create_date chuangjinshijin, m.id mid, m.name faqiren, d.name faqibumen, enumvalue.showValue shouyibumen,");
                     sb.Append("formmain.field0001 liuShui,formmain.field0010  lAmount ,formmain.field0011  cAmount,formmain.field0007 phone,formmain.field0002 company ,");
                     sb.Append("'' chuchaishiyou,'' starDate,'' endDate,'' gongjitianshu,");
@@ -429,7 +433,7 @@ namespace dal
                     sb.Append(") as a  where a.Id = '' + a.bodycontent; ");
                     //付款审批单
                     sb.Append("select* from (");
-                    sb.Append("select level.name zhiwu, IsIntoBook shifouPingzhen,IsIntoCloseBill shifouShengdan,IsIntoAccvouch shifouZhidan ,outo.contents contentId, CAST(body.content as varchar(100))bodycontent,CAST( formmain.id as varchar(100)) as Id, '上海悦目-付款审批单'[type], col.finish_date finish_date, col.id colId,");
+                    sb.Append("select  chunabianhao, danjubianhao,pingzhenhao,level.name zhiwu, IsIntoBook shifouPingzhen,IsIntoCloseBill shifouShengdan,IsIntoAccvouch shifouZhidan ,outo.contents contentId, CAST(body.content as varchar(100))bodycontent,CAST( formmain.id as varchar(100)) as Id, '上海悦目-付款审批单'[type], col.finish_date finish_date, col.id colId,");
                     sb.Append("col.subject title, col.create_date chuangjinshijin, m.id mid, m.name faqiren, d.name faqibumen, enumvalue.showValue shouyibumen,");
                     sb.Append("formmain.field0001 liuShui,formmain.field0010  lAmount ,formmain.field0011  cAmount,formmain.field0007 phone,formmain.field0002 company ,");
                     sb.Append("'' chuchaishiyou,'' starDate,'' endDate,'' gongjitianshu,");
@@ -464,7 +468,7 @@ namespace dal
                 {
                     DataSet ds = SqlHelper.ExecuteDataSet(config, sql);
                     ResultListModel s = new ResultListModel();
-                    string[] field = new string[] { "zhiwu", "liuShui", "shifouPingzhen","contentId", "shifouShengdan", "shifouZhidan", "feiyongleixing", "chuchaishiyou", "gongjitianshu", "starDate", "endDate", "yuzhi", "yinhuan", "shoukuandanwei", "shoukuanyh", "zhanhao", "fukuanriqi", "title", "chuangjinshijin", "faqiren", "faqibumen", "colId", "finish_date", "Id", "company", "phone", "lAmount", "cAmount", "shouyibumen", "type" };
+                    string[] field = new string[] { "chunabianhao", "danjubianhao","pingzhenhao", "zhiwu", "liuShui", "shifouPingzhen","contentId", "shifouShengdan", "shifouZhidan", "feiyongleixing", "chuchaishiyou", "gongjitianshu", "starDate", "endDate", "yuzhi", "yinhuan", "shoukuandanwei", "shoukuanyh", "zhanhao", "fukuanriqi", "title", "chuangjinshijin", "faqiren", "faqibumen", "colId", "finish_date", "Id", "company", "phone", "lAmount", "cAmount", "shouyibumen", "type" };
                     return ModelHelper.PutAllVal<ResultListModel>(s, ds, field);
                 }
                 else

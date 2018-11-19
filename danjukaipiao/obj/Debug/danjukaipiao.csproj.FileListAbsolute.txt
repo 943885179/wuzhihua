@@ -386,7 +386,6 @@ E:\stu\wuzhihua\danjukaipiao\bin\roslyn\vbc.exe
 E:\stu\wuzhihua\danjukaipiao\bin\roslyn\VBCSCompiler.exe
 E:\stu\wuzhihua\danjukaipiao\bin\roslyn\VBCSCompiler.exe.config
 E:\stu\wuzhihua\danjukaipiao\bin\danjukaipiao.dll.config
-E:\stu\wuzhihua\danjukaipiao\bin\danjukaipiao.xml
 E:\stu\wuzhihua\danjukaipiao\bin\danjukaipiao.dll
 E:\stu\wuzhihua\danjukaipiao\bin\danjukaipiao.pdb
 E:\stu\wuzhihua\danjukaipiao\bin\Antlr3.Runtime.dll
@@ -505,11 +504,6 @@ E:\stu\wuzhihua\danjukaipiao\obj\Debug\danjukaipiao.csproj.CoreCompileInputs.cac
 E:\stu\wuzhihua\danjukaipiao\obj\Debug\danjukaipiao.csproj.CopyComplete
 E:\stu\wuzhihua\danjukaipiao\obj\Debug\danjukaipiao.dll
 E:\stu\wuzhihua\danjukaipiao\obj\Debug\danjukaipiao.pdb
-E:\stu\wuzhihua\danjukaipiao\bin\NUnit3.TestAdapter.dll
-E:\stu\wuzhihua\danjukaipiao\bin\NUnit3.TestAdapter.pdb
-E:\stu\wuzhihua\danjukaipiao\bin\nunit.engine.dll
-E:\stu\wuzhihua\danjukaipiao\bin\nunit.engine.api.dll
-E:\stu\wuzhihua\danjukaipiao\bin\Mono.Cecil.dll
 E:\stu\wuzhihua\danjukaipiao\bin\Embarr.Testing.WebAPI.dll
 E:\stu\wuzhihua\danjukaipiao\bin\Microsoft.Owin.Host.HttpListener.dll
 E:\stu\wuzhihua\danjukaipiao\bin\Microsoft.Owin.Hosting.dll

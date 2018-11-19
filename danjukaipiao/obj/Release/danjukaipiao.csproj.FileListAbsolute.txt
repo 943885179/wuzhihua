@@ -503,3 +503,8 @@ E:\stu\wuzhihua\danjukaipiao\bin\Models.dll.config
 E:\stu\wuzhihua\danjukaipiao\obj\Release\danjukaipiao.csprojAssemblyReference.cache
 E:\stu\wuzhihua\danjukaipiao\obj\Release\danjukaipiao.csproj.CoreCompileInputs.cache
 E:\stu\wuzhihua\danjukaipiao\obj\Release\danjukaipiao.csproj.CopyComplete
+E:\stu\wuzhihua\danjukaipiao\bin\Embarr.Testing.WebAPI.dll
+E:\stu\wuzhihua\danjukaipiao\bin\Microsoft.Owin.Host.HttpListener.dll
+E:\stu\wuzhihua\danjukaipiao\bin\Microsoft.Owin.Hosting.dll
+E:\stu\wuzhihua\danjukaipiao\bin\Microsoft.Owin.Host.HttpListener.xml
+E:\stu\wuzhihua\danjukaipiao\bin\Microsoft.Owin.Hosting.xml

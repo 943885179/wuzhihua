@@ -35,3 +35,4 @@ E:\stu\wuzhihua\Models\obj\Debug\Models.csproj.CoreCompileInputs.cache
 E:\stu\wuzhihua\Models\obj\Debug\Models.csproj.CopyComplete
 E:\stu\wuzhihua\Models\obj\Debug\Models.dll
 E:\stu\wuzhihua\Models\obj\Debug\Models.pdb
+E:\stu\wuzhihua\Models\obj\Debug\Models.csprojAssemblyReference.cache

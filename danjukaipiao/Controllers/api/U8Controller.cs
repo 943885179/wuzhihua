@@ -78,7 +78,7 @@ namespace danjukaipiao.Controllers.api
             return dao.getCodeList();
         } 
         /// <summary>
-          /// 获取付款账号
+          /// 获取流量
           /// </summary>
           /// <returns></returns>
         [HttpGet]
@@ -87,6 +87,17 @@ namespace danjukaipiao.Controllers.api
         public object getProjectBycode([FromUri] string citemcode)
         {
             return dao.getProjectBycode(citemcode);
+        }
+        /// <summary>
+        /// 获取流量列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/U8/getProject")]
+        [ActionName("getProject")]
+        public List<fitemss98> getProject()
+        {
+            return dao.getProject();
         }
         /// <summary>
         /// 添加收付款到U8

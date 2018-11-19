@@ -517,7 +517,7 @@ namespace dal
                                     foreach (Detail list in piaoju.Detail)
                                     {
                                         var detailjine = Convert.ToDecimal(list.jine);
-                                        if (!string.IsNullOrEmpty(list.miaoshu)  && !string.IsNullOrEmpty(list.jine) && detailjine!=0)
+                                        if (!string.IsNullOrEmpty(list.miaoshu)  &&list.jine!=0 && detailjine!=0)
                                         {//获取流量集合
 
                                             if (string.IsNullOrEmpty(list.kemu))
@@ -558,6 +558,10 @@ namespace dal
                                             inid++;
 
                                             ccodeList = trueKemu + ",";
+                                            var depatement = (from d in db.Department where d.cDepCode.Equals(list.shouyibumen) select d).FirstOrDefault();
+                                            if (depatement == null) {
+                                                list.shouyibumen = null;
+                                            } 
                                             GL_accvouch acc = new GL_accvouch()
                                             {
                                                 iperiod = Convert.ToByte(DateTime.Now.Month),
@@ -638,18 +642,20 @@ namespace dal
                                     }
                                     #endregion
 
-                                    book.VoucherNum = book.CSNCashID;
-
+                                    book.VoucherNum = book.ID;
                                     db.SaveChanges();
+
+                                    var books = (from b in db.CN_AcctBook where b.ID == RecordTable.Bid select b).First();
                                     #region 添加个人记录表
                                     var request = (from re in ent.RecordTable
-                                                   where re.Bid == book.ID
+                                                   where re.Bid == books.ID
                                                    select re).FirstOrDefault();
                                     request.ip2 = userInfo.name;
                                     request.updateTime2 = DateTime.Now;
                                     request.IsIntoAccvouch = 1;
-                                    request.pingzhenhao = dsign.U8VouchSign + "  " + book.VoucherNum;
+                                    request.pingzhenhao = dsign.U8VouchSign + "  " + books.VoucherNum;
                                     request.userName = model.faqiren;
+                                    ent.SaveChanges();
                                     #endregion
                                     #region 预支冲账
                                     if (!model.type.Equals("上海悦目-预支单"))
@@ -757,7 +763,6 @@ namespace dal
                                                     bCusSupInput = false,//分录往来项是否必输
                                                     iyear = Convert.ToInt16(DateTime.Now.Year),//凭证的会计年度
                                                     cblueoutno_id = null,
-
                                                     ccodeexch_equal = model.content.SubjectCode,//对方科目编码 ，付款的用申请表里的付款科目来做查询(付款为你选择的科目编号) 
                                                     tvouchtime = DateTime.Now,//凭证保存时间 
                                                     iYPeriod = Convert.ToInt32(DateTime.Now.Year + "" + (DateTime.Now.Month >= 10 ? DateTime.Now.Month.ToString() : "0" + DateTime.Now.Month)),
@@ -767,300 +772,301 @@ namespace dal
                                                 };
                                                 db.GL_accvouch.Add(acc);
                                                 db.SaveChanges();
-                                                //冲账  
+                                                #region 冲账(取消)
+                                                /*  if (liuliang.Equals("04"))
+                                                      {
+                                                          foreach (var g in guanlingYuzhi)
+                                                          {
+                                                              if (list.jiefan <= 0) { break; }
+                                                              var g4 = g.record.Where(o => o.l4 > 0).ToList();
+                                                              foreach (var s in g4)
+                                                              {
+                                                                  var r = ent.RecordTable.Where(o => o.id == s.id).First();
+                                                                  if (r.l4 >= list.jiefan)
+                                                                  {
+                                                                      contrast contrast = new contrast();
+                                                                      contrast.yuzhiId = r.id;
+                                                                      contrast.baoxiaoId = request.id;
+                                                                      contrast.l4 = list.jiefan;
+                                                                      ent.contrast.Add(contrast);
+                                                                      r.l4 = r.l4 - list.jiefan;
+                                                                      list.jiefan = 0;
+                                                                      break;
+                                                                  }
+                                                                  else
+                                                                  {
+                                                                      contrast contrast = new contrast();
+                                                                      contrast.yuzhiId = r.id;
+                                                                      contrast.baoxiaoId = request.id;
+                                                                      contrast.l4 = r.l4;
+                                                                      ent.contrast.Add(contrast);
+                                                                      r.l4 = 0;
+                                                                      list.jiefan = list.jiefan - r.l4;
+                                                                  }
+                                                              }
+                                                          }
+                                                      }
+                                                      if (liuliang.Equals("05"))
+                                                      {
+                                                          foreach (var g in guanlingYuzhi)
+                                                          {
+                                                              if (list.jiefan <= 0) { break; }
+                                                              var g5 = g.record.Where(o => o.l5 > 0).ToList();
+                                                              foreach (var s in g5)
+                                                              {
+                                                                  var r = ent.RecordTable.Where(o => o.id == s.id).First();
+                                                                  if (r.l5 >= list.jiefan)
+                                                                  {
 
-                                                if (liuliang.Equals("04"))
-                                                    {
-                                                        foreach (var g in guanlingYuzhi)
-                                                        {
-                                                            if (list.jiefan <= 0) { break; }
-                                                            var g4 = g.record.Where(o => o.l4 > 0).ToList();
-                                                            foreach (var s in g4)
-                                                            {
-                                                                var r = ent.RecordTable.Where(o => o.id == s.id).First();
-                                                                if (r.l4 >= list.jiefan)
-                                                                {
-                                                                    contrast contrast = new contrast();
-                                                                    contrast.yuzhiId = r.id;
-                                                                    contrast.baoxiaoId = request.id;
-                                                                    contrast.l4 = list.jiefan;
-                                                                    ent.contrast.Add(contrast);
-                                                                    r.l4 = r.l4 - list.jiefan;
-                                                                    list.jiefan = 0;
-                                                                    break;
-                                                                }
-                                                                else
-                                                                {
-                                                                    contrast contrast = new contrast();
-                                                                    contrast.yuzhiId = r.id;
-                                                                    contrast.baoxiaoId = request.id;
-                                                                    contrast.l4 = r.l4;
-                                                                    ent.contrast.Add(contrast);
-                                                                    r.l4 = 0;
-                                                                    list.jiefan = list.jiefan - r.l4;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    if (liuliang.Equals("05"))
-                                                    {
-                                                        foreach (var g in guanlingYuzhi)
-                                                        {
-                                                            if (list.jiefan <= 0) { break; }
-                                                            var g5 = g.record.Where(o => o.l5 > 0).ToList();
-                                                            foreach (var s in g5)
-                                                            {
-                                                                var r = ent.RecordTable.Where(o => o.id == s.id).First();
-                                                                if (r.l5 >= list.jiefan)
-                                                                {
+                                                                      contrast contrast = new contrast();
+                                                                      contrast.yuzhiId = r.id;
+                                                                      contrast.baoxiaoId = request.id;
+                                                                      contrast.l5 = list.jiefan;
+                                                                      ent.contrast.Add(contrast);
+                                                                      r.l5 = r.l5 - list.jiefan;
+                                                                      list.jiefan = 0;
+                                                                      break;
+                                                                  }
+                                                                  else
+                                                                  {
 
-                                                                    contrast contrast = new contrast();
-                                                                    contrast.yuzhiId = r.id;
-                                                                    contrast.baoxiaoId = request.id;
-                                                                    contrast.l5 = list.jiefan;
-                                                                    ent.contrast.Add(contrast);
-                                                                    r.l5 = r.l5 - list.jiefan;
-                                                                    list.jiefan = 0;
-                                                                    break;
-                                                                }
-                                                                else
-                                                                {
+                                                                      contrast contrast = new contrast();
+                                                                      contrast.yuzhiId = r.id;
+                                                                      contrast.baoxiaoId = request.id;
+                                                                      contrast.l5 = r.l5;
+                                                                      ent.SaveChanges();
+                                                                      r.l5 = 0;
 
-                                                                    contrast contrast = new contrast();
-                                                                    contrast.yuzhiId = r.id;
-                                                                    contrast.baoxiaoId = request.id;
-                                                                    contrast.l5 = r.l5;
-                                                                    ent.SaveChanges();
-                                                                    r.l5 = 0;
+                                                                      list.jiefan = list.jiefan - r.l5;
+                                                                  }
+                                                              }
+                                                          }
+                                                      }
 
-                                                                    list.jiefan = list.jiefan - r.l5;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
+                                                      if (liuliang.Equals("06"))
+                                                      {
+                                                          foreach (var g in guanlingYuzhi)
+                                                          {
+                                                              if (list.jiefan <= 0) { break; }
+                                                              var g6 = g.record.Where(o => o.l6 > 0).ToList();
+                                                              foreach (var s in g6)
+                                                              {
+                                                                  var r = ent.RecordTable.Where(o => o.id == s.id).First();
+                                                                  if (r.l6 >= list.jiefan)
+                                                                  {
+                                                                      contrast contrast = new contrast();
+                                                                      contrast.yuzhiId = r.id;
+                                                                      contrast.baoxiaoId = request.id;
+                                                                      contrast.l6 = list.jiefan;
+                                                                      ent.contrast.Add(contrast);
+                                                                      r.l6 = r.l6 - list.jiefan;
+                                                                      list.jiefan = 0;
+                                                                      break;
+                                                                  }
+                                                                  else
+                                                                  {
+                                                                      contrast contrast = new contrast();
+                                                                      contrast.yuzhiId = r.id;
+                                                                      contrast.baoxiaoId = request.id;
+                                                                      contrast.l6 = r.l6;
+                                                                      ent.contrast.Add(contrast);
+                                                                      r.l6 = 0;
+                                                                      list.jiefan = list.jiefan - r.l6;
+                                                                  }
+                                                              }
+                                                          }
+                                                      }
 
-                                                    if (liuliang.Equals("06"))
-                                                    {
-                                                        foreach (var g in guanlingYuzhi)
-                                                        {
-                                                            if (list.jiefan <= 0) { break; }
-                                                            var g6 = g.record.Where(o => o.l6 > 0).ToList();
-                                                            foreach (var s in g6)
-                                                            {
-                                                                var r = ent.RecordTable.Where(o => o.id == s.id).First();
-                                                                if (r.l6 >= list.jiefan)
-                                                                {
-                                                                    contrast contrast = new contrast();
-                                                                    contrast.yuzhiId = r.id;
-                                                                    contrast.baoxiaoId = request.id;
-                                                                    contrast.l6 = list.jiefan;
-                                                                    ent.contrast.Add(contrast);
-                                                                    r.l6 = r.l6 - list.jiefan;
-                                                                    list.jiefan = 0;
-                                                                    break;
-                                                                }
-                                                                else
-                                                                {
-                                                                    contrast contrast = new contrast();
-                                                                    contrast.yuzhiId = r.id;
-                                                                    contrast.baoxiaoId = request.id;
-                                                                    contrast.l6 = r.l6;
-                                                                    ent.contrast.Add(contrast);
-                                                                    r.l6 = 0;
-                                                                    list.jiefan = list.jiefan - r.l6;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
+                                                      if (liuliang.Equals("07"))
+                                                      {
+                                                          foreach (var g in guanlingYuzhi)
+                                                          {
+                                                              if (list.jiefan <= 0) { break; }
+                                                              var g7 = g.record.Where(o => o.l7 > 0).ToList();
+                                                              foreach (var s in g7)
+                                                              {
+                                                                  var r = ent.RecordTable.Where(o => o.id == s.id).First();
+                                                                  if (r.l7 >= list.jiefan)
+                                                                  {
+                                                                      contrast contrast = new contrast();
+                                                                      contrast.yuzhiId = r.id;
+                                                                      contrast.baoxiaoId = request.id;
+                                                                      contrast.l7 = list.jiefan;
+                                                                      ent.contrast.Add(contrast);
+                                                                      r.l7 = r.l7 - list.jiefan;
+                                                                      list.jiefan = 0;
+                                                                      break;
+                                                                  }
+                                                                  else
+                                                                  {
+                                                                      contrast contrast = new contrast();
+                                                                      contrast.yuzhiId = r.id;
+                                                                      contrast.baoxiaoId = request.id;
+                                                                      contrast.l7 = r.l7;
+                                                                      ent.contrast.Add(contrast);
+                                                                      r.l7 = 0;
 
-                                                    if (liuliang.Equals("07"))
-                                                    {
-                                                        foreach (var g in guanlingYuzhi)
-                                                        {
-                                                            if (list.jiefan <= 0) { break; }
-                                                            var g7 = g.record.Where(o => o.l7 > 0).ToList();
-                                                            foreach (var s in g7)
-                                                            {
-                                                                var r = ent.RecordTable.Where(o => o.id == s.id).First();
-                                                                if (r.l7 >= list.jiefan)
-                                                                {
-                                                                    contrast contrast = new contrast();
-                                                                    contrast.yuzhiId = r.id;
-                                                                    contrast.baoxiaoId = request.id;
-                                                                    contrast.l7 = list.jiefan;
-                                                                    ent.contrast.Add(contrast);
-                                                                    r.l7 = r.l7 - list.jiefan;
-                                                                    list.jiefan = 0;
-                                                                    break;
-                                                                }
-                                                                else
-                                                                {
-                                                                    contrast contrast = new contrast();
-                                                                    contrast.yuzhiId = r.id;
-                                                                    contrast.baoxiaoId = request.id;
-                                                                    contrast.l7 = r.l7;
-                                                                    ent.contrast.Add(contrast);
-                                                                    r.l7 = 0;
+                                                                      list.jiefan = list.jiefan - r.l7;
+                                                                  }
+                                                              }
+                                                          }
+                                                      }
 
-                                                                    list.jiefan = list.jiefan - r.l7;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
+                                                      if (liuliang.Equals("13"))
+                                                      {
+                                                          foreach (var g in guanlingYuzhi)
+                                                          {
+                                                              if (list.jiefan <= 0) { break; }
+                                                              var g13 = g.record.Where(o => o.l13 > 0).ToList();
+                                                              foreach (var s in g13)
+                                                              {
+                                                                  var r = ent.RecordTable.Where(o => o.id == s.id).First();
+                                                                  if (r.l13 >= list.jiefan)
+                                                                  {
+                                                                      contrast contrast = new contrast();
+                                                                      contrast.yuzhiId = r.id;
+                                                                      contrast.baoxiaoId = request.id;
+                                                                      contrast.l13 = list.jiefan;
+                                                                      ent.contrast.Add(contrast);
+                                                                      r.l13 = r.l13 - list.jiefan;
+                                                                      list.jiefan = 0;
+                                                                      break;
+                                                                  }
+                                                                  else
+                                                                  {
+                                                                      contrast contrast = new contrast();
+                                                                      contrast.yuzhiId = r.id;
+                                                                      contrast.baoxiaoId = request.id;
+                                                                      contrast.l13 = r.l13;
+                                                                      ent.contrast.Add(contrast);
+                                                                      r.l13 = 0;
 
-                                                    if (liuliang.Equals("13"))
-                                                    {
-                                                        foreach (var g in guanlingYuzhi)
-                                                        {
-                                                            if (list.jiefan <= 0) { break; }
-                                                            var g13 = g.record.Where(o => o.l13 > 0).ToList();
-                                                            foreach (var s in g13)
-                                                            {
-                                                                var r = ent.RecordTable.Where(o => o.id == s.id).First();
-                                                                if (r.l13 >= list.jiefan)
-                                                                {
-                                                                    contrast contrast = new contrast();
-                                                                    contrast.yuzhiId = r.id;
-                                                                    contrast.baoxiaoId = request.id;
-                                                                    contrast.l13 = list.jiefan;
-                                                                    ent.contrast.Add(contrast);
-                                                                    r.l13 = r.l13 - list.jiefan;
-                                                                    list.jiefan = 0;
-                                                                    break;
-                                                                }
-                                                                else
-                                                                {
-                                                                    contrast contrast = new contrast();
-                                                                    contrast.yuzhiId = r.id;
-                                                                    contrast.baoxiaoId = request.id;
-                                                                    contrast.l13 = r.l13;
-                                                                    ent.contrast.Add(contrast);
-                                                                    r.l13 = 0;
+                                                                      list.jiefan = list.jiefan - r.l13;
+                                                                  }
+                                                              }
+                                                          }
+                                                      }
+                                                      foreach (var g in guanlingYuzhi)
+                                                      {
+                                                          if (list.jiefan <= 0) { break; }
+                                                          var g13 = g.record
+                                                               .Where(o => o.l13 > 0 || o.l7 > 0 || o.l6 > 0 || o.l5 > 0 || o.l4 > 0).ToList();
+                                                          foreach (var s in g13)
+                                                          {
+                                                              var r = ent.RecordTable.Where(o => o.id == s.id).First();
+                                                              if (r.l4 >= list.jiefan)
+                                                              {
+                                                                  contrast contrast = new contrast();
+                                                                  contrast.yuzhiId = r.id;
+                                                                  contrast.baoxiaoId = request.id;
+                                                                  contrast.l4 = list.jiefan;
+                                                                  ent.contrast.Add(contrast);
 
-                                                                    list.jiefan = list.jiefan - r.l13;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                    foreach (var g in guanlingYuzhi)
-                                                    {
-                                                        if (list.jiefan <= 0) { break; }
-                                                        var g13 = g.record
-                                                             .Where(o => o.l13 > 0 || o.l7 > 0 || o.l6 > 0 || o.l5 > 0 || o.l4 > 0).ToList();
-                                                        foreach (var s in g13)
-                                                        {
-                                                            var r = ent.RecordTable.Where(o => o.id == s.id).First();
-                                                            if (r.l4 >= list.jiefan)
-                                                            {
-                                                                contrast contrast = new contrast();
-                                                                contrast.yuzhiId = r.id;
-                                                                contrast.baoxiaoId = request.id;
-                                                                contrast.l4 = list.jiefan;
-                                                                ent.contrast.Add(contrast);
+                                                                  r.l4 = r.l4 - list.jiefan;
+                                                                  list.jiefan = 0;
+                                                                  break;
+                                                              }
+                                                              else
+                                                              {
+                                                                  contrast contrast = new contrast();
+                                                                  contrast.yuzhiId = r.id;
+                                                                  contrast.baoxiaoId = request.id;
+                                                                  contrast.l4 = r.l4;
+                                                                  ent.contrast.Add(contrast);
+                                                                  r.l4 = 0;
+                                                                  list.jiefan = list.jiefan - r.l4;
+                                                              }
 
-                                                                r.l4 = r.l4 - list.jiefan;
-                                                                list.jiefan = 0;
-                                                                break;
-                                                            }
-                                                            else
-                                                            {
-                                                                contrast contrast = new contrast();
-                                                                contrast.yuzhiId = r.id;
-                                                                contrast.baoxiaoId = request.id;
-                                                                contrast.l4 = r.l4;
-                                                                ent.contrast.Add(contrast);
-                                                                r.l4 = 0;
-                                                                list.jiefan = list.jiefan - r.l4;
-                                                            }
+                                                              if (r.l5 >= list.jiefan)
+                                                              {
+                                                                  contrast contrast = new contrast();
+                                                                  contrast.yuzhiId = r.id;
+                                                                  contrast.baoxiaoId = request.id;
+                                                                  contrast.l5 = list.jiefan;
+                                                                  ent.contrast.Add(contrast);
+                                                                  r.l5 = r.l5 - list.jiefan;
+                                                                  list.jiefan = 0;
+                                                                  break;
+                                                              }
+                                                              else
+                                                              {
+                                                                  contrast contrast = new contrast();
+                                                                  contrast.yuzhiId = r.id;
+                                                                  contrast.baoxiaoId = request.id;
+                                                                  contrast.l5 = r.l5;
+                                                                  ent.contrast.Add(contrast);
+                                                                  r.l5 = 0;
+                                                                  list.jiefan = list.jiefan - r.l5;
+                                                              }
+                                                              if (r.l6 >= list.jiefan)
+                                                              {
+                                                                  contrast contrast = new contrast();
+                                                                  contrast.yuzhiId = r.id;
+                                                                  contrast.baoxiaoId = request.id;
+                                                                  contrast.l6 = list.jiefan;
+                                                                  ent.contrast.Add(contrast);
+                                                                  r.l6 = r.l6 - list.jiefan;
+                                                                  list.jiefan = 0;
+                                                                  break;
+                                                              }
+                                                              else
+                                                              {
+                                                                  contrast contrast = new contrast();
+                                                                  contrast.yuzhiId = r.id;
+                                                                  contrast.baoxiaoId = request.id;
+                                                                  contrast.l6 = r.l6;
+                                                                  ent.contrast.Add(contrast);
+                                                                  r.l6 = 0;
+                                                                  list.jiefan = list.jiefan - r.l6;
+                                                              }
+                                                              if (r.l7 >= list.jiefan)
+                                                              {
+                                                                  contrast contrast = new contrast();
+                                                                  contrast.yuzhiId = r.id;
+                                                                  contrast.baoxiaoId = request.id;
+                                                                  contrast.l7 = list.jiefan;
+                                                                  ent.contrast.Add(contrast);
+                                                                  r.l7 = r.l7 - list.jiefan;
+                                                                  list.jiefan = 0;
+                                                                  break;
+                                                              }
+                                                              else
+                                                              {
+                                                                  contrast contrast = new contrast();
+                                                                  contrast.yuzhiId = r.id;
+                                                                  contrast.baoxiaoId = request.id;
+                                                                  contrast.l7 = r.l7;
+                                                                  ent.contrast.Add(contrast);
+                                                                  r.l7 = 0;
+                                                                  list.jiefan = list.jiefan - r.l7;
+                                                              }
 
-                                                            if (r.l5 >= list.jiefan)
-                                                            {
-                                                                contrast contrast = new contrast();
-                                                                contrast.yuzhiId = r.id;
-                                                                contrast.baoxiaoId = request.id;
-                                                                contrast.l5 = list.jiefan;
-                                                                ent.contrast.Add(contrast);
-                                                                r.l5 = r.l5 - list.jiefan;
-                                                                list.jiefan = 0;
-                                                                break;
-                                                            }
-                                                            else
-                                                            {
-                                                                contrast contrast = new contrast();
-                                                                contrast.yuzhiId = r.id;
-                                                                contrast.baoxiaoId = request.id;
-                                                                contrast.l5 = r.l5;
-                                                                ent.contrast.Add(contrast);
-                                                                r.l5 = 0;
-                                                                list.jiefan = list.jiefan - r.l5;
-                                                            }
-                                                            if (r.l6 >= list.jiefan)
-                                                            {
-                                                                contrast contrast = new contrast();
-                                                                contrast.yuzhiId = r.id;
-                                                                contrast.baoxiaoId = request.id;
-                                                                contrast.l6 = list.jiefan;
-                                                                ent.contrast.Add(contrast);
-                                                                r.l6 = r.l6 - list.jiefan;
-                                                                list.jiefan = 0;
-                                                                break;
-                                                            }
-                                                            else
-                                                            {
-                                                                contrast contrast = new contrast();
-                                                                contrast.yuzhiId = r.id;
-                                                                contrast.baoxiaoId = request.id;
-                                                                contrast.l6 = r.l6;
-                                                                ent.contrast.Add(contrast);
-                                                                r.l6 = 0;
-                                                                list.jiefan = list.jiefan - r.l6;
-                                                            }
-                                                            if (r.l7 >= list.jiefan)
-                                                            {
-                                                                contrast contrast = new contrast();
-                                                                contrast.yuzhiId = r.id;
-                                                                contrast.baoxiaoId = request.id;
-                                                                contrast.l7 = list.jiefan;
-                                                                ent.contrast.Add(contrast);
-                                                                r.l7 = r.l7 - list.jiefan;
-                                                                list.jiefan = 0;
-                                                                break;
-                                                            }
-                                                            else
-                                                            {
-                                                                contrast contrast = new contrast();
-                                                                contrast.yuzhiId = r.id;
-                                                                contrast.baoxiaoId = request.id;
-                                                                contrast.l7 = r.l7;
-                                                                ent.contrast.Add(contrast);
-                                                                r.l7 = 0;
-                                                                list.jiefan = list.jiefan - r.l7;
-                                                            }
-
-                                                            if (r.l13 >= list.jiefan)
-                                                            {
-                                                                contrast contrast = new contrast();
-                                                                contrast.yuzhiId = r.id;
-                                                                contrast.baoxiaoId = request.id;
-                                                                contrast.l13 = list.jiefan;
-                                                                ent.contrast.Add(contrast);
-                                                                r.l13 = r.l13 - list.jiefan;
-                                                                list.jiefan = 0;
-                                                                break;
-                                                            }
-                                                            else
-                                                            {
-                                                                contrast contrast = new contrast();
-                                                                contrast.yuzhiId = r.id;
-                                                                contrast.baoxiaoId = request.id;
-                                                                contrast.l13 = r.l13;
-                                                                ent.SaveChanges();
-                                                                r.l13 = 0;
-                                                                list.jiefan = list.jiefan - r.l13;
-                                                            }
-                                                        }
-                                                    }
-                                                }
+                                                              if (r.l13 >= list.jiefan)
+                                                              {
+                                                                  contrast contrast = new contrast();
+                                                                  contrast.yuzhiId = r.id;
+                                                                  contrast.baoxiaoId = request.id;
+                                                                  contrast.l13 = list.jiefan;
+                                                                  ent.contrast.Add(contrast);
+                                                                  r.l13 = r.l13 - list.jiefan;
+                                                                  list.jiefan = 0;
+                                                                  break;
+                                                              }
+                                                              else
+                                                              {
+                                                                  contrast contrast = new contrast();
+                                                                  contrast.yuzhiId = r.id;
+                                                                  contrast.baoxiaoId = request.id;
+                                                                  contrast.l13 = r.l13;
+                                                                  ent.SaveChanges();
+                                                                  r.l13 = 0;
+                                                                  list.jiefan = list.jiefan - r.l13;
+                                                              }
+                                                          }
+                                                      }
+                                                */
+                                                #endregion
+                                            }
                                             else
                                             {
                                                 return new { errorMsg = "请填写所有摘要信息" };
@@ -1270,6 +1276,8 @@ namespace dal
                                             RowGuid = TimeHelp.ConvertDateTimeToInt(DateTime.Now) + "00000000",
                                         };
                                         db.GL_CashTable.Add(cash);
+                                        #region 冲账金额统计（取消）
+                                        /*
                                         if (liu.citemcode.Equals("04")) {
                                             request.l4 = liu.jine;
                                         }
@@ -1290,7 +1298,9 @@ namespace dal
                                             request.l13 = liu.jine;
                                         }
                                         ent.SaveChanges();
-                                    } 
+                                        */
+                                        #endregion
+                                    }
 
                                     CN_VARelate v = new CN_VARelate()
                                     {

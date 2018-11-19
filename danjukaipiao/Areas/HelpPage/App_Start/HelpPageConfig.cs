@@ -40,7 +40,7 @@ namespace danjukaipiao.Areas.HelpPage
             //config.SetDocumentationProvider(new XmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/App_Data/XmlDocument.xml")));
             #region *************************XML显示接口参数和注释***************************************
             // 添加本项目或其他引用项目的XML配置:可加多个
-            config.SetDocumentationProvider(new MultiXmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/bin/danjukaipiao.xml")));
+           // config.SetDocumentationProvider(new MultiXmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/bin/danjukaipiao.xml")));
             
             #endregion
             //// Uncomment the following to use the documentation from XML documentation file.
@@ -68,9 +68,9 @@ namespace danjukaipiao.Areas.HelpPage
 
             #region *************************默认JSON显示接口***************************************
 
-            //  config.SetSampleForMediaType(
-            //   new TextSample("Binary JSON content. See http://bsonspec.org for details."),
-            //   new MediaTypeHeaderValue("application/bson"));
+             config.SetSampleForMediaType(
+             new TextSample("Binary JSON content. See http://bsonspec.org for details."),
+               new MediaTypeHeaderValue("application/bson"));
             #endregion
             //// Uncomment the following to use "[0]=foo&[1]=bar" directly as the sample for all actions that support form URL encoded format
             //// and have IEnumerable<string> as the body parameter or return type.
